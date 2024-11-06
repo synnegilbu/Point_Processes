@@ -1,90 +1,111 @@
-library(rgl)
+# Required Libraries
+library(spatstat)
+library(plotly)
 
-# Function to simulate a Gibbs process in d dimensions and plot the result
-simulate_gibbs_process <- function(d = 2, n_points = 100, n_iter = 1000, 
-                                   interaction_range = 0.1, beta = -0.5, 
-                                   window_size = 1, plot_result = TRUE) {
+# Function to simulate 2D Gibbs Point Process with optimization
+gibbs_point_process_2d_optimized <- function(n, beta, r, iter = 500, window_size = 1) {
+  # Create an initial random set of points within the unit square
+  points <- matrix(runif(2 * n), ncol = 2) * window_size
   
-  # Initialize the point coordinates randomly within the observation window
-  points <- matrix(runif(n_points * d, min = 0, max = window_size), ncol = d)
+  # Function to calculate pairwise distances efficiently using caching
+  calculate_distances <- function(points) {
+    dists <- as.matrix(dist(points))
+    diag(dists) <- Inf  # Ignore self-interaction (distance = 0)
+    return(dists)
+  }
   
-  # Gibbs process parameters
-  interaction_radius <- interaction_range
-  beta_param <- beta
-  
-  # Function to calculate the potential energy of a configuration
-  potential_function <- function(points) {
-    total_potential <- 0
-    n <- nrow(points)
+  # Metropolis-Hastings update step for Gibbs process with optimized distance calculation
+  for (i in 1:iter) {
+    dists <- calculate_distances(points)  # Precompute distances once per iteration
     
-    for (i in 1:(n-1)) {
-      for (j in (i+1):n) {
-        distance <- sqrt(sum((points[i, ] - points[j, ])^2))
-        if (distance < interaction_radius) {
-          total_potential <- total_potential + beta_param
-        }
+    for (j in 1:n) {
+      # Select a point and propose a move within a small neighborhood
+      current_point <- points[j, ]
+      proposed_point <- current_point + runif(2, min = -0.05, max = 0.05)  # Small random move
+      proposed_point <- pmin(pmax(proposed_point, 0), window_size)  # Keep point within bounds
+      
+      # Calculate distances between the proposed point and the others
+      points[j, ] <- proposed_point
+      new_dists <- calculate_distances(points)
+      
+      # Count the number of points within the repulsion distance `r`
+      close_points_old <- sum(dists[j, ] < r)
+      close_points_new <- sum(new_dists[j, ] < r)
+      
+      # Compute acceptance probability
+      delta_U <- close_points_new - close_points_old  # Change in repulsion potential
+      acceptance_prob <- min(1, exp(-beta * delta_U))
+      
+      # Accept or reject the proposed move
+      if (runif(1) < acceptance_prob) {
+        dists <- new_dists  # Update distances only if the move is accepted
+      } else {
+        points[j, ] <- current_point  # Reject move
       }
     }
-    return(total_potential)
-  }
-  
-  # Metropolis-Hastings MCMC loop
-  for (iter in 1:n_iter) {
-    # Propose a new point configuration
-    idx <- sample(1:n_points, 1) # Choose a random point to move
-    old_point <- points[idx, ]
-    new_point <- runif(d, min = 0, max = window_size) # New location in the window
-    
-    # Temporary points matrix for the new configuration
-    new_points <- points
-    new_points[idx, ] <- new_point
-    
-    # Calculate potentials
-    old_potential <- potential_function(points)
-    new_potential <- potential_function(new_points)
-    
-    # Calculate acceptance probability
-    accept_prob <- exp(old_potential - new_potential)
-    
-    # Accept or reject the new configuration based on the acceptance probability
-    if (runif(1) < accept_prob) {
-      points[idx, ] <- new_point
-    }
-  }
-  
-  # Plot the result if requested
-  if (plot_result) {
-    plot_points(points, d, window_size)
   }
   
   return(points)
 }
 
-# Function to plot the points based on the dimension
-plot_points <- function(points, d, window_size) {
-  if (d == 2) {
-    plot(points[,1], points[,2], xlim = c(0, window_size), ylim = c(0, window_size), 
-         xlab = "X", ylab = "Y", main = "2D Gibbs Process Simulation", pch = 19)
-  } else if (d == 3) {
-    plot3d(points[,1], points[,2], points[,3], xlim = c(0, window_size), 
-           ylim = c(0, window_size), zlim = c(0, window_size), 
-           xlab = "X", ylab = "Y", zlab = "Z", 
-           main = "3D Gibbs Process Simulation", col = "blue", size = 5)
-  } else {
-    message("Plotting is not supported for dimensions higher than 3.")
+# Run optimized 2D Gibbs Point Process
+result_2d_optimized <- gibbs_point_process_2d_optimized(n = 50, beta = 1, r = 1, iter = 500)
+
+# Plot the result
+plot(result_2d_optimized, xlab = "X", ylab = "Y", main = "Optimized 2D Gibbs Point Process", pch = 19, col = "blue")
+
+
+
+
+
+
+# Function for Gibbs Process in 3D
+gibbs_point_process_3d <- function(n, beta, r, domain_size = 1, iter = 5000) {
+  # Initialize points randomly in the 3D domain
+  points <- matrix(runif(3 * n), ncol = 3) * domain_size
+  
+  # Gibbs sampling loop
+  for (i in 1:iter) {
+    # Randomly select a point
+    point_index <- sample(1:n, 1)
+    current_point <- points[point_index, ]
+    
+    # Propose a new position within a small range around the point
+    proposal <- current_point + runif(3, min = -0.05, max = 0.05)
+    proposal <- pmin(pmax(proposal, 0), domain_size)  # Keep within bounds
+    
+    # Calculate the number of points within the distance `r` of the proposal
+    distances <- sqrt(rowSums((points[-point_index, ] - proposal)^2))
+    close_points <- sum(distances < r)
+    
+    # Calculate the probability of acceptance
+    current_distances <- sqrt(rowSums((points[-point_index, ] - current_point)^2))
+    current_close_points <- sum(current_distances < r)
+    delta_U <- close_points - current_close_points  # Change in potential
+    
+    acceptance_prob <- min(1, exp(-beta * delta_U))
+    
+    # Accept or reject the new point
+    if (runif(1) < acceptance_prob) {
+      points[point_index, ] <- proposal
+    }
   }
+  
+  # Return the points as a data frame for plotting
+  return(data.frame(x = points[, 1], y = points[, 2], z = points[, 3]))
 }
 
-# Example usage
-set.seed(42)
-result_points <- simulate_gibbs_process(d = 3, n_points = 50, n_iter = 5000, 
-                                        interaction_range = 3, beta = -1, 
-                                        window_size = 1, plot_result = TRUE)
+# Run 3D Gibbs point process
+result_3d <- gibbs_point_process_3d(n = 100, beta = 1, r = 0.001, iter = 5000)
 
-
-# Example usage for 2D Gibbs Process
-set.seed(42)
-result_points_2d <- simulate_gibbs_process(d = 2, n_points = 100, n_iter = 5000, 
-                                           interaction_range = 1, beta = -1, 
-                                           window_size = 1, plot_result = TRUE)
-
+# Plot the 3D result
+plot_ly(data = result_3d, x = ~x, y = ~y, z = ~z, type = 'scatter3d', mode = 'markers',
+        marker = list(size = 2, color = 'blue', opacity = 0.5)) %>%
+  layout(
+    title = "3D Gibbs (Strauss) Point Process",
+    scene = list(
+      xaxis = list(title = 'X'),
+      yaxis = list(title = 'Y'),
+      zaxis = list(title = 'Z')
+    )
+  )
