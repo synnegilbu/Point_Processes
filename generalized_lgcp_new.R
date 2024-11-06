@@ -1,100 +1,114 @@
-# Load necessary libraries
-library(geoR)      # For Gaussian Random Field simulation
-library(scales)    # For color scales
-library(spatstat)  # For spatial analysis
-library(rgl)       # For 3D visualization
+library(spatstat)
+library(RandomFields)
+library(spatstat.geom)
+library(ggplot2)
+library(plotly)
 
-# Generalized function to simulate Log-Gaussian Cox Process in d dimensions
-simulate_lgcp <- function(d, window, grid_size, mean = 0, variance = 1, scale = 1, mark_type = "continuous", mark_range = c(0, 1)) {
-  # Generate grid for spatial domain
-  grid <- do.call(expand.grid, lapply(window, function(w) seq(w[1], w[2], length.out = grid_size)))
-  coords <- as.matrix(grid)  # Coordinates of the grid points
-  
-  # Simulate Gaussian Random Field (GRF) using geoR
-  grf_sim <- grf(n = nrow(coords), cov.pars = c(variance, scale), cov.model = "gaussian")
-  
-  # Extract GRF values and compute intensity field
-  grf_values <- grf_sim$data  # GRF values
-  intensity <- exp(mean + grf_values)  # Intensity function
-  
-  # Simulate the Poisson point process based on the intensity field
-  lambda_max <- max(intensity)  # Maximum intensity
-  n_points <- rpois(1, lambda_max * prod(sapply(window, diff)))  # Number of points
-  
-  # Generate random points uniformly in the d-dimensional window
-  points <- matrix(runif(n_points * d), ncol = d)
-  
-  # Transform points into the correct ranges based on the window
-  for (i in 1:d) {
-    points[, i] <- points[, i] * diff(window[[i]]) + window[[i]][1]
-  }
-  
-  # Assign intensity values to the random points
-  intensity_at_points <- apply(points, 1, function(pt) {
-    # Find the closest grid point to the random point
-    grid_index <- which.min(rowSums((coords - pt)^2))
-    return(intensity[grid_index])
-  })
-  
-  # Apply thinning to keep points with probability proportional to their intensity
-  keep_points <- runif(n_points) <= intensity_at_points / lambda_max
-  final_points <- points[keep_points, , drop = FALSE]
-  
-  # Assign marks to the valid points
-  if (mark_type == "continuous") {
-    marks <- runif(nrow(final_points), min = mark_range[1], max = mark_range[2])
+# Function to simulate a Log-Gaussian Cox Process in 2D or 3D
+generalized_lgcp <- function(d, n, sigma2, range) {
+  if(d == 2) {
+    # 2D Case: Simulate a 2D Gaussian Random Field
+    sim2 <- grf(n, grid = "reg", cov.pars = c(sigma2, range))
+    
+    # Extract and process GRF values
+    grf_values <- sim2$data
+    grid_size <- sqrt(length(grf_values))  # Calculate grid size
+    
+    # Reshape GRF values into a 2D matrix
+    grf_matrix <- matrix(grf_values, nrow = grid_size, ncol = grid_size)
+    
+    # Exponentiate to obtain inhomogeneous intensity
+    intensity <- exp(grf_matrix)
+    lambda <- intensity / sum(intensity) * 500  # Scale to control total points
+    
+    # Define grid points in 2D space
+    x_coords <- seq(0, 1, length.out = grid_size)
+    y_coords <- seq(0, 1, length.out = grid_size)
+    
+    # Generate points based on Poisson intensities in each cell
+    points_x <- c()
+    points_y <- c()
+    
+    for (i in 1:grid_size) {
+      for (j in 1:grid_size) {
+        # Number of points to place in this cell
+        num_points <- rpois(1, lambda[i, j])
+        
+        if (num_points > 0) {
+          # Randomly distribute points within the cell
+          points_x <- c(points_x, runif(num_points, x_coords[i] - 1/(2*grid_size), x_coords[i] + 1/(2*grid_size)))
+          points_y <- c(points_y, runif(num_points, y_coords[j] - 1/(2*grid_size), y_coords[j] + 1/(2*grid_size)))
+        }
+      }
+    }
+    
+    # Return the points as a data frame for 2D
+    pp_2d <- data.frame(x = points_x, y = points_y)
+    return(pp_2d)
+    
+  } else if(d == 3) {
+    # 3D Case: Setup grid dimensions
+    dim_size <- round(n^(1/3))  # Cube dimension size
+    sim3 <- grf(dim_size^3, grid = "reg", cov.pars = c(sigma2, range))
+    
+    # Extract and reshape GRF values into 3D array
+    grf_values_3d <- sim3$data
+    grf_array <- array(grf_values_3d, dim = c(dim_size, dim_size, dim_size))
+    
+    # Exponentiate to obtain inhomogeneous intensity
+    intensity_3d <- exp(grf_array)
+    lambda_3d <- intensity_3d / sum(intensity_3d) * 500  # Scale to control total points
+    
+    # Define grid points in 3D space
+    x_coords <- seq(0, 1, length.out = dim_size)
+    y_coords <- seq(0, 1, length.out = dim_size)
+    z_coords <- seq(0, 1, length.out = dim_size)
+    
+    # Generate points based on Poisson intensities in each cell
+    points_x <- c()
+    points_y <- c()
+    points_z <- c()
+    
+    for (i in 1:dim_size) {
+      for (j in 1:dim_size) {
+        for (k in 1:dim_size) {
+          # Number of points to place in this cell
+          num_points <- rpois(1, lambda_3d[i, j, k])
+          
+          if (num_points > 0) {
+            # Randomly distribute points within the voxel
+            points_x <- c(points_x, runif(num_points, x_coords[i] - 1/(2*dim_size), x_coords[i] + 1/(2*dim_size)))
+            points_y <- c(points_y, runif(num_points, y_coords[j] - 1/(2*dim_size), y_coords[j] + 1/(2*dim_size)))
+            points_z <- c(points_z, runif(num_points, z_coords[k] - 1/(2*dim_size), z_coords[k] + 1/(2*dim_size)))
+          }
+        }
+      }
+    }
+    
+    # Return the points as a data frame for 3D
+    pp_3d <- data.frame(x = points_x, y = points_y, z = points_z)
+    return(pp_3d)
   } else {
-    stop("Invalid mark type. Choose 'continuous'.")
-  }
-  
-  # Return results
-  if (d == 2) {
-    return(list(points = data.frame(x = final_points[, 1], y = final_points[, 2], mark = marks),
-                intensity = intensity, coords = coords))
-  } else if (d == 3) {
-    return(list(points = data.frame(x = final_points[, 1], y = final_points[, 2], z = final_points[, 3], mark = marks),
-                intensity = intensity, coords = coords))
-  } else {
-    stop("Invalid dimension. Choose either 2 or 3.")
+    stop("Dimension must be either 2 or 3.")
   }
 }
 
-# Example usage for 3D continuous marks
-d <- 3  # Set the number of dimensions (3 for 3D)
-window <- list(c(0, 10), c(0, 10), c(0, 10))  # Define the observation region for 3D
-grid_size <- 20  # Size of the grid for Gaussian Random Field
-mean <- 0        # Mean of the GRF
-variance <- 1    # Variance of the GRF
-scale <- 1       # Scale parameter for the covariance function
+# Example usage for 2D
+result_2d <- generalized_lgcp(d = 2, n = 1000, sigma2 = 1, range = 0.1)
+ggplot(result_2d, aes(x = x, y = y)) +
+  geom_point(alpha = 0.6, color = "blue") +
+  labs(title = "2D Log-Gaussian Cox Process", x = "X", y = "Y") +
+  theme_minimal()
 
-# Run the simulation with continuous marks
-simulated_lgcp <- simulate_lgcp(d, window, grid_size, mean, variance, scale, mark_type = "continuous", mark_range = c(0, 100))
-
-# Extract the points and marks
-points <- simulated_lgcp$points
-marks <- points$mark
-shot_locations <- simulated_lgcp$coords
-
-# Plot the simulated point pattern for 3D
-open3d()  # Open a 3D plotting window
-# Define color gradient based on continuous marks
-color_scale <- scales::col_numeric(palette = "Blues", domain = c(0, 100))
-
-# Plot points with colors based on their continuous marks
-plot3d(points$x, points$y, points$z, col = color_scale(marks), size = 3,
-       xlab = "X", ylab = "Y", zlab = "Z", main = "3D Log-Gaussian Cox Process with Continuous Marks")
-
-# Add the shot locations (cluster centers) in a distinct color
-points3d(shot_locations[, 1], shot_locations[, 2], shot_locations[, 3], col = 'black', size = 8)
-
-# Add a grading scale (color legend) for continuous marks
-color_legend <- function(values, colors, title, position = "topright") {
-  # Create a gradient of colors
-  breaks <- seq(min(values), max(values), length.out = length(colors) + 1)
-  
-  # Plot the legend
-  legend(position, legend = round(breaks, 1), fill = colors, title = title, border = "black")
-}
-
-# Add the grading scale (color legend) to the plot
-color_legend(values = seq(0, 100, length.out = 10), colors = color_scale(seq(0, 100, length.out = 10)), title = "Continuous Marks")
+# Example usage for 3D
+result_3d <- generalized_lgcp(d = 3, n = 1000, sigma2 = 1, range = 0.1)
+plot_ly(data = result_3d, x = ~x, y = ~y, z = ~z, type = 'scatter3d', mode = 'markers',
+        marker = list(size = 2, color = 'blue', opacity = 0.5)) %>%
+  layout(
+    title = "3D Log-Gaussian Cox Process",
+    scene = list(
+      xaxis = list(title = 'X'),
+      yaxis = list(title = 'Y'),
+      zaxis = list(title = 'Z')
+    )
+  )
