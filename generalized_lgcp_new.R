@@ -1,5 +1,4 @@
 library(spatstat)
-library(RandomFields)
 library(spatstat.geom)
 library(ggplot2)
 library(plotly)
