@@ -18,7 +18,7 @@ generalized_lgcp <- function(d, n, sigma2, range) {
     
     # Exponentiate to obtain inhomogeneous intensity
     intensity <- exp(grf_matrix)
-    lambda <- intensity / sum(intensity) * 500  # Scale to control total points
+    lambda <- intensity / sum(intensity) 
     
     # Define grid points in 2D space
     x_coords <- seq(0, 1, length.out = grid_size)

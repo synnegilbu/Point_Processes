@@ -4,11 +4,7 @@ library(spatstat)
 
 # Generalized function to simulate Shot Noise Cox Process in d dimensions
 simulate_sncp <- function(d, lambda, kappa, omega, region, n_shots, mark_type = "categorical", categories = NULL, mark_range = c(0, 1)) {
-  # Check if region is appropriately defined
-  if (length(region) != d || !all(sapply(region, length) == 2)) {
-    stop("Region must specify min and max for each of the dimensions as a list of length 2.")
-  }
-  
+
   # Generate shot locations randomly within the specified region
   shot_locations <- matrix(runif(n_shots * d, 
                                  min = unlist(lapply(region, `[`, 1)), 
