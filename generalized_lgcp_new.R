@@ -1,113 +1,81 @@
-library(spatstat)
-library(spatstat.geom)
 library(ggplot2)
+library(reshape2)
+library(tidyverse)
 library(plotly)
 
-# Function to simulate a Log-Gaussian Cox Process in 2D or 3D
-generalized_lgcp <- function(d, n, sigma2, range) {
-  if(d == 2) {
-    # 2D Case: Simulate a 2D Gaussian Random Field
-    sim2 <- grf(n, grid = "reg", cov.pars = c(sigma2, range))
-    
-    # Extract and process GRF values
-    grf_values <- sim2$data
-    grid_size <- sqrt(length(grf_values))  # Calculate grid size
-    
-    # Reshape GRF values into a 2D matrix
-    grf_matrix <- matrix(grf_values, nrow = grid_size, ncol = grid_size)
-    
-    # Exponentiate to obtain inhomogeneous intensity
-    intensity <- exp(grf_matrix)
-    lambda <- intensity / sum(intensity) 
-    
-    # Define grid points in 2D space
-    x_coords <- seq(0, 1, length.out = grid_size)
-    y_coords <- seq(0, 1, length.out = grid_size)
-    
-    # Generate points based on Poisson intensities in each cell
-    points_x <- c()
-    points_y <- c()
-    
-    for (i in 1:grid_size) {
-      for (j in 1:grid_size) {
-        # Number of points to place in this cell
-        num_points <- rpois(1, lambda[i, j])
-        
-        if (num_points > 0) {
-          # Randomly distribute points within the cell
-          points_x <- c(points_x, runif(num_points, x_coords[i] - 1/(2*grid_size), x_coords[i] + 1/(2*grid_size)))
-          points_y <- c(points_y, runif(num_points, y_coords[j] - 1/(2*grid_size), y_coords[j] + 1/(2*grid_size)))
-        }
-      }
-    }
-    
-    # Return the points as a data frame for 2D
-    pp_2d <- data.frame(x = points_x, y = points_y)
-    return(pp_2d)
-    
-  } else if(d == 3) {
-    # 3D Case: Setup grid dimensions
-    dim_size <- round(n^(1/3))  # Cube dimension size
-    sim3 <- grf(dim_size^3, grid = "reg", cov.pars = c(sigma2, range))
-    
-    # Extract and reshape GRF values into 3D array
-    grf_values_3d <- sim3$data
-    grf_array <- array(grf_values_3d, dim = c(dim_size, dim_size, dim_size))
-    
-    # Exponentiate to obtain inhomogeneous intensity
-    intensity_3d <- exp(grf_array)
-    lambda_3d <- intensity_3d / sum(intensity_3d) * 500  # Scale to control total points
-    
-    # Define grid points in 3D space
-    x_coords <- seq(0, 1, length.out = dim_size)
-    y_coords <- seq(0, 1, length.out = dim_size)
-    z_coords <- seq(0, 1, length.out = dim_size)
-    
-    # Generate points based on Poisson intensities in each cell
-    points_x <- c()
-    points_y <- c()
-    points_z <- c()
-    
-    for (i in 1:dim_size) {
-      for (j in 1:dim_size) {
-        for (k in 1:dim_size) {
-          # Number of points to place in this cell
-          num_points <- rpois(1, lambda_3d[i, j, k])
-          
-          if (num_points > 0) {
-            # Randomly distribute points within the voxel
-            points_x <- c(points_x, runif(num_points, x_coords[i] - 1/(2*dim_size), x_coords[i] + 1/(2*dim_size)))
-            points_y <- c(points_y, runif(num_points, y_coords[j] - 1/(2*dim_size), y_coords[j] + 1/(2*dim_size)))
-            points_z <- c(points_z, runif(num_points, z_coords[k] - 1/(2*dim_size), z_coords[k] + 1/(2*dim_size)))
-          }
-        }
-      }
-    }
-    
-    # Return the points as a data frame for 3D
-    pp_3d <- data.frame(x = points_x, y = points_y, z = points_z)
-    return(pp_3d)
-  } else {
-    stop("Dimension must be either 2 or 3.")
+generate_poisson_gp <- function(d, bounds, m, length_scale, seed = 42) {
+  # Parameters
+  set.seed(seed)
+  xlims <- bounds  # List of bounds for each dimension: e.g., list(c(0, 10), c(0, 10))
+  grid_sides <- lapply(xlims, function(lim) seq(lim[1], lim[2], length.out = m))
+  
+  # Create grid coordinates
+  grid_coords <- expand.grid(grid_sides)
+  X <- as.matrix(grid_coords)
+  grid_step <- sapply(xlims, function(lim) diff(lim) / m)
+  X <- sweep(X, 2, grid_step / 2, "+")  # Center on grid square
+  
+  # RBF Kernel Function
+  rbf <- function(X1, X2, length_scale) {
+    dists <- as.matrix(dist(rbind(X1, X2)))
+    exp(-dists[1:nrow(X1), (nrow(X1)+1):(nrow(X1)+nrow(X2))] ^ 2 / (2 * length_scale ^ 2))
   }
+  
+  # Draw sample from GP
+  K <- rbf(X, X, length_scale)
+  Y <- MASS::mvrnorm(mu = rep(0, nrow(X)), Sigma = K)
+  
+  # Convert to rates
+  Z <- exp(Y)
+  zmax <- max(Z)
+  
+  # Draw Poisson
+  volume <- prod(sapply(xlims, diff))  # Volume of the d-dimensional space
+  N <- rpois(1, zmax * volume)
+  
+  # Generate random points in the d-dimensional space
+  points <- matrix(runif(N * d), ncol = d)
+  for (i in seq_len(d)) {
+    points[, i] <- xlims[[i]][1] + points[, i] * diff(xlims[[i]])
+  }
+  
+  # Find grid square indices for events
+  indices <- lapply(seq_len(d), function(i) findInterval(points[, i], grid_sides[[i]]))
+  flat_indices <- Reduce(function(a, b) (a - 1) * m + b, indices)
+  
+  # Perform thinning
+  kp <- which(runif(N) <= (Z[flat_indices] / zmax))
+  
+  # Return accepted points and rates
+  list(accepted_points = points[kp, , drop = FALSE], rates = Z)
 }
 
-# Example usage for 2D
-result_2d <- generalized_lgcp(d = 2, n = 1000, sigma2 = 1, range = 0.1)
-ggplot(result_2d, aes(x = x, y = y)) +
-  geom_point(alpha = 0.6, color = "blue") +
-  labs(title = "2D Log-Gaussian Cox Process", x = "X", y = "Y") +
-  theme_minimal()
 
-# Example usage for 3D
-result_3d <- generalized_lgcp(d = 3, n = 1000, sigma2 = 1, range = 0.1)
-plot_ly(data = result_3d, x = ~x, y = ~y, z = ~z, type = 'scatter3d', mode = 'markers',
-        marker = list(size = 2, color = 'blue', opacity = 0.5)) %>%
+result <- generate_poisson_gp(
+  d = 3,
+  bounds = list(c(0, 10), c(0, 10), c(0, 10)),
+  m = 10,  
+  length_scale = 2,
+  seed = 42
+)
+
+accepted_points <- result$accepted_points
+
+# 3D Plot
+plot_ly(
+  x = accepted_points[, 1],
+  y = accepted_points[, 2],
+  z = accepted_points[, 3],
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 3, color = "blue", opacity = 0.6)
+) %>%
   layout(
-    title = "3D Log-Gaussian Cox Process",
     scene = list(
-      xaxis = list(title = 'X'),
-      yaxis = list(title = 'Y'),
-      zaxis = list(title = 'Z')
-    )
+      xaxis = list(title = "X"),
+      yaxis = list(title = "Y"),
+      zaxis = list(title = "Z")
+    ),
+    title = "Non-Homogeneous Poisson Process in 3D"
   )
+
