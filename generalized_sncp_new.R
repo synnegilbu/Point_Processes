@@ -1,19 +1,15 @@
-# Load necessary libraries
-library(scales)
-library(spatstat)
+library(rgl)
 
-# Generalized function to simulate Shot Noise Cox Process in d dimensions
-simulate_sncp <- function(d, lambda, kappa, omega, region, n_shots, mark_type = "categorical", categories = NULL, mark_range = c(0, 1)) {
-
+simulate_sncp <- function(d, lambda, omega, region, n_shots) {
+  
   # Generate shot locations randomly within the specified region
   shot_locations <- matrix(runif(n_shots * d, 
                                  min = unlist(lapply(region, `[`, 1)), 
                                  max = unlist(lapply(region, `[`, 2))),
                            ncol = d)
   
-  # Initialize a matrix to store the generated points and their marks
+  # Initialize a matrix to store the generated points
   points <- matrix(NA, nrow = 0, ncol = d)
-  marks <- c()
   
   # For each shot location, generate a number of points around it
   for (i in 1:n_shots) {
@@ -31,112 +27,52 @@ simulate_sncp <- function(d, lambda, kappa, omega, region, n_shots, mark_type = 
       all(pt >= unlist(lapply(region, `[`, 1)) & pt <= unlist(lapply(region, `[`, 2)))
     }), ]
     
-    # Generate marks for the valid points
-    if (mark_type == "categorical") {
-      if (is.null(categories)) {
-        stop("For categorical marks, please provide a vector of categories.")
-      }
-      new_marks <- sample(categories, nrow(valid_points), replace = TRUE)
-    } else if (mark_type == "continuous") {
-      new_marks <- runif(nrow(valid_points), min = mark_range[1], max = mark_range[2])
-    } else {
-      stop("Invalid mark type. Choose 'categorical' or 'continuous'.")
-    }
-    
-    # Add the valid points and their marks to the list of all points
+    # Add the valid points to the list of all points
     points <- rbind(points, valid_points)
-    marks <- c(marks, new_marks)
   }
   
-  # Create the data frame for points, handling dimensions
-  if (d == 2) {
-    return(list(points = data.frame(x = points[, 1], y = points[, 2], mark = marks),
-                shot_locations = shot_locations))
-  } else if (d == 3) {
-    return(list(points = data.frame(x = points[, 1], y = points[, 2], z = points[, 3], mark = marks),
-                shot_locations = shot_locations))
-  } else {
-    stop("Invalid dimension. Choose either 2 or 3.")
-  }
-}
-
-# Example usage for 2D continuous marks
-d <- 2  # Set the number of dimensions (2 for 2D)
-lambda <- 50    # Mean number of points per cluster
-kappa <- 10     # Intensity of the Poisson process of cluster centers
-omega <- 1.0    # Bandwidth of the cluster dispersal kernel
-n_shots <- rpois(1, kappa)  # Number of shot locations determined by a Poisson process
-
-# Define the observation region for 2D
-region <- list(c(0, 10), c(0, 10))  # 2D region
-
-# Run the simulation with continuous marks
-simulated_sncp <- simulate_sncp(d, lambda, kappa, omega, region, n_shots, mark_type = "continuous", mark_range = c(0, 100))
-
-# Extract the points and marks
-points <- simulated_sncp$points
-marks <- points$mark
-shot_locations <- simulated_sncp$shot_locations
-
-# Plot the simulated point pattern for 2D
-plot(points$x, points$y, col = scales::col_numeric(palette = "Blues", domain = NULL)(marks), pch = 16,
-     xlab = "X", ylab = "Y", main = "2D Shot Noise Cox Process with Continuous Marks")
-points(shot_locations[, 1], shot_locations[, 2], col = "black", pch = 19, cex = 1.5)
-
-# Add a grading scale (color legend) for continuous marks
-color_legend <- function(values, colors, title, position = "topright") {
-  # Create a gradient of colors
-  breaks <- seq(min(values), max(values), length.out = length(colors) + 1)
+  # Create a data frame for points
+  point_columns <- paste0("dim", 1:d)
+  points_df <- as.data.frame(points)
+  colnames(points_df) <- point_columns
   
-  # Plot the legend
-  legend(position, legend = round(breaks, 1), fill = colors, title = title, border = "black")
+  # Return the results
+  return(list(points = points_df, shot_locations = shot_locations))
 }
 
-# Add the grading scale (color legend) to the plot
-color_scale <- scales::col_numeric(palette = "Blues", domain = c(0, 100))
-color_legend(values = seq(0, 100, length.out = 10), colors = color_scale(seq(0, 100, length.out = 10)), title = "Continuous Marks")
+# Example Usage
+region <- list(c(0, 10), c(0, 10), c(0, 10), c(0, 5))  # Define region in 4D space
+lambda <- 10           # Mean number of offspring per shot
+omega <- 1.0           # Standard deviation of offspring dispersion
+n_shots <- 5           # Number of shot centers
+d <- 4                 # Number of dimensions
 
+# Simulate process
+result <- simulate_sncp(d, lambda, omega, region, n_shots)
 
+# Check the structure of the result
+str(result)
 
-# Example usage for 3D continuous marks
-d <- 3  # Set the number of dimensions (3 for 3D)
-lambda <- 50    # Mean number of points per cluster
-kappa <- 10     # Intensity of the Poisson process of cluster centers
-omega <- 1.0    # Bandwidth of the cluster dispersal kernel
-n_shots <- rpois(1, kappa)  # Number of shot locations determined by a Poisson process
-
-# Define the observation region for 3D
-region <- list(c(0, 10), c(0, 10), c(0, 10))  # 3D region
-
-# Run the simulation with continuous marks
-simulated_sncp <- simulate_sncp(d, lambda, kappa, omega, region, n_shots, mark_type = "continuous", mark_range = c(0, 100))
-
-# Extract the points and marks
-points <- simulated_sncp$points
-marks <- points$mark
-shot_locations <- simulated_sncp$shot_locations
-
-# Plot the simulated point pattern for 3D
-open3d()  # Open a 3D plotting window
-# Define color gradient based on continuous marks
-color_scale <- scales::col_numeric(palette = "Blues", domain = c(0, 100))
-
-# Plot points with colors based on their continuous marks
-plot3d(points$x, points$y, points$z, col = color_scale(marks), size = 3,
-       xlab = "X", ylab = "Y", zlab = "Z", main = "3D Shot Noise Cox Process with Continuous Marks")
-
-# Add the shot locations (cluster centers) in a distinct color
-points3d(shot_locations[, 1], shot_locations[, 2], shot_locations[, 3], col = 'black', size = 8)
-
-# Add a grading scale (color legend) for continuous marks
-color_legend <- function(values, colors, title, position = "topright") {
-  # Create a gradient of colors
-  breaks <- seq(min(values), max(values), length.out = length(colors) + 1)
-  
-  # Plot the legend
-  legend(position, legend = round(breaks, 1), fill = colors, title = title, border = "black")
+# If d = 2 or d = 3, you could visualize the result:
+if (d == 2) {
+  plot(result$points[, 1:2], col = "blue", pch = 16, main = "Shot Noise Cox Process (2D)")
+  points(result$shot_locations, col = "red", pch = 4)
 }
 
-# Add the grading scale (color legend) to the plot
-color_legend(values = seq(0, 100, length.out = 10), colors = color_scale(seq(0, 100, length.out = 10)), title = "Continuous Marks")
+
+region <- list(c(0, 10), c(0, 10), c(0, 10))  # Define region in 3D space
+lambda <- 10           # Mean number of offspring per shot
+omega <- 1.0           # Standard deviation of offspring dispersion
+n_shots <- 5           # Number of shot centers
+d <- 3                 # Number of dimensions
+
+# Simulate process
+result <- simulate_sncp(d, lambda, omega, region, n_shots)
+
+# Visualization for 3D
+
+open3d()
+plot3d(result$points, col = "blue", size = 3, main = "Shot Noise Cox Process (3D)")
+points3d(result$shot_locations, col = "red", size = 6)  # Shot locations in red
+legend3d("topright", legend = c("Offspring", "Shot Locations"), pch = c(16, 16), col = c("blue", "red"), cex = 1)
 

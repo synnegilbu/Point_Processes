@@ -1,13 +1,10 @@
 
 simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_in, 
                                            covariate_field, covariate_coeff, points = matrix(nrow = 0, ncol = 0), d = 2) {
-  # Arguments:
-  # covariate_field: A function that returns the covariate value at a given location u.
-  # covariate_coeff: Coefficient for the covariate effect (beta_z).
   
   # Function to calculate pairwise interaction energy
   pairwise_interaction <- function(points, r) {
-    if (nrow(points) < 2) return(0)  # No interaction if fewer than 2 points
+    if (nrow(points) < 2) return(0)  
     dist_matrix <- as.matrix(dist(points))
     sum(dist_matrix[upper.tri(dist_matrix)] < r)  # Count pairs within radius r
   }
@@ -15,19 +12,18 @@ simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_
   # Compute the covariate effect for the current configuration of points
   compute_covariate_effect <- function(points, covariate_field, covariate_coeff) {
     if (nrow(points) == 0) return(0)
-    cov_values <- apply(points, 1, covariate_field)  # Evaluate the covariate at each point
-    sum(covariate_coeff * cov_values)  # Linear contribution from covariates
+    cov_values <- apply(points, 1, covariate_field)  
+    sum(covariate_coeff * cov_values)  
   }
   
   # Initialize accepted configurations
   accepted_points <- list()
   
   for (i in 1:n_iter) {
-    # Proposal: Add, Remove, or Move a point
-    proposal_type <- sample(c("add", "remove", "move"), 1, prob = c(0.3, 0.3, 0.4))
+    # Proposal: Add or Remove a point
+    proposal_type <- sample(c("add", "remove"), 1, prob = c(0.5, 0.5))
     
     if (proposal_type == "add") {
-      # Add a new point in d dimensions
       new_point <- sapply(region, function(bounds) runif(1, bounds[1], bounds[2]))
       proposed_points <- rbind(points, new_point)
       
@@ -37,7 +33,7 @@ simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_
       current_covariate <- compute_covariate_effect(points, covariate_field, covariate_coeff)
       proposed_covariate <- compute_covariate_effect(proposed_points, covariate_field, covariate_coeff)
       
-      # Compute acceptance probability with covariate effect
+      
       acceptance_prob <- min(1, beta * gamma^proposed_energy * exp(proposed_covariate - current_covariate))
       
     } else if (proposal_type == "remove" && nrow(points) > 0) {
@@ -53,22 +49,6 @@ simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_
       
       # Compute acceptance probability with covariate effect
       acceptance_prob <- min(1, nrow(points) / (beta * gamma^current_energy * exp(current_covariate - proposed_covariate)))
-      
-    } else if (proposal_type == "move" && nrow(points) > 0) {
-      # Move a randomly chosen point
-      move_idx <- sample(1:nrow(points), 1)
-      new_location <- sapply(region, function(bounds) runif(1, bounds[1], bounds[2]))
-      proposed_points <- points
-      proposed_points[move_idx, ] <- new_location
-      
-      # Compute energies and covariate effects
-      current_energy <- pairwise_interaction(points, r)
-      proposed_energy <- pairwise_interaction(proposed_points, r)
-      current_covariate <- compute_covariate_effect(points, covariate_field, covariate_coeff)
-      proposed_covariate <- compute_covariate_effect(proposed_points, covariate_field, covariate_coeff)
-      
-      # Compute acceptance probability with covariate effect
-      acceptance_prob <- min(1, gamma^proposed_energy * exp(proposed_covariate - current_covariate))
     }
     
     # Accept or reject the proposal based on the acceptance probability
@@ -85,19 +65,6 @@ simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_
   # Return the final configuration and all saved configurations
   list(final_points = points, all_points = accepted_points)
 }
-
-set.seed(42)
-
-# Define a region in 3D
-region_3d <- list(c(0, 1), c(0, 1), c(0, 1))
-
-# Define a covariate field: e.g., a simple linear function
-covariate_field <- function(u) {
-  # Example: a simple linear function of the coordinates (e.g., altitude)
-  x <- u[1]; y <- u[2]; z <- u[3]
-  return(x + y + z)  # Just an example covariate
-}
-
 
 set.seed(42)
 
