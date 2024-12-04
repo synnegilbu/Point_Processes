@@ -41,11 +41,11 @@ simulate_sncp <- function(d, lambda, omega, region, n_shots) {
 }
 
 # Example Usage
-region <- list(c(0, 10), c(0, 10), c(0, 10), c(0, 5))  # Define region in 4D space
-lambda <- 10           # Mean number of offspring per shot
-omega <- 1.0           # Standard deviation of offspring dispersion
+region <- list(c(0, 10), c(0, 10))  # Define region in 4D space
+lambda <- 15           # Mean number of offspring per shot
+omega <- 0.5           # Standard deviation of offspring dispersion
 n_shots <- 5           # Number of shot centers
-d <- 4                 # Number of dimensions
+d <- 2                 # Number of dimensions
 
 # Simulate process
 result <- simulate_sncp(d, lambda, omega, region, n_shots)
@@ -54,15 +54,15 @@ result <- simulate_sncp(d, lambda, omega, region, n_shots)
 str(result)
 
 # If d = 2 or d = 3, you could visualize the result:
-if (d == 2) {
+
   plot(result$points[, 1:2], col = "blue", pch = 16, main = "Shot Noise Cox Process (2D)")
   points(result$shot_locations, col = "red", pch = 4)
-}
+
 
 
 region <- list(c(0, 10), c(0, 10), c(0, 10))  # Define region in 3D space
-lambda <- 10           # Mean number of offspring per shot
-omega <- 1.0           # Standard deviation of offspring dispersion
+lambda <- 15           # Mean number of offspring per shot
+omega <- 0.5           # Standard deviation of offspring dispersion
 n_shots <- 5           # Number of shot centers
 d <- 3                 # Number of dimensions
 
@@ -74,5 +74,5 @@ result <- simulate_sncp(d, lambda, omega, region, n_shots)
 open3d()
 plot3d(result$points, col = "blue", size = 3, main = "Shot Noise Cox Process (3D)")
 points3d(result$shot_locations, col = "red", size = 6)  # Shot locations in red
-legend3d("topright", legend = c("Offspring", "Shot Locations"), pch = c(16, 16), col = c("blue", "red"), cex = 1)
+
 

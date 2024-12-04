@@ -1,6 +1,5 @@
-
 simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_in, 
-                                           covariate_field, covariate_coeff, points = matrix(nrow = 0, ncol = 0), d = 2) {
+                                           covariate_field, covariate_coeff, points = NULL, d = 2) {
   
   # Function to calculate pairwise interaction energy
   pairwise_interaction <- function(points, r) {
@@ -16,10 +15,18 @@ simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_
     sum(covariate_coeff * cov_values)  
   }
   
+  # Initialize points matrix if not provided
+  if (is.null(points)) {
+    points <- matrix(nrow = 0, ncol = d)
+  }
+  
   # Initialize accepted configurations
   accepted_points <- list()
   
   for (i in 1:n_iter) {
+    # Initialize acceptance probability
+    acceptance_prob <- 0
+    
     # Proposal: Add or Remove a point
     proposal_type <- sample(c("add", "remove"), 1, prob = c(0.5, 0.5))
     
@@ -32,7 +39,6 @@ simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_
       proposed_energy <- pairwise_interaction(proposed_points, r)
       current_covariate <- compute_covariate_effect(points, covariate_field, covariate_coeff)
       proposed_covariate <- compute_covariate_effect(proposed_points, covariate_field, covariate_coeff)
-      
       
       acceptance_prob <- min(1, beta * gamma^proposed_energy * exp(proposed_covariate - current_covariate))
       
@@ -47,8 +53,9 @@ simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_
       current_covariate <- compute_covariate_effect(points, covariate_field, covariate_coeff)
       proposed_covariate <- compute_covariate_effect(proposed_points, covariate_field, covariate_coeff)
       
-      # Compute acceptance probability with covariate effect
       acceptance_prob <- min(1, nrow(points) / (beta * gamma^current_energy * exp(current_covariate - proposed_covariate)))
+    } else {
+      proposed_points <- points  # If no points exist to remove
     }
     
     # Accept or reject the proposal based on the acceptance probability
@@ -65,6 +72,43 @@ simulate_gibbs_with_covariates <- function(region, beta, gamma, r, n_iter, burn_
   # Return the final configuration and all saved configurations
   list(final_points = points, all_points = accepted_points)
 }
+
+
+set.seed(123)  # For reproducibility
+
+# Define the 2D region
+region <- list(c(0, 10), c(0, 10))  # Region is [0, 10] x [0, 10]
+
+# Define a covariate field
+covariate_field <- function(point) {
+  # A simple example: linear gradient covariate
+  x <- point[1]
+  y <- point[2]
+  return(x + y)
+}
+
+# Parameters for the Gibbs process
+beta <- 60          # Baseline intensity
+gamma <- 0.8       # Interaction strength
+r <- 1.5           # Interaction radius
+n_iter <- 1000     # Number of iterations
+burn_in <- 500     # Burn-in period
+covariate_coeff <- 0.1  # Weight of the covariate effect
+
+# Run the simulation
+result <- simulate_gibbs_with_covariates(region, beta, gamma, r, n_iter, burn_in, 
+                                         covariate_field, covariate_coeff, d = 2)
+
+# Extract final points
+final_points <- result$final_points
+
+# Plot the points
+plot(final_points[, 1], final_points[, 2], 
+     pch = 16, col = "blue", xlab = "X", ylab = "Y", 
+     main = "Simulated Gibbs Process (2D)",
+     xlim = region[[1]], ylim = region[[2]])
+
+
 
 set.seed(42)
 
