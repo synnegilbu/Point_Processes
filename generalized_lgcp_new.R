@@ -308,8 +308,8 @@ ggplot(grid_df, aes(x = x, y = y, fill = rate)) +
 
 # 2. 2D Plot of the Poisson points on top of the GRF heatmap
 ggplot() +
-  geom_tile(data = grid_df, aes(x = x, y = y, fill = rate)) +  # GRF heatmap
-  scale_fill_viridis() +
+  geom_tile() +  # Creates the heatmap for the GRF
+  scale_fill_viridis() +  # Color scale for the GRF
   geom_point(data = accepted_points_df, aes(x = x, y = y), color = "red", size = 2) +  # Poisson points in red
-  labs(title = "Poisson Points on Top of GRF Heatmap", x = "X", y = "Y") +
+  labs(x = "X", y = "Y") +
   theme_minimal()
