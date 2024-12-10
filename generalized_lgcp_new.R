@@ -1,11 +1,3 @@
-library(ggplot2)
-library(reshape2)
-library(tidyverse)
-library(plotly)
-library(MASS)
-library(viridis)
-
-
 generate_poisson_gp_with_covariates <- function(d, bounds, m, length_scale, covariate_field, covariate_coeff, seed = 42) {
   # Parameters
   set.seed(seed)
@@ -15,8 +7,7 @@ generate_poisson_gp_with_covariates <- function(d, bounds, m, length_scale, cova
   # Create grid coordinates
   grid_coords <- expand.grid(grid_sides)
   X <- as.matrix(grid_coords)
-  grid_step <- sapply(xlims, function(lim) diff(lim) / m)
-  X <- sweep(X, 2, grid_step / 2, "+")  # Center on grid square
+  grid_step <- sapply(xlims, function(lim) diff(lim) / m)  # Size of each grid cell
   
   # RBF Kernel Function
   rbf <- function(X1, X2, length_scale) {
@@ -29,31 +20,128 @@ generate_poisson_gp_with_covariates <- function(d, bounds, m, length_scale, cova
   Y <- MASS::mvrnorm(mu = rep(0, nrow(X)), Sigma = K)
   
   # Covariate effect: apply covariate field
-  covariate_values <- apply(X, 1, covariate_field)  # Get covariate value at each point
+  covariate_values <- apply(X, 1, covariate_field)
   covariate_effect <- exp(covariate_coeff * covariate_values)  # Apply covariate coefficient
   
   # Convert to rates (incorporate covariate)
   Z <- exp(Y) * covariate_effect  # Modify the rate with the covariate effect
-  zmax <- max(Z)
   
-  # Draw Poisson (adjust N based on zmax and volume)
+  # Generate points proportional to GRF rates
   volume <- prod(sapply(xlims, diff))  # Volume of the d-dimensional space
-  N <- min(1e6, rpois(1, zmax * volume))  # Limit N to avoid excessive memory usage
+  total_rate <- sum(Z) * (volume / (m^d))  # Integral approximation over grid
+  N <- rpois(1, total_rate)  # Total number of points
   
-  # Generate random points in the d-dimensional space, but limit the total points
-  points <- matrix(runif(N * d), ncol = d)
+  # Sample grid cells proportional to GRF rates
+  probabilities <- Z / sum(Z)  # Normalize rates to probabilities
+  sampled_indices <- sample(1:length(Z), size = N, replace = TRUE, prob = probabilities)
+  
+  # Generate random points within the sampled grid cells
+  sampled_points <- matrix(0, nrow = N, ncol = d)
   for (i in seq_len(d)) {
-    points[, i] <- xlims[[i]][1] + points[, i] * diff(xlims[[i]])
+    cell_centers <- grid_coords[sampled_indices, i]
+    offsets <- runif(N, min = -grid_step[i] / 2, max = grid_step[i] / 2)  # Random offset within cell
+    sampled_points[, i] <- cell_centers + offsets
   }
   
-  # Find grid square indices for events
-  indices <- lapply(seq_len(d), function(i) findInterval(points[, i], grid_sides[[i]]))
-  flat_indices <- Reduce(function(a, b) (a - 1) * m + b, indices)
-  
-  # Perform thinning
-  kp <- which(runif(N) <= (Z[flat_indices] / zmax))
-  
-  # Return accepted points and rates
-  list(accepted_points = points[kp, , drop = FALSE], rates = Z, grid_coords = X)
+  # Return all points and rates
+  list(
+    sampled_points = sampled_points,  # Points sampled from the LGCP
+    rates = Z,                        # GRF rates
+    grid_coords = X                   # Grid coordinates
+  )
 }
 
+
+
+# Parameters
+bounds <- list(c(0, 10), c(0, 10))  # 2D space
+m <- 60                            # Grid size
+length_scale <- 1                  # Correlation length scale
+covariate_field <- function(point) sin(point[1] / 2) + cos(point[2] / 3)
+covariate_coeff <- 0.5             # Covariate coefficient
+
+# Simulate LGCP
+result <- generate_poisson_gp_with_covariates(
+  d = 2,
+  bounds = bounds,
+  m = m,
+  length_scale = length_scale,
+  covariate_field = covariate_field,
+  covariate_coeff = covariate_coeff,
+  seed = 42
+)
+
+# Extract results
+sampled_points <- result$sampled_points
+rates <- result$rates
+grid_coords <- result$grid_coords
+
+# Visualize GRF
+library(ggplot2)
+grf_data <- data.frame(
+  x = grid_coords[, 1],
+  y = grid_coords[, 2],
+  z = rates
+)
+ggplot(grf_data, aes(x = x, y = y, fill = z)) +
+  geom_tile() +
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  labs(title = "Gaussian Random Field with Covariates", fill = "Rate")
+
+# Visualize Sampled Points
+points_data <- data.frame(
+  x = sampled_points[, 1],
+  y = sampled_points[, 2]
+)
+
+ggplot() +
+  geom_tile(data = grf_data, aes(x = x, y = y, fill = z)) +
+  scale_fill_viridis_c() +
+  geom_point(data = points_data, aes(x = x, y = y), color = "red", size = 0.5) +
+  labs(title = "Gaussian Random Field with Thinned Poisson Points",
+       x = "X", y = "Y", fill = "Rate") +
+  theme_minimal()
+
+
+# Define parameters for 3D simulation
+bounds <- list(c(0, 10), c(0, 10), c(0, 5))  # Bounds for X, Y, Z
+m <- 10                                     # Grid resolution
+length_scale <- 7                           # Correlation length scale
+covariate_field <- function(point) {
+  x <- point[1]
+  y <- point[2]
+  z <- point[3]
+  sin(x / 3) + cos(y / 4) + z / 5            # Example covariate field for 3D
+}
+covariate_coeff <- 0.5                      # Covariate coefficient
+
+# Run the simulation
+result <- generate_poisson_gp_with_covariates(
+  d = 3,
+  bounds = bounds,
+  m = m,
+  length_scale = length_scale,
+  covariate_field = covariate_field,
+  covariate_coeff = covariate_coeff,
+  seed = 42
+)
+
+# Extract results
+sampled_points <- result$sampled_points
+rates <- result$rates
+grid_coords <- result$grid_coords
+
+# Visualize in 3D (requires rgl package)
+install.packages("rgl")  # Install if not already available
+library(rgl)
+
+# Plot sampled points
+plot3d(sampled_points[, 1], sampled_points[, 2], sampled_points[, 3],
+       col = "red", type = "p",
+       xlab = "X", ylab = "Y", zlab = "Z", main = "3D LGCP Simulated Points")
+
+# Optionally visualize the grid intensities
+plot3d(grid_coords[, 1], grid_coords[, 2], grid_coords[, 3],
+       col = heat.colors(100)[cut(rates, breaks = 100)], size = 1, type = "s",
+       add = TRUE, alpha = 0.5)
