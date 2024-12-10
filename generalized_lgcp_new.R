@@ -248,68 +248,43 @@ plot_ly(
     title = "Uniform Covariate Field with Strong Effect"
   )
 
-# Define a covariate field (simple example: linear gradient in 2D)
-covariate_field <- function(u) {
-  x <- u[1]; y <- u[2]
-  return(2 * x + 3 * y)  # Example: linear covariate, sum of coordinates
-}
+# Load necessary libraries
+library(ggplot2)
 
-# Set parameters for the Poisson process
-d <- 2  # Dimensionality (2D)
-bounds <- list(c(0, 10), c(0, 10))  # Bounds for the 2D region
-m <- 60  # Grid resolution (density of points in the grid)
-length_scale <- 2  # Length scale for the Gaussian process kernel
-covariate_coeff <- 0.009  # Moderate covariate effect
+# Example 2D configuration
+d <- 2
+bounds <- list(c(0, 10), c(0, 10))  # 2D bounds
+m <- 100                            # Finer grid resolution
+length_scale <- 0.5                 # Smaller length scale for sharper variations
+covariate_field <- function(x) sin(pi * x[1]) + cos(pi * x[2]) # Oscillatory covariate
+covariate_coeff <- 0             # Stronger covariate effect
+seed <- 42
 
-# Generate the Poisson point process with covariates
-result_2d <- generate_poisson_gp_with_covariates(
+# Generate data
+result <- generate_poisson_gp_with_covariates(
   d = d,
   bounds = bounds,
   m = m,
   length_scale = length_scale,
   covariate_field = covariate_field,
   covariate_coeff = covariate_coeff,
-  seed = 42
+  seed = seed
 )
 
-# Check if the result is empty
-if (length(result_2d$accepted_points) == 0) {
-  stop("No points were accepted. Adjust the rate and volume settings.")
-}
+# Extract data
+accepted_points <- result$accepted_points
+rates <- result$rates
+grid_coords <- result$grid_coords
 
-# Extract the accepted points, grid coordinates, and rates
-accepted_points_2d <- result_2d$accepted_points
-grid_coords_2d <- result_2d$grid_coords
-rates_2d <- result_2d$rates
+# Prepare data for plotting
+grid_df <- data.frame(grid_coords, rate = rates)
+colnames(grid_df) <- c("x", "y", "rate")
+points_df <- data.frame(accepted_points)
+colnames(points_df) <- c("x", "y")
 
-# Debugging: Check the range of accepted points and grid
-cat("Range of accepted points:\n")
-print(range(accepted_points_2d))
-
-cat("\nRange of grid coordinates:\n")
-print(range(grid_coords_2d))
-
-# Debugging: Check the rate (Z) and zmax
-cat("\nMaximum rate (zmax):", max(rates_2d), "\n")
-cat("Rate values (Z):", summary(rates_2d), "\n")
-
-# Convert grid coordinates and rates into a data frame for plotting
-grid_df <- data.frame(x = grid_coords_2d[, 1], y = grid_coords_2d[, 2], rate = rates_2d)
-
-# Convert accepted points into a data frame for plotting
-accepted_points_df <- data.frame(x = accepted_points_2d[, 1], y = accepted_points_2d[, 2])
-
-# 1. Plot the Gaussian Random Field (GRF) as a heatmap
-ggplot(grid_df, aes(x = x, y = y, fill = rate)) +
-  geom_tile() +  # Creates the heatmap for the GRF
-  scale_fill_viridis() +  # Color scale for the GRF
-  labs(title = "Gaussian Random Field (GRF) with Covariate Effect", x = "X", y = "Y") +
-  theme_minimal()
-
-# 2. 2D Plot of the Poisson points on top of the GRF heatmap
+# Plot
 ggplot() +
-  geom_tile() +  # Creates the heatmap for the GRF
-  scale_fill_viridis() +  # Color scale for the GRF
-  geom_point(data = accepted_points_df, aes(x = x, y = y), color = "red", size = 2) +  # Poisson points in red
-  labs(x = "X", y = "Y") +
+  geom_point(data = points_df, aes(x = x, y = y), color = "red", size = 0.5, alpha = 0.7) +
+  labs(x = "X",
+       y = "Y") +
   theme_minimal()
