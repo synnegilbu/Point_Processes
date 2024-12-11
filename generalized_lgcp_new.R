@@ -10,7 +10,7 @@ library(rgl)
 #   covariate_coeff: covariate coefficient
 #   seed: random seed
 
-generate_poisson_gp_with_covariates <- function(d, bounds, m, length_scale, covariate_field, covariate_coeff, seed = 123) {
+simulate_lgcp <- function(d, bounds, m, length_scale, covariate_field, covariate_coeff, seed = 123) {
   
   set.seed(seed)
   xlims <- bounds  # List of bounds for each dimension
@@ -74,7 +74,7 @@ covariate_field <- function(point) sin(point[1] / 2) + cos(point[2] / 3)
 covariate_coeff <- 0.5           
 
 # Simulate LGCP
-result <- generate_poisson_gp_with_covariates(
+result <- simulate_lgcp(
   d = 2,
   bounds = bounds,
   m = m,
@@ -123,7 +123,7 @@ covariate_field <- function(point) {
 covariate_coeff <- 0.5                   
 
 # Run the simulation
-result <- generate_poisson_gp_with_covariates(
+result <- simulate_lgcp(
   d = 3,
   bounds = bounds,
   m = m,
