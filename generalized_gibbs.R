@@ -1,3 +1,15 @@
+library(ggplot2)
+library(rgl)
+# Parameters:
+#   region: Bounds of the Space
+#   beta: Baseline Intensity
+#   interaction_radius: Distance within which points interact
+#   phi: Interaction Function
+#   n_iter: Number of Iterations
+#   d: Dimensionality 
+#   covariate_field: User-defined function
+#   covariate_coeff: Covariate coefficient
+
 
 simulate_gibbs_with_covariates <- function(region, beta, interaction_radius, phi, n_iter, d = 3, covariate_field = NULL, covariate_coeff = 0) {
   
@@ -6,7 +18,7 @@ simulate_gibbs_with_covariates <- function(region, beta, interaction_radius, phi
   # Initialize the point configuration
   points <- matrix(nrow = 0, ncol = d)
   
-  # Helper function to compute lambda(u, x)
+  # Function to compute lambda(u, x)
   compute_lambda <- function(u, x, beta, interaction_radius, phi, covariate_field, covariate_coeff) {
     covariate_effect <- if (!is.null(covariate_field)) {
       exp(covariate_coeff * covariate_field(u))
@@ -26,7 +38,7 @@ simulate_gibbs_with_covariates <- function(region, beta, interaction_radius, phi
     return(lambda)
   }
   
-  # Helper function to compute r(u, x) for birth and death proposals
+  # Function to compute r(u, x) for birth and death proposals
   compute_r <- function(proposed_point, current_points, add = TRUE) {
     if (add) {
       # Compute r(u, x) for adding a point
@@ -41,6 +53,7 @@ simulate_gibbs_with_covariates <- function(region, beta, interaction_radius, phi
     }
   }
   
+  # Initialize accepted points
   accepted_points <- list()
   
   for (i in 1:n_iter) {
@@ -74,25 +87,25 @@ simulate_gibbs_with_covariates <- function(region, beta, interaction_radius, phi
 }
 
 # Define a 2D region
-region_2d <- list(c(0, 10), c(0, 10))  # Region is [0, 10] x [0, 10]
+region_2d <- list(c(0, 10), c(0, 10)) 
 
 # Define a covariate field
 covariate_field_2d <- function(point) {
   x <- point[1]
   y <- point[2]
-  return(sin(x / 2) + cos(y / 3))  # Example: Oscillatory covariate field
+  return(sin(x / 2) + cos(y / 3)) 
 }
 
-# Define the potential function (hard-core process with soft repulsion)
+# Define the potential function 
 phi <- function(r, interaction_radius) {
-  ifelse(r < interaction_radius, 1 - r / interaction_radius, 0)  # Linear penalty
+  ifelse(r < interaction_radius, 1 - r / interaction_radius, 0) 
 }
 
 # Parameters for the Gibbs process
-beta <- 50          # Baseline intensity
-interaction_radius <- 10.0  # Interaction radius
-n_iter <- 1000      # Number of iterations
-covariate_coeff <- 0.5  # Weight of the covariate effect
+beta <- 50          
+interaction_radius <- 10.0  
+n_iter <- 1000      
+covariate_coeff <- 0.5
 
 # Run the simulation
 result_2d <- simulate_gibbs_with_covariates(region_2d, beta, interaction_radius, phi, n_iter, d = 2,
@@ -113,27 +126,26 @@ if (!is.null(all_points_2d) && nrow(all_points_2d) > 0) {
 }
 
 
-# Define a 3D region
-region_3d <- list(c(0, 1), c(0, 1), c(0, 1))  # 3D region
+# 3D simulation
+region_3d <- list(c(0, 1), c(0, 1), c(0, 1))  
 
-# Define a covariate field
+
 covariate_field_3d <- function(point) {
   x <- point[1]
   y <- point[2]
   z <- point[3]
-  return(2 * x + y - z)  # Linear gradient covariate
+  return(2 * x + y - z) 
 }
 
-# Define the potential function (hard-core process with soft repulsion)
 phi <- function(r, interaction_radius) {
-  ifelse(r < interaction_radius, 1 - r / interaction_radius, 0)  # Linear penalty
+  ifelse(r < interaction_radius, 1 - r / interaction_radius, 0)  
 }
 
-# Parameters for the Gibbs process
-beta <- 1        # Baseline intensity
-interaction_radius <- 5 # Interaction radius
-n_iter <- 1000      # Number of iterations
-covariate_coeff <- 2.0  # Strong covariate effect
+
+beta <- 1        
+interaction_radius <- 5 
+n_iter <- 1000      
+covariate_coeff <- 2.0  
 
 # Run the simulation
 result_3d <- simulate_gibbs_with_covariates(region_3d, beta, interaction_radius, phi, n_iter, d = 3,
