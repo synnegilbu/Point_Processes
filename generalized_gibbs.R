@@ -12,7 +12,7 @@ library(rgl)
 #   covariate_coeff: Covariate coefficient
 
 
-simulate_gibbs_with_covariates <- function(region, beta, interaction_radius, phi, n_iter, d = 3, covariate_field = NULL, covariate_coeff = 0) {
+simulate_gibbs <- function(region, beta, interaction_radius, phi, n_iter, d = 3, covariate_field = NULL, covariate_coeff = 0) {
   
   region_volume <- prod(sapply(region, function(bounds) diff(bounds))) # Compute the volume of the region
   
@@ -109,7 +109,7 @@ n_iter <- 1000
 covariate_coeff <- 0.5
 
 # Run the simulation
-result_2d <- simulate_gibbs_with_covariates(region_2d, beta, interaction_radius, phi, n_iter, d = 2,
+result_2d <- simulate_gibbs(region_2d, beta, interaction_radius, phi, n_iter, d = 2,
                                             covariate_field = covariate_field_2d, covariate_coeff = covariate_coeff)
 
 # Combine all points from accepted configurations
@@ -149,7 +149,7 @@ n_iter <- 1000
 covariate_coeff <- 2.0  
 
 # Run the simulation
-result_3d <- simulate_gibbs_with_covariates(region_3d, beta, interaction_radius, phi, n_iter, d = 3,
+result_3d <- simulate_gibbs(region_3d, beta, interaction_radius, phi, n_iter, d = 3,
                                             covariate_field = covariate_field_3d, covariate_coeff = covariate_coeff)
 
 # Combine all points from accepted configurations
