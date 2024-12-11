@@ -1,4 +1,10 @@
-library(rgl)
+# Parameters:
+#   d: dimensionality
+#   lambda: cluster size intensity
+#   omega: cluster dispersion
+#   region: region bounds
+#   n_shots: number of shots
+
 
 simulate_sncp <- function(d, lambda, omega, region, n_shots) {
   
