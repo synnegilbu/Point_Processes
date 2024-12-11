@@ -1,29 +1,43 @@
-generate_poisson_gp_with_covariates <- function(d, bounds, m, length_scale, covariate_field, covariate_coeff, seed = 42) {
-  # Parameters
+# Load necessary libraries
+library(ggplot2)
+library(rgl)
+# Parameters:
+#   d: dimensions
+#   bounds: space bounds
+#   m: grid resolution
+#   length_scale: correlation length scale
+#   covariate_field: user-defined function
+#   covariate_coeff: covariate coefficient
+#   seed: random seed
+
+generate_poisson_gp_with_covariates <- function(d, bounds, m, length_scale, covariate_field, covariate_coeff, seed = 123) {
+  
   set.seed(seed)
-  xlims <- bounds  # List of bounds for each dimension: e.g., list(c(0, 10), c(0, 10))
-  grid_sides <- lapply(xlims, function(lim) seq(lim[1], lim[2], length.out = m))
+  xlims <- bounds  # List of bounds for each dimension
+  grid_sides <- lapply(xlims, function(lim) seq(lim[1], lim[2], length.out = m)) # Calculates the size of each grid cell along each dimension
   
   # Create grid coordinates
   grid_coords <- expand.grid(grid_sides)
   X <- as.matrix(grid_coords)
   grid_step <- sapply(xlims, function(lim) diff(lim) / m)  # Size of each grid cell
   
-  # RBF Kernel Function
+  # Powered Exponential Covariance function
   rbf <- function(X1, X2, length_scale) {
     dists <- as.matrix(dist(rbind(X1, X2)))
     exp(-dists[1:nrow(X1), (nrow(X1)+1):(nrow(X1)+nrow(X2))] ^ 2 / (2 * length_scale ^ 2))
   }
   
-  # Draw sample from GP
+  # Draw sample from Gaussian Process
   K <- rbf(X, X, length_scale)
-  Y <- MASS::mvrnorm(mu = rep(0, nrow(X)), Sigma = K)
+  Y <- MASS::mvrnorm(mu = rep(0, nrow(X)), Sigma = K) #Draws samples from a multivariate normal distribution
+  # Y represents the Gaussian Random Field
+  
   
   # Covariate effect: apply covariate field
   covariate_values <- apply(X, 1, covariate_field)
-  covariate_effect <- exp(covariate_coeff * covariate_values)  # Apply covariate coefficient
+  covariate_effect <- exp(covariate_coeff * covariate_values) 
   
-  # Convert to rates (incorporate covariate)
+  # Incorporate covariates
   Z <- exp(Y) * covariate_effect  # Modify the rate with the covariate effect
   
   # Generate points proportional to GRF rates
@@ -52,13 +66,12 @@ generate_poisson_gp_with_covariates <- function(d, bounds, m, length_scale, cova
 }
 
 
-
-# Parameters
-bounds <- list(c(0, 10), c(0, 10))  # 2D space
-m <- 60                            # Grid size
-length_scale <- 1                  # Correlation length scale
+#2D simulation with GRF underneath
+bounds <- list(c(0, 10), c(0, 10))  
+m <- 60                           
+length_scale <- 1                  
 covariate_field <- function(point) sin(point[1] / 2) + cos(point[2] / 3)
-covariate_coeff <- 0.5             # Covariate coefficient
+covariate_coeff <- 0.5           
 
 # Simulate LGCP
 result <- generate_poisson_gp_with_covariates(
@@ -76,20 +89,13 @@ sampled_points <- result$sampled_points
 rates <- result$rates
 grid_coords <- result$grid_coords
 
-# Visualize GRF
-library(ggplot2)
 grf_data <- data.frame(
   x = grid_coords[, 1],
   y = grid_coords[, 2],
   z = rates
 )
-ggplot(grf_data, aes(x = x, y = y, fill = z)) +
-  geom_tile() +
-  scale_fill_viridis_c() +
-  theme_minimal() +
-  labs(title = "Gaussian Random Field with Covariates", fill = "Rate")
 
-# Visualize Sampled Points
+# Visualize Sampled Points + GRF
 points_data <- data.frame(
   x = sampled_points[, 1],
   y = sampled_points[, 2]
@@ -105,16 +111,16 @@ ggplot() +
 
 
 # Define parameters for 3D simulation
-bounds <- list(c(0, 10), c(0, 10), c(0, 5))  # Bounds for X, Y, Z
-m <- 10                                     # Grid resolution
-length_scale <- 7                           # Correlation length scale
+bounds <- list(c(0, 10), c(0, 10), c(0, 10))  
+m <- 10                                    
+length_scale <- 7                           
 covariate_field <- function(point) {
   x <- point[1]
   y <- point[2]
   z <- point[3]
-  sin(x / 3) + cos(y / 4) + z / 5            # Example covariate field for 3D
+  sin(x / 3) + cos(y / 4) + z / 5            
 }
-covariate_coeff <- 0.5                      # Covariate coefficient
+covariate_coeff <- 0.5                   
 
 # Run the simulation
 result <- generate_poisson_gp_with_covariates(
@@ -132,9 +138,6 @@ sampled_points <- result$sampled_points
 rates <- result$rates
 grid_coords <- result$grid_coords
 
-# Visualize in 3D (requires rgl package)
-install.packages("rgl")  # Install if not already available
-library(rgl)
 
 # Plot sampled points
 plot3d(sampled_points[, 1], sampled_points[, 2], sampled_points[, 3],
