@@ -33,7 +33,7 @@ simulate_gibbs <- function(region, beta, interaction_radius, phi, n_iter, d = 3,
     }
     distances <- sqrt(rowSums((x - u)^2))
     interaction_penalty <- sum(phi(distances, interaction_radius))
-    
+    print(interaction_penalty)
     # Compute lambda
     lambda <- beta * covariate_effect * exp(-interaction_penalty)
     return(lambda)
@@ -104,23 +104,23 @@ phi <- function(r, interaction_radius) {
 
 # Parameters for the Gibbs process
 beta <- 50          
-interaction_radius <- 10.0  
+interaction_radius <- 1  
 n_iter <- 1000      
-covariate_coeff <- 0.5
+covariate_coeff <- 1
 
 # Run the simulation
 result_2d <- simulate_gibbs(region_2d, beta, interaction_radius, phi, n_iter, d = 2,
                                             covariate_field = covariate_field_2d, covariate_coeff = covariate_coeff)
 
 # Combine all points from accepted configurations
-all_points_2d <- do.call(rbind, result_2d$all_points)
+all_points_2d <- result_2d$final_points
 
 # Plot the final configuration
 if (!is.null(all_points_2d) && nrow(all_points_2d) > 0) {
   plot(all_points_2d[, 1], all_points_2d[, 2], 
        pch = 16, col = "blue", 
        xlab = "X", ylab = "Y", 
-       main = "Simulated Gibbs Process (2D) with Covariates",
+       main = "Simulated Gibbs Process",
        xlim = region_2d[[1]], ylim = region_2d[[2]])
 } else {
   message("No points generated in the simulation.")
@@ -128,7 +128,7 @@ if (!is.null(all_points_2d) && nrow(all_points_2d) > 0) {
 
 
 # 3D simulation
-region_3d <- list(c(0, 1), c(0, 1), c(0, 1))  
+region_3d <- list(c(0, 10), c(0, 10), c(0, 10))  
 
 
 covariate_field_3d <- function(point) {
@@ -144,8 +144,8 @@ phi <- function(r, interaction_radius) {
 
 
 beta <- 1        
-interaction_radius <- 5 
-n_iter <- 1000      
+interaction_radius <- 0.5
+n_iter <- 1000     
 covariate_coeff <- 2.0  
 
 # Run the simulation
@@ -153,7 +153,8 @@ result_3d <- simulate_gibbs(region_3d, beta, interaction_radius, phi, n_iter, d 
                                             covariate_field = covariate_field_3d, covariate_coeff = covariate_coeff)
 
 # Combine all points from accepted configurations
-all_points_3d <- do.call(rbind, result_3d$all_points)
+all_points_3d <- result_3d$final_points
+
 
 # Plot the final configuration
 if (!is.null(all_points_3d) && nrow(all_points_3d) > 0) {
@@ -161,8 +162,11 @@ if (!is.null(all_points_3d) && nrow(all_points_3d) > 0) {
   plot3d(all_points_3d[, 1], all_points_3d[, 2], all_points_3d[, 3],
          col = "blue", size = 5,
          xlab = "X", ylab = "Y", zlab = "Z",
-         main = "Simulated Gibbs Process (3D) with Covariates")
+         main = "Simulated Gibbs Process")
 } else {
   message("No points generated in the simulation.")
 }
 
+
+# To check if this gives a valid model, you could run the K-function in the
+# spatstat-package. This will show that we have repulsion.

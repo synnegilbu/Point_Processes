@@ -111,27 +111,16 @@ ggplot() +
 
 
 # Define parameters for 3D simulation
-bounds <- list(c(0, 10), c(0, 10), c(0, 10))  
-m <- 10                                    
-length_scale <- 7                           
-covariate_field <- function(point) {
-  x <- point[1]
-  y <- point[2]
-  z <- point[3]
-  sin(x / 3) + cos(y / 4) + z / 5            
-}
-covariate_coeff <- 0.5                   
-
-# Run the simulation
 result <- simulate_lgcp(
   d = 3,
-  bounds = bounds,
-  m = m,
-  length_scale = length_scale,
-  covariate_field = covariate_field,
-  covariate_coeff = covariate_coeff,
-  seed = 42
+  bounds = list(c(0, 10), c(0, 10), c(0, 10)),
+  m = 10,
+  length_scale = 2,
+  covariate_field = function(x) { sin(x[1]) + cos(x[2]) + 0.5 * x[3] },
+  covariate_coeff = 0.5,
+  seed = 123
 )
+
 
 # Extract results
 sampled_points <- result$sampled_points
@@ -144,7 +133,5 @@ plot3d(sampled_points[, 1], sampled_points[, 2], sampled_points[, 3],
        col = "red", type = "p",
        xlab = "X", ylab = "Y", zlab = "Z", main = "3D LGCP Simulated Points")
 
-# Optionally visualize the grid intensities
-plot3d(grid_coords[, 1], grid_coords[, 2], grid_coords[, 3],
-       col = heat.colors(100)[cut(rates, breaks = 100)], size = 1, type = "s",
-       add = TRUE, alpha = 0.5)
+# To check if this gives a valid model, you could run the K-function in the
+# spatstat-package. This will show that we have clustering
