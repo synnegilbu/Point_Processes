@@ -1,6 +1,3 @@
-# Load necessary libraries
-library(ggplot2)
-library(rgl)
 # Parameters:
 #   region: Bounds of the Space
 #   beta: Baseline Intensity
@@ -10,11 +7,14 @@ library(rgl)
 #   d: Dimensionality 
 #   covariate_field: User-defined function
 #   covariate_coeff: Covariate coefficient
+#   buffer_size: Creates a larger simulation region 
 
 
-simulate_gibbs <- function(region, beta, interaction_radius, phi, n_iter, d = 3, covariate_field = NULL, covariate_coeff = 0) {
+simulate_gibbs <- function(region, beta, interaction_radius, phi, n_iter, d = 3, covariate_field = NULL, covariate_coeff = 0, buffer_size = NULL) {
   
-  region_volume <- prod(sapply(region, function(bounds) diff(bounds))) # Compute the volume of the region
+  # Add a buffer region to account for edge effects
+  buffer_region <- lapply(region, function(bounds) c(bounds[1] - buffer_size, bounds[2] + buffer_size))
+  region_volume <- prod(sapply(buffer_region, function(bounds) diff(bounds))) # Compute the volume of the extended region
   
   # Initialize the point configuration
   points <- matrix(nrow = 0, ncol = d)
@@ -33,7 +33,7 @@ simulate_gibbs <- function(region, beta, interaction_radius, phi, n_iter, d = 3,
     }
     distances <- sqrt(rowSums((x - u)^2))
     interaction_penalty <- sum(phi(distances, interaction_radius))
-    print(interaction_penalty)
+    
     # Compute lambda
     lambda <- beta * covariate_effect * exp(-interaction_penalty)
     return(lambda)
@@ -62,7 +62,7 @@ simulate_gibbs <- function(region, beta, interaction_radius, phi, n_iter, d = 3,
     acceptance_prob <- 0
     
     if (proposal_type == "add") {
-      new_point <- sapply(region, function(bounds) runif(1, bounds[1], bounds[2]))
+      new_point <- sapply(buffer_region, function(bounds) runif(1, bounds[1], bounds[2]))
       r_ux <- compute_r(new_point, points, add = TRUE)
       acceptance_prob <- min(1, r_ux)
       
@@ -83,8 +83,13 @@ simulate_gibbs <- function(region, beta, interaction_radius, phi, n_iter, d = 3,
     accepted_points[[i]] <- points
   }
   
+  # Filter points to retain only those within the original region
+  final_points <- points[apply(points, 1, function(pt) {
+    all(sapply(1:d, function(dim) region[[dim]][1] <= pt[dim] && pt[dim] <= region[[dim]][2]))
+  }), ]
+  
   # Return the final configuration and all accepted configurations
-  list(final_points = points, all_points = accepted_points)
+  list(final_points = final_points, all_points = accepted_points)
 }
 
 # Define a 2D region
@@ -107,10 +112,11 @@ beta <- 50
 interaction_radius <- 1  
 n_iter <- 1000      
 covariate_coeff <- 1
+buffer_size <- 2
 
 # Run the simulation
 result_2d <- simulate_gibbs(region_2d, beta, interaction_radius, phi, n_iter, d = 2,
-                                            covariate_field = covariate_field_2d, covariate_coeff = covariate_coeff)
+                                            covariate_field = covariate_field_2d, covariate_coeff = covariate_coeff, buffer_size=buffer_size)
 
 # Combine all points from accepted configurations
 all_points_2d <- result_2d$final_points
@@ -150,7 +156,7 @@ covariate_coeff <- 2.0
 
 # Run the simulation
 result_3d <- simulate_gibbs(region_3d, beta, interaction_radius, phi, n_iter, d = 3,
-                                            covariate_field = covariate_field_3d, covariate_coeff = covariate_coeff)
+                                            covariate_field = covariate_field_3d, covariate_coeff = covariate_coeff,buffer_size = 2)
 
 # Combine all points from accepted configurations
 all_points_3d <- result_3d$final_points
@@ -169,4 +175,6 @@ if (!is.null(all_points_3d) && nrow(all_points_3d) > 0) {
 
 
 # To check if this gives a valid model, you could run the K-function in the
-# spatstat-package. This will show that we have repulsion.
+# 'spatstat'-package. This will show that we have repulsion.
+# For further work with this code, we want to get rid of 'rbind' on line 73,
+# for computational efficiency

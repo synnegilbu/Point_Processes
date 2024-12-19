@@ -46,3 +46,5 @@ simulate_sncp <- function(d, lambda, omega, region, n_shots) {
   return(list(points = points_df, shot_locations = shot_locations))
 }
 
+
+
