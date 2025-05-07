@@ -27,20 +27,18 @@ compute_fem_matrices <- function(points, simplices) {
     verts <- points[idx, , drop = FALSE]
     
     # Build matrix B for the affine transformation
-    B <- t(verts[-1, , drop = FALSE] - matrix(verts[1, ], d, d, byrow = TRUE))  # d x d
-    detB <- det(B)
-    
-    # Skip degenerate simplex
-    if (abs(detB) < 1e-12) {
-      warning(paste("Skipping degenerate simplex at row", i, "with det =", detB))
+    T <- t(verts[-1, , drop = FALSE] - matrix(verts[1, ], d, d, byrow = TRUE))  # d x d
+    detT <- det(T)
+    if (abs(detT) < 1e-12) {
+      warning(paste("Skipping degenerate simplex at row", i, "with det =", detT))
       next
     }
     
-    vol <- abs(detB) / factorial(d)
+    vol <- abs(detT) / factorial(d)
     
     # Gradients of basis functions in physical space
     Ghat <- cbind(-1, diag(d))  # Gradients on reference element
-    grads <- solve(t(B), Ghat)  # Each column is grad(phi_i)
+    grads <- solve(t(T), Ghat)  # Each column is grad(phi_i)
     
     
     # Stiffness matrix (G)
@@ -189,74 +187,44 @@ res <- run_spde_lgcp_pipeline(
   estimate_beta = TRUE
 )
 
-plot(res$latent_field, res$estimated_field,
-     xlab = "True Latent Field",
-     ylab = "INLA Estimated Field",
-     main = "SPDE LGCP Recovery",
-     col = rgb(0, 0, 1, 0.3), pch = 16)
+hist(res$latent_field, breaks = 50, main = "Latent Field Distribution", xlab = "Y", col = "skyblue")
+
+plot(res$latent_field, res$estimated_field, pch = 16, cex = 0.5,
+     xlab = "True Y", ylab = "Estimated Y", main = "Latent vs Estimated Field")
 abline(0, 1, col = "red")
 
-print(res$beta_estimate)
-cor(res$latent_field, res$estimated_field)      # Correlation
-mean((res$latent_field - res$estimated_field)^2) # MSE
-plot(res$latent_field, res$latent_field - res$estimated_field,
-     xlab = "True Field", ylab = "Residual", main = "Residual Plot")
-abline(h = 0, col = "red")
+residuals <- res$latent_field - res$estimated_field
+hist(residuals, breaks = 50, col = "lightcoral", main = "Residuals", xlab = "Y - Y_hat")
+hist(res$counts, breaks = 30, main = "Histogram of Poisson Counts", xlab = "Counts", col = "grey")
 
 
 
-
-
-
-
-
-# --- Run 4D Example ---
-res4d <- run_spde_lgcp_pipeline(
-  d = 4,
-  m = 4,  # 4^4 = 256 nodes — a good balance of resolution vs compute
-  covariate_fn = function(x) x[1] + 0.5 * x[2] - x[3] + 0.2 * x[4],
-  beta = 0.7,
+res2d <- run_spde_lgcp_pipeline(
+  d = 2,
+  m = 30,  # use higher resolution for nicer plots
+  covariate_fn = function(x) x[1] + 2 * x[2],
+  beta = 0.5,
   estimate_beta = TRUE,
-  scale_intensity = 1500
+  scale_intensity = 1000
 )
 
-# 1. Extract posterior mean of latent field
-Y_hat <- res4d$estimated_field
+par(mfrow = c(1, 2))
 
-# 2. Recompute covariate values (must match what was used in simulation)
-covariate_vals <- apply(res4d$mesh_points, 1, function(x) x[1] + 0.5 * x[2] - x[3] + 0.2 * x[4])
+# Histogram of latent field
+hist(res2d$latent_field, breaks = 50, col = "skyblue",
+     main = "Latent Field Distribution", xlab = "Y")
 
-# 3. Get estimated beta from INLA output
-beta_hat <- res4d$beta_estimate["cov", "mean"]
+# Latent vs Estimated field
+plot(res2d$latent_field, res2d$estimated_field, pch = 19, cex = 0.4,
+     xlab = "True Y", ylab = "Estimated Y", main = "Latent vs Estimated Field")
 
-# 4. Compute estimated log-intensity and intensity
-eta_hat <- Y_hat + beta_hat * covariate_vals
-lambda_hat <- exp(eta_hat)
+par(mfrow = c(1, 2))
 
-# Correlation between estimated and true log-intensity
-cat("Corr(η):", cor(eta_hat, eta_true), "\n")
+# Residuals
+hist(res2d$latent_field - res2d$estimated_field, breaks = 50,
+     col = "salmon", main = "Residuals", xlab = "Y - Y_hat")
 
-# Correlation between estimated and true intensity
-cat("Corr(λ):", cor(lambda_hat, lambda_true), "\n")
-
-# True latent field from simulation
-Y_true <- res4d$latent_field
-
-# True beta used during simulation
-beta_true <- 0.7
-
-# Compute true log-intensity and intensity
-eta_true <- Y_true + beta_true * covariate_vals
-lambda_true <- exp(eta_true)
-
-
-# Compare visually
-plot(lambda_true, lambda_hat,
-     xlab = "True λ", ylab = "Estimated λ",
-     main = "Estimated vs True Intensity (4D)",
-     pch = 16, col = rgb(0, 0, 1, 0.3))
-abline(0, 1, col = "red")
-
-
+# Counts histogram
+hist(res2d$counts, breaks = 100, col = "gray", main = "Histogram of Poisson Counts", xlab = "Counts")
 
 
