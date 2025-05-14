@@ -15,6 +15,7 @@ build_mesh <- function(d, m, bounds) {
   list(points = pts, simplices = simplices)
 }
 
+
 # FEM matrix builder
 compute_fem_matrices <- function(points, simplices) {
   n <- nrow(points)
@@ -64,7 +65,7 @@ compute_fem_matrices <- function(points, simplices) {
 
 
 # Precision matrix
-assemble_precision_matrix <- function(C, G, tau = 1, kappa = 1, jitter = 1e-5) {
+assemble_precision_matrix <- function(C, G, tau = 0.1, kappa = 2, jitter = 1e-5) {
   Q <- tau^2 * (kappa^2 * C + G)
   Q + Diagonal(nrow(Q), jitter)
 }
@@ -75,7 +76,7 @@ simulate_latent_field <- function(Q) {
 }
 
 # Intensity function
-build_intensity <- function(Y, coords, covariate_fn, beta, scale_intensity = 1000) {
+build_intensity <- function(Y, coords, covariate_fn, beta, scale_intensity = 2000) {
   cov_vals <- apply(coords, 1, covariate_fn)
   eta <- Y + beta * cov_vals
   eta <- pmin(pmax(eta, -6), 6)  # clamp for stability
@@ -85,7 +86,7 @@ build_intensity <- function(Y, coords, covariate_fn, beta, scale_intensity = 100
 
 # LGCP point simulation
 simulate_lgcp_points_continuous <- function(Y, coords, covariate_fn, beta, bounds,
-                                            scale_intensity = 1000, seed = 123) {
+                                            scale_intensity = 2000, seed = 123) {
   set.seed(seed)
   d <- ncol(coords)
   volume <- prod(sapply(bounds, function(b) diff(b)))
@@ -94,8 +95,9 @@ simulate_lgcp_points_continuous <- function(Y, coords, covariate_fn, beta, bound
   eta_vals <- Y + beta * apply(coords, 1, covariate_fn)
   eta_vals <- pmin(pmax(eta_vals, -10), 10)
   eta_max <- max(eta_vals)
-  lambda_max <- scale_intensity * exp(eta_max)
+  lambda_max <- min(scale_intensity * exp(6), 1e5)  # clamp max
   N_max <- rpois(1, lambda_max * volume)
+  
   
   # Step 2: Uniform samples in the space
   points <- matrix(runif(N_max * d), ncol = d)
@@ -142,13 +144,14 @@ run_inla_inference <- function(counts, covariate, Q, estimate_beta = TRUE) {
 # Pipeline
 run_spde_lgcp_pipeline <- function(
     d = 3, m = 10, covariate_fn = function(x) sum(x), beta = 0.1,
-    estimate_beta = TRUE, scale_intensity = 1000
+    estimate_beta = TRUE, scale_intensity = 2000
 ) {
   bounds <- replicate(d, c(0, 1), simplify = FALSE)
   mesh <- build_mesh(d, m, bounds)
   fem <- compute_fem_matrices(mesh$points, mesh$simplices)
   Q <- assemble_precision_matrix(fem$C, fem$G)
   Y <- simulate_latent_field(Q) 
+  Y <- scale(Y)  # zero mean, unit variance
   cat("Latent field variance:", var(Y), "\n")
   
   intensity_out <- build_intensity(Y, mesh$points, covariate_fn, beta, scale_intensity)
@@ -179,52 +182,162 @@ run_spde_lgcp_pipeline <- function(
   )
 }
 
-res <- run_spde_lgcp_pipeline(
-  d = 3,
-  m = 10,
-  covariate_fn = function(x) x[1] + 2 * x[2],  
-  beta = 0.5,
-  estimate_beta = TRUE
-)
+# res <- run_spde_lgcp_pipeline(
+#   d = 3,
+#   m = 10,
+#   covariate_fn = function(x) x[1] + 2 * x[2],  
+#   beta = 0.5,
+#   estimate_beta = TRUE
+# )
+# 
+# hist(res$latent_field, breaks = 50, main = "Latent Field Distribution", xlab = "Y", col = "skyblue")
+# 
+# plot(res$latent_field, res$estimated_field, pch = 16, cex = 0.5,
+#      xlab = "True Y", ylab = "Estimated Y", main = "Latent vs Estimated Field")
+# abline(0, 1, col = "red")
+# 
+# residuals <- res$latent_field - res$estimated_field
+# hist(residuals, breaks = 50, col = "lightcoral", main = "Residuals", xlab = "Y - Y_hat")
+# hist(res$counts, breaks = 30, main = "Histogram of Poisson Counts", xlab = "Counts", col = "grey")
 
-hist(res$latent_field, breaks = 50, main = "Latent Field Distribution", xlab = "Y", col = "skyblue")
 
-plot(res$latent_field, res$estimated_field, pch = 16, cex = 0.5,
-     xlab = "True Y", ylab = "Estimated Y", main = "Latent vs Estimated Field")
-abline(0, 1, col = "red")
+benchmark_mse_dim1 <- function(reps = 3, m = 10, beta = FALSE) {
+  mse_values <- numeric(reps)
+  
+  for (rep in 1:reps) {
+    cat("1D Repetition", rep, "\n")
+    
+    res <- run_spde_lgcp_pipeline(
+      d = 1,
+      m = m,
+      covariate_fn = function(x) x[1],
+      beta = beta,
+      estimate_beta = TRUE
+    )
+    
+    mse_values[rep] <- mean((res$latent_field - res$estimated_field)^2)
+    print(cor(res$latent_field, res$estimated_field))
+    
+  }
+  
+  data.frame(dimension = 1, repetition = 1:reps, latent_mse = mse_values)
+}
+benchmark_mse_dim2 <- function(reps = 3, m = 10, beta = FALSE) {
+  mse_values <- numeric(reps)
+  
+  for (rep in 1:reps) {
+    cat("2D Repetition", rep, "\n")
+    
+    res <- run_spde_lgcp_pipeline(
+      d = 2,
+      m = m,
+      covariate_fn = function(x) x[1],
+      beta = beta,
+      estimate_beta = TRUE
+    )
+    
+    mse_values[rep] <- mean((res$latent_field - res$estimated_field)^2)
+    print(cor(res$latent_field, res$estimated_field))
 
-residuals <- res$latent_field - res$estimated_field
-hist(residuals, breaks = 50, col = "lightcoral", main = "Residuals", xlab = "Y - Y_hat")
-hist(res$counts, breaks = 30, main = "Histogram of Poisson Counts", xlab = "Counts", col = "grey")
+  }
+  
+  data.frame(dimension = 2, repetition = 1:reps, latent_mse = mse_values)
+}
+benchmark_mse_dim3 <- function(reps = 3, m = 10, beta = FALSE) {
+  mse_values <- numeric(reps)
+  
+  for (rep in 1:reps) {
+    cat("3D Repetition", rep, "\n")
+    
+    res <- run_spde_lgcp_pipeline(
+      d = 3,
+      m = m,
+      covariate_fn = function(x) x[1],
+      beta = beta,
+      estimate_beta = TRUE
+    )
+    
+    mse_values[rep] <- mean((res$latent_field - res$estimated_field)^2)
+  }
+  
+  data.frame(dimension = 3, repetition = 1:reps, latent_mse = mse_values)
+}
+benchmark_mse_dim4 <- function(reps = 3, m = 10, beta = FALSE) {
+  mse_values <- numeric(reps)
+  
+  for (rep in 1:reps) {
+    cat("4D Repetition", rep, "\n")
+    
+    res <- run_spde_lgcp_pipeline(
+      d = 4,
+      m = m,
+      covariate_fn = function(x) x[1],
+      beta = beta,
+      estimate_beta = TRUE
+    )
+    
+    mse_values[rep] <- mean((res$latent_field - res$estimated_field)^2)
+  }
+  
+  data.frame(dimension = 3, repetition = 1:reps, latent_mse = mse_values)
+}
+
+set.seed(42)
+
+mse1 <- benchmark_mse_dim1()
+mse2 <- benchmark_mse_dim2()
+print(rbind(mean(mse1$latent_mse), mean(mse2$latent_mse)))
+
+mse3 <- benchmark_mse_dim3()
+mse4 <- benchmark_mse_dim4()
+
+rbind(mean(mse1$latent_mse), mean(mse2$latent_mse), mean(mse3$latent_mse), mean(mse4$latent_mse))
+
+
 
 
 
 res2d <- run_spde_lgcp_pipeline(
   d = 2,
-  m = 30,  # use higher resolution for nicer plots
+  m = 100,  # use higher resolution for nicer plots
   covariate_fn = function(x) x[1] + 2 * x[2],
   beta = 0.5,
   estimate_beta = TRUE,
-  scale_intensity = 1000
+  scale_intensity = 7000
 )
 
-par(mfrow = c(1, 2))
 
-# Histogram of latent field
-hist(res2d$latent_field, breaks = 50, col = "skyblue",
-     main = "Latent Field Distribution", xlab = "Y")
+library(fields)
+# Prepare data
+x <- unique(res2d$mesh_points[, 1])
+y <- unique(res2d$mesh_points[, 2])
+z_true <- matrix(res2d$latent_field, nrow = length(x), byrow = FALSE)
+z_est <- matrix(res2d$estimated_field, nrow = length(x), byrow = FALSE)
 
-# Latent vs Estimated field
-plot(res2d$latent_field, res2d$estimated_field, pch = 19, cex = 0.4,
-     xlab = "True Y", ylab = "Estimated Y", main = "Latent vs Estimated Field")
+# Shared color limits
+zlim <- range(c(z_true, z_est), na.rm = TRUE)
 
-par(mfrow = c(1, 2))
+# Set layout
+layout(matrix(c(1, 2), nrow = 1), widths = c(1, 1))
+par(mar = c(4, 4, 3, 1))  # Margins: bottom, left, top, right
 
-# Residuals
-hist(res2d$latent_field - res2d$estimated_field, breaks = 50,
-     col = "salmon", main = "Residuals", xlab = "Y - Y_hat")
+# Plot true field
+image.plot(x, y, z_true,
+           main = "True Latent Field", xlab = "x", ylab = "y", asp = 1,
+           zlim = zlim)
 
-# Counts histogram
-hist(res2d$counts, breaks = 100, col = "gray", main = "Histogram of Poisson Counts", xlab = "Counts")
+# Plot estimated field
+image.plot(x, y, z_est,
+           main = "Estimated Latent Field (INLA)", xlab = "x", ylab = "y", asp = 1,
+           zlim = zlim)
+
+pts <- res2d$mesh_points
+Y_true <- res2d$latent_field
+Y_est  <- res2d$estimated_field
+residuals <- Y_true - Y_est
+
+cat("RMSE:", sqrt(mean(residuals^2)), "\n")
+cat("Mean residual:", mean(residuals), "\n")
+cat("SD of residuals:", sd(residuals), "\n")
 
 

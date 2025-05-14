@@ -64,7 +64,7 @@ compute_fem_matrices <- function(points, simplices) {
 
 
 # Precision matrix
-assemble_precision_matrix <- function(C, G, tau = 1, kappa = 1, jitter = 1e-5) {
+assemble_precision_matrix <- function(C, G, tau = 3, kappa = 1.5, jitter = 1e-5) {
   Q <- tau^2 * (kappa^2 * C + G)
   Q + Diagonal(nrow(Q), jitter)
 }
@@ -75,7 +75,7 @@ simulate_latent_field <- function(Q) {
 }
 
 # Intensity function
-build_intensity <- function(Y, coords, covariate_fn, beta, scale_intensity = 1000) {
+build_intensity <- function(Y, coords, covariate_fn, beta, scale_intensity = 7000) {
   cov_vals <- apply(coords, 1, covariate_fn)
   eta <- Y + beta * cov_vals
   eta <- pmin(pmax(eta, -6), 6)  # clamp for stability
@@ -85,7 +85,7 @@ build_intensity <- function(Y, coords, covariate_fn, beta, scale_intensity = 100
 
 # LGCP point simulation
 simulate_lgcp_points_continuous <- function(Y, coords, covariate_fn, beta, bounds,
-                                            scale_intensity = 1000, seed = 123) {
+                                            scale_intensity = 7000, seed = 123) {
   set.seed(seed)
   d <- ncol(coords)
   volume <- prod(sapply(bounds, function(b) diff(b)))
@@ -124,10 +124,11 @@ run_inla_inference <- function(counts, covariate, Q, estimate_beta = TRUE) {
   
   fmla <- if (estimate_beta) {
     y ~ 1 + cov + f(idx, model = "generic0", Cmatrix = Q,
-                hyper = list(prec = list(initial = 2, fixed = FALSE)))
+                    hyper = list(prec = list(initial = log(1), fixed = FALSE)))
   } else {
     y ~ 1 + f(idx, model = "generic0", Cmatrix = Q,
-          hyper = list(prec = list(initial = 2, fixed = FALSE)))
+              hyper = list(prec = list(initial = log(1), fixed = FALSE)))
+              
   }
   
   inla(
@@ -142,7 +143,7 @@ run_inla_inference <- function(counts, covariate, Q, estimate_beta = TRUE) {
 # Pipeline
 run_spde_lgcp_pipeline <- function(
     d = 3, m = 10, covariate_fn = function(x) sum(x), beta = 0.1,
-    estimate_beta = TRUE, scale_intensity = 1000
+    estimate_beta = TRUE, scale_intensity = 7000
 ) {
   bounds <- replicate(d, c(0, 1), simplify = FALSE)
   mesh <- build_mesh(d, m, bounds)
@@ -184,35 +185,37 @@ run_spde_lgcp_pipeline <- function(
 
 res2d <- run_spde_lgcp_pipeline(
   d = 2,
-  m = 200,  # use higher resolution for nicer plots
+  m = 100,  # use higher resolution for nicer plots
   covariate_fn = function(x) x[1] + 2 * x[2],
   beta = 0.5,
   estimate_beta = TRUE,
-  scale_intensity = 1000
+  scale_intensity = 7000
 )
 
 
 library(fields)
-# Ensure you have your x, y, and matrix for each field
+# Prepare data
 x <- unique(res2d$mesh_points[, 1])
 y <- unique(res2d$mesh_points[, 2])
 z_true <- matrix(res2d$latent_field, nrow = length(x), byrow = FALSE)
 z_est <- matrix(res2d$estimated_field, nrow = length(x), byrow = FALSE)
 
-# Set up layout manually: 1 row, 2 columns with equal size for plots, narrow for legends
-layout(matrix(c(1, 2), nrow = 1), widths = c(1, 1))
+# Shared color limits
+zlim <- range(c(z_true, z_est), na.rm = TRUE)
 
+# Set layout
+layout(matrix(c(1, 2), nrow = 1), widths = c(1, 1))
 par(mar = c(4, 4, 3, 1))  # Margins: bottom, left, top, right
 
-# True latent field
+# Plot true field
 image.plot(x, y, z_true,
-           main = "True Latent Field", xlab = "x", ylab = "y", asp = 1)
+           main = "True Latent Field", xlab = "x", ylab = "y", asp = 1,
+           zlim = zlim)
 
-# Estimated latent field
+# Plot estimated field
 image.plot(x, y, z_est,
-           main = "Estimated Latent Field (INLA)", xlab = "x", ylab = "y", asp = 1)
-
-
+           main = "Estimated Latent Field (INLA)", xlab = "x", ylab = "y", asp = 1,
+           zlim = zlim)
 
 pts <- res2d$mesh_points
 Y_true <- res2d$latent_field
@@ -223,14 +226,3 @@ cat("RMSE:", sqrt(mean(residuals^2)), "\n")
 cat("Mean residual:", mean(residuals), "\n")
 cat("SD of residuals:", sd(residuals), "\n")
 
-# Define global color scale limits based on the range of both fields
-zlim <- range(c(res2d$latent_field, res2d$estimated_field), finite = TRUE)
-
-# Plot side-by-side with shared color scale
-par(mfrow = c(1, 2))
-
-quilt.plot(res2d$mesh_points[,1], res2d$mesh_points[,2], res2d$latent_field,
-           main = "True Latent Field", zlim = zlim)
-
-quilt.plot(res2d$mesh_points[,1], res2d$mesh_points[,2], res2d$estimated_field,
-           main = "Estimated Latent Field (INLA)", zlim = zlim)

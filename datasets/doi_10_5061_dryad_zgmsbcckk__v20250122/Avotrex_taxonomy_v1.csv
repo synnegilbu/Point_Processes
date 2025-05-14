@@ -1,0 +1,611 @@
+﻿sp_id,species,superorder,order,family,genus,status,taxonomic_authority,formally_described,common_name,authority_ref_id
+x001,Bubo_sp_Eivissa,Neoaves,Strigiformes,Strigidae,Bubo,EP,undescribed (Guerra et al. 2013),no,Eivissan eagle-owl,Guerra_2013
+x002,Athene_cretensis,Neoaves,Strigiformes,Strigidae,Athene,EP,Weesie 1982,yes,Cretan owl,Weesie_1982
+x003,Athene_angelis,Neoaves,Strigiformes,Strigidae,Athene,EP,Mourer-Chauvire et al. 1997,yes,Corsica owl,MourerChauvire_1997
+x004,Bubo_insularis,Neoaves,Strigiformes,Strigidae,Bubo,EP,Mourer-Chauvire & Weesie 1986,yes,Insular eagle-owl,MourerChauvire_1986
+x005,Aquila_nipaloides,Neoaves,Accipitriformes,Accipitridae,Aquila,EP,Louchart et al. 2005,yes,Tyrrhenian eagle / Steppe eagle,Louchart_2005
+x006,Rallus_eivissensis,Neoaves,Gruiformes,Rallidae,Rallus,EP,Mcminn et al. 2005,yes,Ibiza rail,McMinn_2005
+x007,Anser_sp_Eivissa,Galloanserae,Anseriformes,Anatidae,Anser,EP,undescribed (Florit et al. 1989),no,Eivissan duck,Florit_1989
+x008,Haematopus_meadewaldoi,Neoaves,Charadriiformes,Haematopodidae,Haematopus,EX,Bannerman 1913,yes,Canary islands oystercatcher,Bannerman_1913
+x009,Erithacus_sp_Canaries,Neoaves,Passeriformes,Muscicapidae,Erithacus,EP,undescribed (Illera Per. Com.),no,Canary robin,Illera Per. Com.
+x010,Turdus_sp_Canaries,Neoaves,Passeriformes,Turdidae,Turdus,EP,undescribed (Illera Per. Com.),no,Canary thrush,Illera Per. Com.
+x011,Coturnix_gomerae,Galloanserae,Galliformes,Phasianidae,Coturnix,EP,Jaume et al. 1993,yes,Canary islands quail,Jaume_1993
+x012,Puffinus_holeae,Neoaves,Procellariiformes,Procellariidae,Puffinus,EP,Walker et al. 1990,yes,Dune shearwater,Walker_1990
+x013,Puffinus_olsoni,Neoaves,Procellariiformes,Procellariidae,Puffinus,EP,McMinn & Jaume 1990,yes,Lava shearwater,McMinn_1990
+x014,Pterodroma_sp_Hierro,Neoaves,Procellariiformes,Procellariidae,Pterodroma,EP,undescribed (Rando 2002),no,Canary islands petrel,Rando_2002
+x015,Emberiza_alcoveri,Neoaves,Passeriformes,Emberizidae,Emberiza,EP,Rando 1999,yes,Long-legged bunting,Rando_1999
+x016,Chloris_aurelioi,Neoaves,Passeriformes,Fringillidae,Chloris,EP,Rando et al. 2010,yes,Slender-billed greenfinch,Rando_2010
+x017,Chloris_triasi,Neoaves,Passeriformes,Fringillidae,Chloris,EP,Alcover & Florit 1987,yes,Trias greenfinch,Alcover_1987
+x018,Rallus_sp_Madeira,Neoaves,Gruiformes,Rallidae,Rallus,EP,undescribed (Alcover et al. 2015),no,Madeira undescribed rail,Alcover_2015
+x019,Turdus_sp_Madeira,Neoaves,Passeriformes,Turdidae,Turdus,EP,undescribed (Illera et al. 2012),no,Madeira thrush,Illera_2012
+x020,Fringillidae_sp_Madeira,Neoaves,Passeriformes,Fringillidae,Fringillidae sp.,EP,undescribed (Illera et al. 2012),no,Madeira fringilid,Illera_2012
+x021,Fringilla_sp_Graciosa,Neoaves,Passeriformes,Fringillidae,Fringilla,EP,undescribed (Illera Per. Com.),no,Graciosa finch,Illera Per. Com.
+x022,Turdus_sp_Graciosa,Neoaves,Passeriformes,Turdidae,Turdus,EP,undescribed (Illera Per. Com.),no,Graciosa thrush,Illera Per. Com.
+x023,Otus_frutuosoi,Neoaves,Strigiformes,Strigidae,Otus,EP,Rando et al. 2013,yes,Sao Miguel scops owl,Rando_2013
+x024,Otus_mauli,Neoaves,Strigiformes,Strigidae,Otus,EP,Rando et al. 2012,yes,Madeiran scops owl,Rando_2012
+x025,Pyrrhula_crassa,Neoaves,Passeriformes,Fringillidae,Pyrrhula,EP,Rando et al. 2017,yes,Azores large bullfinch,Rando_2017
+x026,Rallus_carvaoensis,Neoaves,Gruiformes,Rallidae,Rallus,EP,Alcover et al. 2015,yes,Sao Miguel rail,Alcover_2015
+x027,Rallus_montivagorum,Neoaves,Gruiformes,Rallidae,Rallus,EP,Alcover et al. 2015,yes,Pico rail,Alcover_2015
+x028,Rallus_nanus,Neoaves,Gruiformes,Rallidae,Rallus,EP,Alcover et al. 2015,yes,Sao Jorge rail,Alcover_2015
+x029,Rallus_lowei,Neoaves,Gruiformes,Rallidae,Rallus,EP,Alcover et al. 2015,yes,Madeira rail,Alcover_2015
+x030,Rallus_adolfocaesaris,Neoaves,Gruiformes,Rallidae,Rallus,EP,Alcover et al. 2015,yes,Porto Santo rail,Alcover_2015
+x031,Rallus_sp_Graciosa,Neoaves,Gruiformes,Rallidae,Rallus,EP,undescribed (Alcover et al. 2015),no,Graciosa rail,Alcover_2015
+x032,Rallus_sp_Terceira,Neoaves,Gruiformes,Rallidae,Rallus,EP,undescribed (Alcover et al. 2015),no,Terceira rail,Alcover_2015
+x033,Rallus_sp_SantaMaria,Neoaves,Gruiformes,Rallidae,Rallus,EP,undescribed (Alcover et al. 2015),no,Santa Maria rail,Alcover_2015
+x034,Fringilla_sp_Pico,Neoaves,Passeriformes,Fringillidae,Fringilla,EP,undescribed (Illera Per. Com.),no,Azores chaffinch,Illera Per. Com.
+x035,Pterodroma_rupinarum,Neoaves,Procellariiformes,Procellariidae,Pterodroma,EX,Olson 1975,yes,Large St Helena petrel,Olson_1975a
+x036,Mundia_elpenor,Neoaves,Gruiformes,Rallidae,Mundia,EX,Olson 1973,yes,Ascension crake,Olson_1973
+x037,Laterallus_podarces,Neoaves,Gruiformes,Rallidae,Laterallus,EX,Wetmore 1963,yes,Saint Helena rail,Wetmore_1963
+x038,Zapornia_astrictocarpus,Neoaves,Gruiformes,Rallidae,Zapornia,EX,Olson 1973,yes,Saint Helena crake,Olson_1973
+x039,Nycticorax_olsoni,Neoaves,Pelecaniformes,Ardeidae,Nycticorax,EP,Bourne et al. 2003,yes,Ascension night heron,Bourne_2003
+x040,Bulweria_bifax,Neoaves,Procellariiformes,Procellariidae,Bulweria,EX,Olson 1975,yes,Olson's petrel,Olson_1975a
+x041,Puffinus_pacificoides,Neoaves,Procellariiformes,Procellariidae,Puffinus,EP,Olson 1975,yes,Saint Helena shearwater,Olson_1975a
+x042,Dysmoropelia_dekarchiskos,Neoaves,Columbiformes,Columbidae,Dysmoropelia,EP,Olson 1975,yes,Saint Helena dove,Olson_1975a
+x043,Nannococcyx_psix,Neoaves,Cuculiformes,Cuculidae,Nannococcyx,EX,Olson 1975,yes,Saint Helena cuckoo,Olson_1975a
+x044,Upupa_antaios,Neoaves,Bucerotiformes,Upupidae,Upupa,EX,Olson 1975,yes,Saint Helena giant hoopoe,Olson_1975a
+x045,Gallinula_nesiotis,Neoaves,Gruiformes,Rallidae,Gallinula,EX,Sclater 1861,yes,Tristan moorhen,Sclater_1861
+x046,Rallus_ibycus,Neoaves,Gruiformes,Rallidae,Rallus,EP,Olson & Wingate 2000,yes,Lesser Bermuda rail,Olson_2000
+x047,Zapornia_piercei,Neoaves,Gruiformes,Rallidae,Zapornia,EP,Olson & Wingate 2000,yes,Lesser Bermuda crake,Olson_2000
+x048,Colaptes_oceanicus,Neoaves,Piciformes,Picidae,Colaptes,EX,Olson 2013,yes,Bermuda flicker,Olson_2013
+x049,Rallus_recessus,Neoaves,Gruiformes,Rallidae,Rallus,EP,Olson & Wingate 2001,yes,Bermuda rail,Olson_2001
+x050,Bermuteo_avivorus,Neoaves,Accipitriformes,Accipitridae,Bermuteo,EX,Olson 2008,yes,Bermuda hawk,Olson_2008c
+x051,Aegolius_gradyi,Neoaves,Strigiformes,Strigidae,Aegolius,EX,Olson 2012,yes,Bermuda saw-whet owl,Olson_2012b
+x052,Nyctanassa_carcinocatactes,Neoaves,Pelecaniformes,Ardeidae,Nyctanassa,EX,Olson & Wingate 2006,yes,Bermuda night heron,Olson_2006a
+x053,Pipilo_naufragus,Neoaves,Passeriformes,Passerellidae,Pipilo,EX,Olson & Wingate 2012,yes,Bermuda towhee,Olson_2012a
+x056,Laterallus_sp_FernandoNoronha,Neoaves,Gruiformes,Rallidae,Laterallus,EH,undescribed (Olson 1981),no,Fernando de Noonha rail,Olson_1981b
+x057,Phalcoboenus_napieri,Neoaves,Falconiformes,Falconidae,Phalcoboenus,EP,Adams & Woods 2016,yes,Falkland islands caracara,Adams_2016
+x058,Oscaravis_olsoni,Neoaves,Cathartiformes,Teratornithidae,Oscaravis,EP,Arredondo & Arredondo 2002,yes,Cuban teratorn,Arredondo_2002
+x059,Neochen_barbadiana,Galloanserae,Anseriformes,Anatidae,Neochen,EP,Brodkorb 1965,yes,Barbados goose,Brodkorb_1965
+x060,Tyto_cravesae,Neoaves,Strigiformes,Tytonidae,Tyto,EP,Suárez & Olson 2015,yes,Crave's giant barn owl,Suarez_2015
+x061,Tyto_pollens,Neoaves,Strigiformes,Tytonidae,Tyto,EP,Wetmore 1937,yes,Bahamian barn owl,Wetmore_1937
+x062,Tyto_ostologa,Neoaves,Strigiformes,Tytonidae,Tyto,EP,Wetmore 1922,yes,Hispaniolan barn owl,Wetmore_1922
+x063,Tyto_noeli,Neoaves,Strigiformes,Tytonidae,Tyto,EP,Arredondo 1972,yes,Noel's barn owl,Arredondo_1972b
+x064,Tyto_cavatica,Neoaves,Strigiformes,Tytonidae,Tyto,EP,Wetmore 1920,yes,Puerto Rican barn owl,Wetmore_1920
+x065,Riccordia_bracei,Neoaves,Caprimulgiformes,Trochilidae,Riccordia,EX,Lawrence 1877,yes,Brace's emerald,Lawrence_1877
+x066,Buteo_quadratus,Neoaves,Accipitriformes,Accipitridae,Buteo,EP,Wetmore 1937,yes,Red-shouldered hawk,Wetmore_1937
+x067,Buteogallus_borrasi,Neoaves,Accipitriformes,Accipitridae,Buteogallus,EP,Arredondo 1970,yes,Giant Cuban hawk / Borrás’s hawk,Arredondo_1970
+x068,Titanohierax_gloveralleni,Neoaves,Accipitriformes,Accipitridae,Titanohierax,EP,Wetmore 1937,yes,Bahama eagle /Bahaman titan hawk,Wetmore_1937
+x069,Buteogallus_irpus,Neoaves,Accipitriformes,Accipitridae,Buteogallus,EP,Suarez & Olson 2021,yes,Wolf hawk,Suarez_2021
+x070,Caracara_lutosa,Neoaves,Falconiformes,Falconidae,Caracara,EX,Ridgway 1876,yes,Guadalupe caracara,Ridgway_1876
+x071,Caracara_creightoni,Neoaves,Falconiformes,Falconidae,Caracara,EP,Brodkorb 1959,yes,Bahaman caracara,Brodkorb_1959
+x072,Caracara_tellustris,Neoaves,Falconiformes,Falconidae,Caracara,EP,Olson 2008,yes,Jamaican caracara,Olson_2008b
+x073,Caracara_latebrosus,Neoaves,Falconiformes,Falconidae,Caracara,EP,Wetmore 1920,yes,Puerto Rican caracara,Wetmore_1920
+x074,Caracara_sp_GranCayman,Neoaves,Falconiformes,Falconidae,Caracara,EP,undescribed (Olson 2008),no,Grand Cayman caracara,Olson_2008b
+x075,Milvago_carbo,Neoaves,Falconiformes,Falconidae,Milvago,EP,Suárez & Olson 2003,yes,Cuban caracara,Suarez_2003c
+x076,Milvago_alexandri,Neoaves,Falconiformes,Falconidae,Milvago,EP,Olson 1976,yes,Hispaniolan caracara,Olson_1976c
+x077,Scolopax_brachycarpa,Neoaves,Charadriiformes,Scolopacidae,Scolopax,EP,Takano & Steadman 2015,yes,Hispaniolan woodcock,Takano_2015
+x078,Scolopax_anthonyi,Neoaves,Charadriiformes,Scolopacidae,Scolopax,EP,Wetmore 1920,yes,Puerto Rican woodcock,Wetmore_1920
+x079,Gallinago_kakuki,Neoaves,Charadriiformes,Scolopacidae,Gallinago,EP,Steadman & Takano 2016,yes,Cuban snipe,Steadman_2016
+x080,Ara_tricolor,Neoaves,Psittaciformes,Psittacidae,Ara,EX,Bechstein 1811,yes,Cuban macaw,Bechstein_1811
+x082,Ara_autocthones,Neoaves,Psittaciformes,Psittacidae,Ara,EP,Wetmore 1937,yes,Puerto Rican macaw,Wetmore_1937
+x086,Psittacara_labati,Neoaves,Psittaciformes,Psittacidae,Psittacara,EX,Rothschild 1905,yes,Guadeloupe parakeet,Rothschild_1905
+x087,Amazona_sp_GrandTurk,Neoaves,Psittaciformes,Psittacidae,Amazona,EP,undescribed (Carlson 1999),no,Turks and Caicos parrot,Carlson_1999
+x088,Amazona_sp_Montserrat,Neoaves,Psittaciformes,Psittacidae,Amazona,EP,undescribed (Williams & Steadman 2001),no,Montserrat parrot,Williams_2001
+x089,Amazona_violacea,Neoaves,Psittaciformes,Psittacidae,Amazona,EX,Gmelin 1789,yes,Guadeloupe parrot,Gmelin_1789
+x090,Amazona_martinicana,Neoaves,Psittaciformes,Psittacidae,Amazona,EX,Clark 1905,yes,Martinique parrot,Clark_1905
+x092,Scytalopus_sp_Cuba,Neoaves,Passeriformes,Rhinocryptidae,Scytalopus,EP,undescribed (Olson & Kurochkin 1987),no,Cuban tapaluco,Olson_1987
+x093,Bubo_osvaldoi,Neoaves,Strigiformes,Strigidae,Bubo,EP,Arredondo & Olson 1994,yes,Cuban horned owl,Arredondo_1994
+x096,Ornimegalonyx_oteroi,Neoaves,Strigiformes,Strigidae,Ornimegalonyx,EP,Arredondo 1958,yes,Cuban giant owl,Arredondo_1958
+x098,Falco_kurochkini,Neoaves,Falconiformes,Falconidae,Falco,EP,Suárez & Olson 2001,yes,Cuban kestrel,Suarez_2001b
+x099,Xenicibis_xympithecus,Neoaves,Pelecaniformes,Threskiornithidae,Xenicibis,EP,Olson & Steadman 1977,yes,Jamaican ibis,Olson_1977b
+x100,Siphonorhis_daiquiri,Neoaves,Caprimulgiformes,Caprimulgidae,Siphonorhis,EP,Olson 1985,yes,Cuban poorwill,Olson_1985
+x101,Corvus_pumilis,Neoaves,Passeriformes,Corvidae,Corvus,EP,Wetmore 1920,yes,Puerto Rican crow,Wetmore_1920
+x102,Ciconia_sp_Cuba,Neoaves,Ciconiiformes,Ciconiidae,Ciconia,EP,undescribed (Suárez & Olson 2003),no,Cuban stork,Suarez_2003b
+x103,Gymnogyps_varonai,Neoaves,Cathartiformes,Cathartidae,Gymnogyps,EP,Arredondo 1971,yes,Cuban condor,Arredondo_1971
+x104,Nesotrochis_debooyi,Neoaves,Gruiformes,Rallidae,Nesotrochis,EP,Wetmore 1918,yes,De Booy's rail,Wetmore_1918
+x105,Nesotrochis_picapicensis,Neoaves,Gruiformes,Rallidae,Nesotrochis,EP,Fischer & Stephan 1971,yes,Cuban cave-rail,Fischer_1971
+x106,Nesotrochis_steganinos,Neoaves,Gruiformes,Rallidae,Nesotrochis,EP,Olson 1974,yes,Haitian cave-rail,Olson_1974b
+x107,Rallus_cyanocavi,Neoaves,Gruiformes,Rallidae,Rallus,EP,Steadman et al. 2013,yes,Medium-sized Abaco rail,Steadman_2013
+x108,Geotrygon_larva,Neoaves,Columbiformes,Columbidae,Geotrygon,EP,Wetmore 1920,yes,Puerto Rican quail-dove,Wetmore_1920
+x109,Pedinorhis_stirpsarcana,Neoaves,Passeriformes,Emberizidae,Pedinorhis,EP,Olson & McKitrick 1981,yes,Puerto Rican bunting,Olson_1981a
+x110,Antigone_cubensis,Neoaves,Gruiformes,Gruidae,Antigone,EP,Fischer & Stephan 1971,yes,Cuban flightless crane,Fischer_1971
+x111,Tachornis_uranoceles,Neoaves,Caprimulgiformes,Apodidae,Tachornis,EP,Olson 1982,yes,Puerto Rican palm swift,Olson_1982b
+x112,Riccordia_elegans,Neoaves,Caprimulgiformes,Trochilidae,Riccordia,EX,Gould 1860,yes,Gould's emerald,Gould_1860a
+x113,Turdus_ravidus,Neoaves,Passeriformes,Turdidae,Turdus,EX,Cory 1886,yes,Grand Cayman thrush,Cory_1886
+x114,Melopyrrha_latirostris,Neoaves,Passeriformes,Emberizidae,Melopyrrha,EP,Steadman & Morgan 1985,yes,Cayman finch,Steadman_1985
+x115,Rallus_gracilipes,Neoaves,Gruiformes,Rallidae,Rallus,EP,Takano & Steadman 2018,yes,Large Abaco flightless rail,Takano_2018
+x123,Forpus_sp_Abaco,Neoaves,Psittaciformes,Psittacidae,Forpus,EP,undescribed (Steadman & Franklin 2015),no,Abaco parrtolet,Steadman_2015
+x124,Pterodroma_jugabilis,Neoaves,Procellariiformes,Procellariidae,Pterodroma,EP,Olson & James 1991,yes,Oahu petrel,Olson_1991
+x125,Branta_rhuax,Galloanserae,Anseriformes,Anatidae,Branta,EP,Wetmore 1943,yes,Giant Hawaii goose,Wetmore_1943
+x126,Branta_hylobadistes,Galloanserae,Anseriformes,Anatidae,Branta,EP,Olson & James 1991,yes,Nene-nui,Olson_1991
+x127,Chelychelynechen_quassus,Galloanserae,Anseriformes,Anatidae,Chelychelynechen,EP,Olson & James 1991,yes,Turtle-jawed moa-nalo,Olson_1991
+x128,Thambetochen_chauliodous,Galloanserae,Anseriformes,Anatidae,Thambetochen,EP,Olson & Wetmore 1976,yes,Maui Nui moa-nalo,Olson_1976a
+x129,Thambetochen_xanion,Galloanserae,Anseriformes,Anatidae,Thambetochen,EP,Olson & James 1991,yes,Oahu moa-nalo,Olson_1991
+x130,Ptaiochen_pau,Galloanserae,Anseriformes,Anatidae,Ptaiochen,EP,Olson & James 1991,yes,Small-billed moa-nalo,Olson_1991
+x131,Apteribis_glenos,Neoaves,Pelecaniformes,Threskiornithidae,Apteribis,EP,Olson & Wetmore 1976,yes,Molokai apteribis,Olson_1976a
+x132,Apteribis_brevis,Neoaves,Pelecaniformes,Threskiornithidae,Apteribis,EP,Olson & James 1991,yes,Maui upland apteribis,Olson_1991
+x133,Chloridops_sp_Kauai,Neoaves,Passeriformes,Fringillidae,Chloridops,EP,undescribed (James & Olson 1991),no,Kauai grosbeak,Olson_1991
+x134,Chloridops_sp_Maui,Neoaves,Passeriformes,Fringillidae,Chloridops,EP,undescribed (James & Olson 1991),no,Maui grosbeak,Olson_1991
+x135,Zapornia_sandwichensis,Neoaves,Gruiformes,Rallidae,Zapornia,EX,Gmelin 1789,yes,Hawaiian crake,Gmelin_1789
+x136,Zapornia_palmeri,Neoaves,Gruiformes,Rallidae,Zapornia,EX,Frohawk 1892,yes,Laysan crake,Frohawk_1892
+x137,Zapornia_ziegleri,Neoaves,Gruiformes,Rallidae,Zapornia,EP,Olson & James 1991,yes,Small Oahu crake,Olson_1991
+x138,Zapornia_menehune,Neoaves,Gruiformes,Rallidae,Zapornia,EP,Olson & James 1991,yes,Liliput crake,Olson_1991
+x139,Zapornia_keplerorum,Neoaves,Gruiformes,Rallidae,Zapornia,EP,Olson & James 1991,yes,Small Maui crake,Olson_1991
+x140,Chaetoptila_sp_Maui,Neoaves,Passeriformes,Mohoidae,Chaetoptila,EP,undescribed (James & Olson 1991),no,Narrow-billed kioea,Olson_1991
+x141,Procellariidae_sp_EasterIsland,Neoaves,Procellariiformes,Procellariidae,Procellariidae sp.,EP,undescribed (Jaramillo et al. 2008),no,Easter island Procellariidae,Jaramillo_2008
+x142,Ardeidae_sp_EasterIsland,Neoaves,Pelecaniformes,Ardeidae,Ardeidae,EP,undescribed (Jaramillo et al. 2008),no,Easter island heron,Jaramillo_2008
+x143,Zapornia_sp_EasterIsland,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Jaramillo et al. 2008),no,Easter island crake,Jaramillo_2008
+x144,Zapornia_ralphorum,Neoaves,Gruiformes,Rallidae,Zapornia,EP,Olson & James 1991,yes,Great Oʻahu rail ,Olson_1991
+x145,Zapornia_severnsi,Neoaves,Gruiformes,Rallidae,Zapornia,EP,Olson & James 1991,yes,Great Maui rail,Olson_1991
+x146,Rallidae_sp_EasterIsland,Neoaves,Gruiformes,Rallidae,Rallidae,EP,undescribed (Jaramillo et al. 2008),no,Easter island rail,Jaramillo_2008
+x147,Circus_dossenus,Neoaves,Accipitriformes,Accipitridae,Circus,EP,Olson & James 1991,yes,Hawaiian harrier,Olson_1991
+x148,Grallistrix_auceps,Neoaves,Strigiformes,Strigidae,Grallistrix,EP,Olson & James 1991,yes,Kauai stilt-owl,Olson_1991
+x149,Grallistrix_orion,Neoaves,Strigiformes,Strigidae,Grallistrix,EP,Olson & James 1991,yes,Oahu stilt-owl,Olson_1991
+x150,Grallistrix_geleches,Neoaves,Strigiformes,Strigidae,Grallistrix,EP,Olson & James 1991,yes,Molokai stilt-owl,Olson_1991
+x151,Grallistrix_erdmani,Neoaves,Strigiformes,Strigidae,Grallistrix,EP,Olson & James 1991,yes,Maui stilt-owl,Olson_1991
+x152,Corvus_impluviatus,Neoaves,Passeriformes,Corvidae,Corvus,EP,James & Olson 1991,yes,High-billed crow,Olson_1991
+x153,Corvus_viriosus,Neoaves,Passeriformes,Corvidae,Corvus,EP,James & Olson 1991,yes,Robust crow,Olson_1991
+x154,Corvus_hawaiiensis,Neoaves,Passeriformes,Corvidae,Corvus,EW,Peale 1848,yes,Hawaiian crow,Peale_1848
+x155,Telespiza_persecutrix,Neoaves,Passeriformes,Fringillidae,Telespiza,EP,James & Olson 1991,yes,Kauai finch,Olson_1991
+x156,Telespiza_ypsilon,Neoaves,Passeriformes,Fringillidae,Telespiza,EP,James & Olson 1991,yes,Molokai finch,Olson_1991
+x157,Psittacidae_sp_EasterIsland_1,Neoaves,Psittaciformes,Psittacidae,Psittacidae,EP,undescribed (Jaramillo et al. 2008),no,Easter island Psitacid sp1,Jaramillo_2008
+x158,Chloridops_kona,Neoaves,Passeriformes,Fringillidae,Chloridops,EX,Wilson 1888,yes,Kona grosbeak,Wilson_1888
+x159,Psittacidae_sp_EasterIsland_2,Neoaves,Psittaciformes,Psittacidae,Psittacidae,EP,undescribed (Jaramillo et al. 2008),no,Easter island Psitacid sp2,Jaramillo_2008
+x160,Tytonidae_sp_EasterIsland,Neoaves,Strigiformes,Tytonidae,Tytonidae,EP,undescribed (Jaramillo et al. 2008),no,Easter island barn owl,Jaramillo_2008
+x161,Chloridops_wahi,Neoaves,Passeriformes,Fringillidae,Chloridops,EP,James & Olson 1991,yes,Wahi grosbeak,Olson_1991
+x162,Chloridops_regiskongi,Neoaves,Passeriformes,Fringillidae,Chloridops,EP,James & Olson 1991,yes,King Kong grosbeak,Olson_1991
+x163,Dysmorodrepanis_munroi,Neoaves,Passeriformes,Fringillidae,Dysmorodrepanis,EX,Perkins 1919,yes,Lanai hookbill,Perkins_1919
+x164,Loxioides_kikuchi,Neoaves,Passeriformes,Fringillidae,Loxioides,EP,James & Olson 2006,yes,Kauai palila,James_2006
+x165,Orthiospiza_howarthi,Neoaves,Passeriformes,Fringillidae,Orthiospiza,EH,James & Olson 1991,yes,Highland finch,Olson_1991
+x166,Telespiza_sp_aff.ypsilon,Neoaves,Passeriformes,Fringillidae,Telespiza,EP,undescribed (James & Olson 1991),no,Maui Nui finch,Olson_1991
+x167,Xestospiza_conica,Neoaves,Passeriformes,Fringillidae,Xestospiza,EP,James & Olson 1991,yes,Cone-billed finch,Olson_1991
+x168,Xestospiza_fastiglialis,Neoaves,Passeriformes,Fringillidae,Xestospiza,EP,James & Olson 1991,yes,Ridge-billed finch,Olson_1991
+x169,Hemignathus_upupirostris,Neoaves,Passeriformes,Fringillidae,Hemignathus,EP,James & Olson 1991,yes,Hoopoe-billed akialoa,Olson_1991
+x170,Hemignathus_vorpalis,Neoaves,Passeriformes,Fringillidae,Hemignathus,EP,James & Olson 2003,yes,Giant nukupuu,James_2003
+x171,Hemignathus_lucidus,Neoaves,Passeriformes,Fringillidae,Hemignathus,EX,Lichtenstein 1839,yes,Oahu nukupuu ,Lichtenstein_1839
+x172,Aidemedia_lutetiae,Neoaves,Passeriformes,Fringillidae,Aidemedia,EP,James & Olson 1991,yes,Maui Nui icterid-like gaper,Olson_1991
+x173,Aidemedia_chascax,Neoaves,Passeriformes,Fringillidae,Aidemedia,EP,James & Olson 1991,yes,Oahu icterid-like gaper,Olson_1991
+x174,Aidemedia_zanclops,Neoaves,Passeriformes,Fringillidae,Aidemedia,EP,James & Olson 1991,yes,Sickle-billed gaper,Olson_1991
+x175,Ciridops_tenax,Neoaves,Passeriformes,Fringillidae,Ciridops,EP,James & Olson 1991,yes,Stout-legged finch ,Olson_1991
+x176,Ciridops_anna,Neoaves,Passeriformes,Fringillidae,Ciridops,EX,Dole 1878,yes,Ula-ai-hawane,Dole_1878
+x177,Himatione_fraithii,Neoaves,Passeriformes,Fringillidae,Himatione,EX,Rothschild 1892,yes,Laysan honeycreeper,Rothschild_1892
+x178,Drepanis_funerea,Neoaves,Passeriformes,Fringillidae,Drepanis,EX,Newton 1893,yes,Black mamo,Newton_1893b
+x179,Drepanis_pacifica,Neoaves,Passeriformes,Fringillidae,Drepanis,EX,Gmelin 1788,yes,Hawaii mamo,Gmelin_1788
+x180,Akialoa_ellisiana,Neoaves,Passeriformes,Fringillidae,Akialoa,EX,Gray 1860,yes,Oahu akialoa,Gray_1859
+x181,Akialoa_obscura,Neoaves,Passeriformes,Fringillidae,Akialoa,EX,Gmelin 1788,yes,Lesser akialoa,Gmelin_1788
+x182,Akialoa_lanaiensis,Neoaves,Passeriformes,Fringillidae,Akialoa,EX,Rothschild 1893,yes,Lanai akialoa / Maui Nui akialoa,Rothschild_1893a
+x183,Akialoa_stejnegeri,Neoaves,Passeriformes,Fringillidae,Akialoa,EX,Wilson 1889,yes,Kauai akialoa,Wilson_1889
+x184,Viridonia_sagittirostris,Neoaves,Passeriformes,Fringillidae,Viridonia,EX,Rothschild 1892,yes,Greater amakihi,Rothschild_1892
+x185,Vangulifer_mirandus,Neoaves,Passeriformes,Fringillidae,Vangulifer,EP,James & Olson 1991,yes,Strange-billed finch,Olson_1991
+x186,Vangulifer_neophasis,Neoaves,Passeriformes,Fringillidae,Vangulifer,EP,James & Olson 1991,yes,Thin-billed finch,Olson_1991
+x187,Paroreomyza_flammea,Neoaves,Passeriformes,Fringillidae,Paroreomyza,EX,Wilson 1890,yes,Molokai creeper,Wilson_1890
+x188,Loxops_wolstenholmei,Neoaves,Passeriformes,Fringillidae,Loxops,EX,Rothschild 1893,yes,Oahu akepa,Rothschild_1893c
+x190,Rhodacanthis_palmeri,Neoaves,Passeriformes,Fringillidae,Rhodacanthis,EX,Rothschild 1892,yes,Great Koa finch,Rothschild_1892
+x191,Rhodacanthis_flaviceps,Neoaves,Passeriformes,Fringillidae,Rhodacanthis,EX,Rothschild 1892,yes,Lesser Koa finch,Rothschild_1892
+x192,Rhodacanthis_forfex,Neoaves,Passeriformes,Fringillidae,Rhodacanthis,EP,James & Olson 2005,yes,Scissor-billed Koa finch,James_2005
+x193,Rhodacanthis_litotes,Neoaves,Passeriformes,Fringillidae,Rhodacanthis,EP,James & Olson 2005,yes,Primitive Koa finch ,James_2005
+x194,Moho_braccatus,Neoaves,Passeriformes,Mohoidae,Moho,EX,Cassin 1855,yes,Kauai oo,Cassin_1855
+x195,Moho_bishopi,Neoaves,Passeriformes,Mohoidae,Moho,EX,Rothschild 1893,yes,Bishop's oo,Rothschild_1893b
+x196,Moho_apicalis,Neoaves,Passeriformes,Mohoidae,Moho,EX,Gould 1860,yes,Oahu oo,Gould_1860b
+x197,Moho_nobilis,Neoaves,Passeriformes,Mohoidae,Moho,EX,Merrem 1786,yes,Hawaii oo,Merrem_1786
+x198,Chaetoptila_angustipluma,Neoaves,Passeriformes,Mohoidae,Chaetoptila,EX,Peale 1848,yes,Kioea,Peale_1848
+x199,Apteribis_sp_Maui,Neoaves,Pelecaniformes,Threskiornithidae,Apteribis,EP,undescribed (Olson & James 1991),no,Maui lowland apteribis,Olson_1991
+x200,Gallirallus_sp_Haafeva,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,undescribed (Kirchman & Steadman 2006),no,Ha'afeva rail,Kirchman_2006b
+x201,Myadestes_myadestinus,Neoaves,Passeriformes,Turdidae,Myadestes,EX,Stejneger 1887,yes,Kama'o,Stejneger_1887b
+x202,Myadestes_woahensis,Neoaves,Passeriformes,Turdidae,Myadestes,EX,Wilson & Evans 1899,yes,Amaui thrush / Ahu thrush,Wilson_1899
+x203,Talpanas_lippa,Galloanserae,Anseriformes,Anatidae,Talpanas,EP,Iwaniuk et al. 2009,yes,Kauai mole duck,Iwaniuk_2009
+x204,Tribonyx_hodgenorum,Neoaves,Gruiformes,Rallidae,Tribonyx,EX,Olson 1986,yes,Hodgen's waterhen,Olson_1986
+x205,Capellirallus_karamu,Neoaves,Gruiformes,Rallidae,Capellirallus,EP,Falla 1954,yes,Snipe-rail,Falla_1954
+x206,Fulica_prisca,Neoaves,Gruiformes,Rallidae,Fulica,EP,Hamilton 1893,yes,New Zealand coot,Hamilton_1893
+x207,Fulica_chathamensis,Neoaves,Gruiformes,Rallidae,Fulica,EP,Forbes 1892,yes,Chatham coot,Forbes_1892a
+x208,Hypotaenidia_dieffenbachii,Neoaves,Gruiformes,Rallidae,Hypotaenidia,EX,Gray 1843,yes,Dieffenbach's rail ,Gray_1843
+x209,Cabalus_modestus,Neoaves,Gruiformes,Rallidae,Cabalus,EX,Hutton 1872,yes,Chatham rail,Hutton_1872
+x210,Diaphorapteryx_hawkinsi,Neoaves,Gruiformes,Rallidae,Diaphorapteryx,EX,Forbes 1892,yes,Hawkin's rail,Forbes_1892a
+x211,Porphyrio_mantelli,Neoaves,Gruiformes,Rallidae,Porphyrio,EX,Owen 1848,yes,North Island takahe,Owen_1848b
+x212,Biziura_delautouri,Galloanserae,Anseriformes,Anatidae,Biziura,EP,Forbes 1892,yes,New Zealand Musk duck,Forbes_1892a
+x213,Malacorhynchus_scarletti,Galloanserae,Anseriformes,Anatidae,Malacorhynchus,EP,Olson 1977,yes,Scarlett's duck,Olson_1977a
+x214,Chenonetta_finschi,Galloanserae,Anseriformes,Anatidae,Chenonetta,EX,Van Beneden 1875,yes,Finsch's duck,Beneden_1875
+x215,Cnemiornis_calcitrans,Galloanserae,Anseriformes,Anatidae,Cnemiornis,EP,Owen 1865,yes,South island goose,Owen_1865
+x216,Cnemiornis_gracillis,Galloanserae,Anseriformes,Anatidae,Cnemiornis,EP,Forbes 1892,yes,North island goose,Forbes_1892c
+x217,Cygnus_sumnerensis,Galloanserae,Anseriformes,Anatidae,Cygnus,EH,Forbes 1890,yes,Pouwa swan / New Zealand swan,Forbes_1890
+x218,Anas_chathamica,Galloanserae,Anseriformes,Anatidae,Anas,EP,Oliver 1955,yes,Chatham Island duck,Oliver_1955
+x219,Mergus_australis,Galloanserae,Anseriformes,Anatidae,Mergus,EX,Hombron & Jacquinot 1841,yes,Auckland Island merganser,Hombron_1841
+x220,Tadorna_sp_Chatham,Galloanserae,Anseriformes,Anatidae,Tadorna,EP,undescribed (Hume 2017),no,Chatham Island shelduck,Hume_2017
+x221,Oxyura_vantetsi,Galloanserae,Anseriformes,Anatidae,Oxyura,EP,Worthy 2005,yes,New Zealand stiff-tailed duck,Worthy_2005
+x222,Coturnix_novaezelandiae,Galloanserae,Galliformes,Phasianidae,Coturnix,EX,Quoy & Gaimard 1830,yes,New Zealand quail,Quoy_1830
+x223,Coenocorypha_barrierensis,Neoaves,Charadriiformes,Scolopacidae,Coenocorypha,EX,Oliver 1955,yes,North island snipe / Little barrier snipe,Oliver_1955
+x224,Coenocorypha_iredalei,Neoaves,Charadriiformes,Scolopacidae,Coenocorypha,EX,Rothschild 1921,yes,South island snipe,Rothschild_1921
+x225,Aptornis_otidiformis,Neoaves,Gruiformes,Aptornithidae,Aptornis,EP,Owen 1844,yes,North Island adzebill,Owen_1844b
+x226,Aptornis_defossor,Neoaves,Gruiformes,Aptornithidae,Aptornis,EP,Owen 1871,yes,South Island adzebill,Owen_1871
+x227,Aegotheles_novazelandiae,Neoaves,Caprimulgiformes,Aegothelidae,Aegotheles,EP,Scarlet 1968,yes,New Zealand owlet-nightjar,Scarlet_1986
+x228,Hieraaetus_moorei,Neoaves,Accipitriformes,Accipitridae,Hieraaetus,EP,Haast 1872,yes,Haast's eagle,Haast_1872
+x229,Circus_teauteensis,Neoaves,Accipitriformes,Accipitridae,Circus,EP,Forbes 1892,yes,Large New Zealand harrier / Forbes' harrier,Forbes_1892a
+x230,Ninox_albifacies,Neoaves,Strigiformes,Strigidae,Ninox,EX,Gray 1844,yes,Laughing owl,Gray_1844
+x231,Ixobrychus_novaezelandiae,Neoaves,Pelecaniformes,Ardeidae,Ixobrychus,EX,Potts 1871,yes,New Zealand little bittern,Potts_1871
+x232,Euryapteryx_curtus,Palaeognathae,Dinornithiformes,Emeidae,Euryapteryx,EP,Owen 1846,yes,Stout-legged moa / Coastal moa,Owen_1846b
+x233,Emeus_crassus,Palaeognathae,Dinornithiformes,Emeidae,Emeus,EP,Owen 1846,yes,Eastern moa,Owen_1846a
+x234,Anomalopteryx_didiformis,Palaeognathae,Dinornithiformes,Emeidae,Anomalopteryx,EP,Owen 1844,yes,Bush moa,Owen_1844a
+x235,Pachyornis_geranoides,Palaeognathae,Dinornithiformes,Emeidae,Pachyornis,EP,Owen 1848,yes,Mantell's moa,Owen_1848a
+x236,Pachyornis_elephantopus,Palaeognathae,Dinornithiformes,Emeidae,Pachyornis,EP,Owen 1856,yes,Heavy-footed moa,Owen_1856
+x237,Pachyornis_australis,Palaeognathae,Dinornithiformes,Emeidae,Pachyornis,EP,Oliver 1949,yes,Crested moa,Oliver_1949
+x238,Megalapteryx_didinus,Palaeognathae,Dinornithiformes,Megalapterygidae,Megalapteryx,EP,Owen 1883,yes,Upland moa,Owen_1883
+x239,Dinornis_novaezealandiae,Palaeognathae,Dinornithiformes,Dinornithidae,Dinornis,EP,Owen 1843,yes,North island giant moa,Owen_1843
+x240,Dinornis_robustus,Palaeognathae,Dinornithiformes,Dinornithidae,Dinornis,EP,Owen 1844,yes,South island giant moa,Owen_1846b
+x241,Puffinus_spelaeus,Neoaves,Procellariiformes,Procellariidae,Puffinus,EP,Holdaway & Worthy 1994,yes,Scarlett's shearwater,Holdaway_1994
+x242,Megadyptes_waitaha,Neoaves,Sphenisciformes,Spheniscidae,Megadyptes,EP,Boessenkool et al. 2009,yes,Waitaha penguin,Boessenkool_2009
+x243,Eudyptes_warhami,Neoaves,Sphenisciformes,Spheniscidae,Eudyptes,EP,Cole et al. 2019,yes,Chatham island penguin,Cole_2019
+x244,Dendroscansor_decurvirostris,Neoaves,Passeriformes,Acanthisittidae,Dendroscansor,EP,Millener & Worthy 1991,yes,Long-billed wren,Millener_1991
+x245,Xenicus_longipes,Neoaves,Passeriformes,Acanthisittidae,Xenicus,EX,Gmelin 1789,yes,Bush wren,Gmelin_1788
+x246,Traversia_lyalli,Neoaves,Passeriformes,Acanthisittidae,Traversia,EX,Rothschild 1894,yes,Lyall's wren,Rothschild_1894
+x247,Pachyplichas_yaldwyni,Neoaves,Passeriformes,Acanthisittidae,Pachyplichas,EP,Millener 1988,yes,South island stout-legged wren,Millener_1988
+x248,Pachyplichas_jagmi,Neoaves,Passeriformes,Acanthisittidae,Pachyplichas,EP,Millener 1988,yes,North island stout-legged wren,Millener_1988
+x249,Anthornis_melanocephala,Neoaves,Passeriformes,Meliphagidae,Anthornis,EX,Gray 1843,yes,Chatham bellbird,Gray_1843
+x250,Poodytes_rufescens,Neoaves,Passeriformes,Locustellidae,Poodytes,EX,Buller 1869,yes,Chatham fernbird,Buller_1869
+x251,Heteralocha_acutirostris,Neoaves,Passeriformes,Callaeidae,Heteralocha,EX,Gould 1837,yes,Huia,Gould_1837
+x252,Turnagra_tanagra,Neoaves,Passeriformes,Oriolidae,Turnagra,EX,Schlegel 1866,yes,North Island piopio,Schlegel_1866
+x253,Turnagra_capensis,Neoaves,Passeriformes,Oriolidae,Turnagra,EX,Sparrman 1787,yes,South Island piopio,Sparrman_1787
+x254,Corvus_moriorum,Neoaves,Passeriformes,Corvidae,Corvus,EP,Forbes 1892,yes,Chatham raven,Forbes_1892b
+x255,Corvus_antipodum,Neoaves,Passeriformes,Corvidae,Corvus,EP,Forbes 1893,yes,New zealand raven,Forbes_1893
+x256,Pterodroma_imberi,Neoaves,Procellariiformes,Procellariidae,Pterodroma,EP,Tennyson et al. 2015,yes,Imber's petrel,Tennyson_2015
+x257,Coenocorypha_chathamica,Neoaves,Charadriiformes,Scolopacidae,Coenocorypha,EP,Forbes 1893,yes,Forbes's snipe,Forbes_1893
+x258,Nestor_productus,Neoaves,Psittaciformes,Strigopidae,Nestor,EX,Gould 1836,yes,Norfolk kaka,Gould_1836
+x259,Nestor_chathamensis,Neoaves,Psittaciformes,Strigopidae,Nestor,EH,Wood et al. 2014,yes,Chatham islands kaka,Wood_2014
+x261,Aplonis_mavornata,Neoaves,Passeriformes,Sturnidae,Aplonis,EX,Buller 1887,yes,Mauke starling / Mysterious starling,Buller_1887
+x263,Porphyrio_sp_Norfolk,Neoaves,Gruiformes,Rallidae,Porphyrio,EP,undescribed (Hume 2017),no,Norfolk island gallinule,Hume_2017
+x264,Coenocorypha_sp_Norfolk,Neoaves,Charadriiformes,Scolopacidae,Coenocorypha,EP,undescribed (Hume 2017),no,Norfolk Island snipe,Hume_2017
+x265,Pyrocephalus_dubius,Neoaves,Passeriformes,Tyrannidae,Pyrocephalus,EX,Gould & Gray 1839,yes,Vermillion flycatcher,Gould_1839
+x266,Zapornia_sp_Hawaii_Small,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Olson & James 1991),no,Small Big Island crake,Olson_1991
+x267,Zapornia_sp_Kauai_Medium,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Olson & James 1991),no,Medium Kauai crake,Olson_1991
+x268,Zapornia_sp_Kauai_Great,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Olson & James 1991),no,Great Kauai crake,Olson_1991
+x269,Zapornia_sp_Maui,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Olson & James 1991),no,Medium Maui crake,Olson_1991
+x270,Zapornia_sp_Hawaii_Large,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Olson & James 1991),no,Great Big Island crake,Olson_1991
+x271,Anatidae_sp_Oahu,Galloanserae,Anseriformes,Anatidae,Anatidae sp.,EP,undescribed (Olson & James 1991),no,Supernumerary Oahu goose,Olson_1991
+x272,Rhyticeros_sp_Lifou,Neoaves,Bucerotiformes,Bucerotidae,Rhyticeros,EP,undescribed (Hume 2017),no,Lifou hornbill,Hume_2017
+x273,Larus_sp_Kauai,Neoaves,Charadriiformes,Laridae,Larus,EP,undescribed (Burney et al. 2001),no,Kauai gull,Burney_2001
+x274,Tadorna_sp_Kauai,Galloanserae,Anseriformes,Anatidae,Tadorna,EP,undescribed (Burney et al. 2001),no,Undescribed long-legged duck,Burney_2001
+x275,Apteribis_sp_Lanai,Neoaves,Pelecaniformes,Threskiornithidae,Apteribis,EP,undescribed (Dove & Olson 2011),no,Hawaiian ibis,Dove_2011
+x276,Anas_sp_VitiLevu,Galloanserae,Anseriformes,Anatidae,Anas,EP,undescribed (Geoffrey & Atholl 2009),no,Fiji teal,Geoffrey_2009
+x277,Porphyrio_albus,Neoaves,Gruiformes,Rallidae,Porphyrio,EX,White 1790,yes,Lord Howe gallinule ,White_1790
+x278,Gerygone_insularis,Neoaves,Passeriformes,Acanthizidae,Gerygone,EX,Ramsay 1879,yes,Lord Howe gerygone ,Ramsay_1878
+x279,Zosterops_strenuus,Neoaves,Passeriformes,Zosteropidae,Zosterops,EX,Gould 1855,yes,Robust white-eye,Gould_1855
+x280,Pampusana_leonpascoi,Neoaves,Columbiformes,Columbidae,Pampusana,EP,Worthy & Wragg 2003,yes,Henderson ground dove,Worthy_2003a
+x281,Ducula_harrisoni,Neoaves,Columbiformes,Columbidae,Ducula,EP,Wragg & Worthy 2006,yes,Henderson imperial pigeon,Wragg_2006
+x282,Bountyphaps_obsoleta,Neoaves,Columbiformes,Columbidae,Bountyphaps,EP,Worthy & Wragg 2008,yes,Henderson archaic pigeon,Worthy_2008
+x283,Prosobonia_sauli,Neoaves,Charadriiformes,Scolopacidae,Prosobonia,EP,De Pietri et al. 2021,yes,Henderson sandpiper,DePietri_2021
+x284,Accipiter_quartus,Neoaves,Accipitriformes,Accipitridae,Accipiter,EP,Balouet & Olson 1989,yes,Gracile goshawk,Balouet_1989
+x285,Accipiter_efficax,Neoaves,Accipitriformes,Accipitridae,Accipiter,EP,Balouet & Olson 1989,yes,Powerful goshawk,Balouet_1989
+x286,Caloenas_canacorum,Neoaves,Columbiformes,Columbidae,Caloenas,EP,Balouet & Olson 1989,yes,Kanaka pigeon / Great green pigeon,Balouet_1989
+x287,Pampusana_longitarsus,Neoaves,Columbiformes,Columbidae,Pampusana,EP,Balouet & Olson 1989,yes,New Caledonian ground dove,Balouet_1989
+x288,Megapodius_molistructor,Galloanserae,Galliformes,Megapodiidae,Megapodius,EP,Balouet & Olson 1989,yes,Pile-builder megapode,Balouet_1989
+x289,Sylviornis_neocaledoniae,Galloanserae,Galliformes,Sylviornithidae,Sylviornis,EP,Poplin 1980,yes,Giant flightless Sylviornis,Poplin_1980
+x290,Tyto_letocarti,Neoaves,Strigiformes,Tytonidae,Tyto,EP,Balouet & Olson 1989,yes,New Caledonian barn owl,Balouet_1989
+x291,Porphyrio_kukwiedei,Neoaves,Gruiformes,Rallidae,Porphyrio,EX,Balouet & Olson 1989,yes,New Caledonian gallinule,Balouet_1989
+x292,Rhynochetos_orarius,Neoaves,Eurypygiformes,Rhynochetidae,Rhynochetos,EP,Balouet & Olson 1989,yes,Lowland kagu,Balouet_1989
+x293,Coenocorypha_neocaledonica,Neoaves,Charadriiformes,Scolopacidae,Coenocorypha,EP,Worthy et al. 2013,yes,New Caledonian snipe,Worthy_2013
+x294,Ninox_sp_NewCaledonia,Neoaves,Strigiformes,Strigidae,Ninox,EP,undescribed (Balouet & Olson 1989),no,New Caledonian boobook,Balouet_1989
+x295,Hypotaenidia_ripleyi,Neoaves,Gruiformes,Rallidae,Hypotaenidia,EP,Steadman 1986,yes,Mangaia rail / Ripley's rail,Steadman_1986
+x296,Zapornia_rua,Neoaves,Gruiformes,Rallidae,Zapornia,EP,Steadman 1986,yes,Mangaia crake,Steadman_1986
+x297,Aerodramus_manuoi,Neoaves,Caprimulgiformes,Apodidae,Aerodramus,EP,Steadman 2002,yes,Mangaia swiftlet,Steadman_2002a
+x298,Pampusana_nui,Neoaves,Columbiformes,Columbidae,Pampusana,EP,Steadman 1992,yes,Giant ground dove,Steadman_1992b
+x299,Zosteropidae_sp_Guam,Neoaves,Passeriformes,Zosteropidae,Zosteropidae sp.,EP,undescribed (Pregill & Steadman 2009),no,Guam white-eye,Pregill_2009
+x300,Zapornia_sp_Guam,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Pregill & Steadman 2009),no,Guam crake,Pregill_2009
+x301,Vini_vidivici,Neoaves,Psittaciformes,Psittacidae,Vini,EP,Steadman & Zarriello 1987,yes,Conquered lorikeet,Steadman_1987
+x302,Vini_sinotoi,Neoaves,Psittaciformes,Psittacidae,Vini,EP,Steadman & Zarriello 1987,yes,Sinoto's lorikeet,Steadman_1987
+x303,Macropygia_arevarevauupa,Neoaves,Columbiformes,Columbidae,Macropygia,EP,Steadman 1992,yes,Huahine cuckoo-dove,Steadman_1992b
+x304,Gallirallus_sp_Saipan,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,undescribed (Pregill & Steadman 2009),no,Saipan rail,Pregill_2009
+x305,Aplonis_diluvialis,Neoaves,Passeriformes,Sturnidae,Aplonis,EP,Steadman 1989,yes,Huahine starling,Steadman_1989a
+x306,Porphyrio_mcnabi,Neoaves,Gruiformes,Rallidae,Porphyrio,EP,Kirchman & Steadman 2006,yes,Huahine swamphen,Kirchman_2006a
+x307,Gallirallus_storrsolsoni,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2006,yes,Huahine rail,Kirchman_2006a
+x308,Erythrura_sp_Rota,Neoaves,Passeriformes,Estrildidae,Erythrura,EH,undescribed (Pregill & Steadman 2009),no,Rota parrot-finch,Pregill_2009
+x309,Chroicocephalus_utunui,Neoaves,Charadriiformes,Laridae,Chroicocephalus,EP,Steadman 2002,yes,Huahine Gull,Steadman_2002b
+x310,Zapornia_nigra,Neoaves,Gruiformes,Rallidae,Zapornia,EX,Miller 1784,yes,Miller's rail,Miller_1784
+x311,Hypotaenidia_pacifica,Neoaves,Gruiformes,Rallidae,Hypotaenidia,EX,Gmelin 1789,yes,Tahiti rail ,Gmelin_1789
+x312,Cyanoramphus_zealandicus,Neoaves,Psittaciformes,Psittacidae,Cyanoramphus,EX,Latham 1790,yes,Black-fronted parakeet,Latham_1790
+x313,Cyanoramphus_ulietanus,Neoaves,Psittaciformes,Psittacidae,Cyanoramphus,EX,Gmelin 1788,yes,Society parakeet,Gmelin_1788
+x314,Prosobonia_leucoptera,Neoaves,Charadriiformes,Scolopacidae,Prosobonia,EX,Gmelin 1789,yes,Tahitian sandpiper,Gmelin_1789
+x315,Prosobonia_ellisi,Neoaves,Charadriiformes,Scolopacidae,Prosobonia,EX,Gmelin 1789,yes,Moorea sandpiper,Gmelin_1789
+x316,Pomarea_pomarea,Neoaves,Passeriformes,Monarchidae,Pomarea,EX,Garnot 1828,yes,Maupiti monarch,Garnot_1828
+x317,Gallirallus_roletti,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2007,yes,Tahuata rail,Kirchman_2007
+x318,Gallirallus_gracilitibia,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2007,yes,Ua Huka rail,Kirchman_2007
+x319,Gallirallus_epulare,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2007,yes,Nuku Hiva rail,Kirchman_2007
+x321,Ptilinopus_mercierii,Neoaves,Columbiformes,Columbidae,Ptilinopus,EX,Des Murs & Prévost 1849,yes,Red-moustached Fruit-Dove ,DesMurs_1849
+x322,Porphyrio_paepae,Neoaves,Gruiformes,Rallidae,Porphyrio,EX,Steadman 1988,yes,Marquesan swamphen,Steadman_1988
+x323,Vini_sp_Guam,Neoaves,Psittaciformes,Psittacidae,Vini,EP,undescribed (Pregill & Steadman 2009),no,Guam lorikeet,Pregill_2009
+x324,Prosobonia_sp_Mangaia,Neoaves,Charadriiformes,Scolopacidae,Prosobonia,EP,undescribed (Steadman 1995),no,Mangaia sandpiper,Steadman_1995
+x325,Zapornia_sp_Mangaia,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Steadman 1986),no,Lesser Mangaia crake,Steadman_1986
+x326,Macropygia_heana,Neoaves,Columbiformes,Columbidae,Macropygia,EP,Steadman 1992,yes,Marquesas cuckoo-dove,Steadman_1992b
+x329,Myiagra_sp_UaHuka,Neoaves,Passeriformes,Monarchidae,Myiagra,EP,undescribed (Steadman 1989),no,Indeterminate flycatcher,Steadman_1989c
+x330,Todiramphus_cinnamominus,Neoaves,Coraciiformes,Alcedinidae,Todiramphus,EW,Swainson 1821,yes,Guam Kingfisher,Swainson_1821
+x331,Hypotaenidia_wakensis,Neoaves,Gruiformes,Rallidae,Hypotaenidia,EX,Rothschild 1903,yes,Wake Island rail,Rothschild_1903
+x332,Dendrocygna_sp_Aitutaki,Galloanserae,Anseriformes,Anatidae,Dendrocygna,EP,undescribed (Steadman 1991),no,Aitutaki whistling duck,Steadman_1991
+x333,Megapodius_alimentum,Galloanserae,Galliformes,Megapodiidae,Megapodius,EP,Steadman 1989,yes,Consumed scrubfowl,Steadman_1989b
+x335,Gallirallus_huiatua,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Steadman et al. 2000,yes,Niue rail,Steadman_2000
+x336,Gallirallus_vekamatolu,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2005,yes,Eua rail,Kirchman_2005
+x338,Nycticorax_kalavikai,Neoaves,Pelecaniformes,Ardeidae,Nycticorax,EP,Steadman et al. 2000,yes,Niue night-heron,Steadman_2000
+x339,Didunculus_placopedetes,Neoaves,Columbiformes,Columbidae,Didunculus,EP,Steadman 2006,yes,Tongan tooth-billed pigeon,Steadman_2006b
+x340,Zenaida_graysoni,Neoaves,Columbiformes,Columbidae,Zenaida,EW,Lawrence 1871,yes,Socorro dove,Lawrence_1871
+x341,Ducula_david,Neoaves,Columbiformes,Columbidae,Ducula,EP,Balouet & Olson 1987,yes,Steadman's imperial pigeon,Balouet_1987
+x342,Gallirallus_sp_Rurutu,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,undescribed (Steadman & Bollt 2010),no,Rurutu rail,Steadman_2010
+x343,Ducula_shutleri,Neoaves,Columbiformes,Columbidae,Ducula,EP,undescribed (Steadman 1993),no,Shutler's fruit pigeon,Worthy_2020
+x344,Gallicolumba_sp_Rurutu_1,Neoaves,Columbiformes,Columbidae,Gallicolumba,EP,undescribed (Steadman & Bollt 2010),no,Rurutu large ground-dove,Steadman_2010
+x345,Eclectus_infectus,Neoaves,Psittaciformes,Psittacidae,Eclectus,EX,Steadman 2006,yes,Oceanic parrot,Steadman_2006a
+x346,Gallicolumba_sp_Rurutu_2,Neoaves,Columbiformes,Columbidae,Gallicolumba,EH,undescribed (Steadman & Bollt 2010),no,Rurutu small ground-dove,Steadman_2010
+x347,Ducula_tihonireasini,Neoaves,Columbiformes,Columbidae,Ducula,EP,Rigal 2018,yes,Mangareva Imperial pigeon,Rigal_2018
+x348,Porphyrio_sp_Mangaia,Neoaves,Gruiformes,Rallidae,Porphyrio,EP,undescribed (Steadman 1995),no,Mangaia swamphen,Steadman_1995
+x349,Lalage_sp_Eua,Neoaves,Passeriformes,Campephagidae,Lalage,EP,undescribed (Steadman 1995),no,Eua triller,Steadman_1995
+x350,Ptilinopus_sp_Mangavera,Neoaves,Columbiformes,Columbidae,Ptilinopus,EH,undescribed (Thibault & Cibois 2012),no,Mangareva fruit dove,Thibault_2012
+x351,Acrocephalus_astrolabii,Neoaves,Passeriformes,Acrocephalidae,Acrocephalus,EX,Holyoak & Thibault 1978,yes,Mangareva reed warbler,Holyoak_1978
+x352,Megapodius_sp_Eua,Galloanserae,Galliformes,Megapodiidae,Megapodius,EP,undescribed (Steadman 1993),no,Eua scrubfowl,Steadman_1993
+x353,Gallinula_sp_Eua,Neoaves,Gruiformes,Rallidae,Gallinula,EP,undescribed (Steadman 1993),no,Eua moorhen,Steadman_1993
+x354,Eopsaltria_sp_Eua,Neoaves,Passeriformes,Petroicidae,Eopsaltria,EP,undescribed (Steadman 1993),no,Eua yellow robin,Steadman_1993
+x355,Aplonis_fusca,Neoaves,Passeriformes,Sturnidae,Aplonis,EX,Gould 1836,yes,Tasman starling,Gould_1836
+x356,Prosobonia_cancellata,Neoaves,Charadriiformes,Scolopacidae,Prosobonia,EX,Gmelin 1789,yes,Christmas sandpiper,Gmelin_1789
+x357,Ducula_lakeba,Neoaves,Columbiformes,Columbidae,Ducula,EP,Worthy 2001,yes,Lakeba imperial pigeon,Worthy_2001a
+x358,Natunaornis_gigoura,Neoaves,Columbiformes,Columbidae,Natunaornis,EP,Worthy 2001,yes,giant flightless pigeon,Worthy_2001a
+x359,Coenocorypha_miratropica,Neoaves,Charadriiformes,Scolopacidae,Coenocorypha,EP,Worthy 2003,yes,Viti Levu snipe,Worthy_2003b
+x360,Hypotaenidia_poeciloptera,Neoaves,Gruiformes,Rallidae,Hypotaenidia,EX,Hartlaub 1866,yes,Bar-winged rail ,Hartlaub_1866
+x361,Vitirallus_watlingi,Neoaves,Gruiformes,Rallidae,Vitirallus,EP,Worthy 2004,yes,Viti Levu rail,Worthy_2004
+x362,Megavitiornis_altirostris,Galloanserae,Galliformes,Sylviornithidae,Megavitiornis,EP,Worthy 2000,yes,Noble 'megapode',Worthy_2020
+x363,Megapodius_amissus,Galloanserae,Galliformes,Megapodiidae,Megapodius,EP,Worthy 2000,yes,Viti Levu scrubfowl,Worthy_2020
+x364,Horornis_sp_Eua,Neoaves,Passeriformes,Scotocercidae,Horornis,EP,undescribed (Steadman 1993),no,Eua bush warbler,Steadman_1993
+x365,Hypotaenidia_steadmani,Neoaves,Gruiformes,Rallidae,Hypotaenidia,EP,Worthy & Bollt 2011,yes,Tubuai rail,Worthy_2011
+x366,Zosteropidae_sp_Eua,Neoaves,Passeriformes,Zosteropidae,Zosteropidae sp.,EP,undescribed (Steadman 1993),no,Eua white-eye,Steadman_1993
+x367,Nycticorax_sp_Eua,Neoaves,Pelecaniformes,Ardeidae,Nycticorax,EP,undescribed (Steadman 1993),no,Eua night-heron,Steadman_1993
+x368,Anatidae_sp_Rota,Galloanserae,Anseriformes,Anatidae,Anatidae sp.,EP,undescribed (Steadman 1998),no,Rota flightless duck,Steadman_1998
+x369,Pampusana_ferruginea,Neoaves,Columbiformes,Columbidae,Pampusana,EX,Forster 1844,yes,Tanna ground dove ,Forster_1844
+x370,Mwalau_walterlinii,Galloanserae,Galliformes,Megapodiidae,Mwalau,EP,Worthy et al. 2015,yes,Lini's megapode,Worthy_2015
+x371,Zapornia_sp_Tinian,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Steadman 1998),no,Tinian crake,Steadman_1998
+x372,Zapornia_sp_Aguijan,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Steadman 1998),no,Aguijan crake,Steadman_1998
+x373,Zapornia_sp_Rota,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Steadman 1998),no,Rota crake,Steadman_1998
+x374,Porphyrio_sp_Tinian,Neoaves,Gruiformes,Rallidae,Porphyrio,EP,undescribed (Steadman 1998),no,Tinian swamphen,Steadman_1998
+x375,Porphyrio_sp_Rota,Neoaves,Gruiformes,Rallidae,Porphyrio,EP,undescribed (Steadman 1998),no,Rota swamphen,Steadman_1998
+x376,Gallicolumba_sp_Rota,Neoaves,Columbiformes,Columbidae,Gallicolumba,EH,undescribed (Steadman 1998),no,Rota large ground-dove,Steadman_1998
+x377,Gallirallus_pendiculentus,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2006,yes,Tinian rail,Kirchman_2006b
+x378,Gallirallus_pisonii,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2006,yes,Aguijan rail,Kirchman_2006b
+x379,Gallirallus_temptatus,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2006,yes,Rota rail,Kirchman_2006b
+x380,Psittacidae_sp_Rota,Neoaves,Psittaciformes,Psittacidae,Psittacidae sp.,EP,undescribed (Steadman 1998),no,Rota parrot,Steadman_1998
+x381,Cacatua_sp_NewIreland,Neoaves,Psittaciformes,Cacatuidae,Cacatua,EP,undescribed (Steadman et al. 1999),no,New ireland cockatoo,Steadman_1999b
+x382,Megapodius_sp_NewIreland,Galloanserae,Galliformes,Megapodiidae,Megapodius,EP,undescribed (Steadman et al. 1999),no,New Ireland megapode,Steadman_1999b
+x383,Porphyrio_sp_NewIreland,Neoaves,Gruiformes,Rallidae,Porphyrio,EP,undescribed (Steadman et al. 1999),no,Giant swamphen,Steadman_1999b
+x385,Myiagra_freycineti,Neoaves,Passeriformes,Monarchidae,Myiagra,EX,Oustalet 1881,yes,Guam flightcatcher,Oustalet_1881
+x386,Tyto_sp_NewIreland_1,Neoaves,Strigiformes,Tytonidae,Tyto,EP,undescribed (Steadman et al. 1999),no,New ireland lesser barn-owl,Steadman_1999b
+x387,Tyto_sp_NewIreland_2,Neoaves,Strigiformes,Tytonidae,Tyto,EP,undescribed (Steadman et al. 1999),no,New ireland greater barn-owl,Steadman_1999b
+x388,Hypotaenidia_vavauensis,Neoaves,Gruiformes,Rallidae,Hypotaenidia,EH,undescribed (Olson 2006),no,Vavau rail,Worthy_2020
+x389,Corvus_sp_NewIreland,Neoaves,Passeriformes,Corvidae,Corvus,EP,undescribed (Steadman et al. 1999),no,New Ireland crow,Steadman_1999b
+x390,Zapornia_monasa,Neoaves,Gruiformes,Rallidae,Zapornia,EX,Kittlitz 1858,yes,Kosrae crake,Kittlitz_1858
+x391,Aplonis_corvina,Neoaves,Passeriformes,Sturnidae,Aplonis,EX,Kittlitz 1833,yes,Kosrae starling ,Kittlitz_1832
+x393,Gallirallus_ernstmayri,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,Kirchman & Steadman 2006,yes,New Ireland rail,Kirchman_2006b
+x394,Zapornia_sp_NukuHiva,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Steadman 2006),no,Nuku Hiva crake,Steadman_2006c
+x395,Zapornia_sp_UaHuka_Large,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Steadman 2006),no,Ua Huka crake,Steadman_2006c
+x396,Zapornia_sp_UaHuka_Small,Neoaves,Gruiformes,Rallidae,Zapornia,EP,undescribed (Steadman 2006),no,Ua Huka crake,Steadman_2006c
+x398,Microgoura_meeki,Neoaves,Columbiformes,Columbidae,Microgoura,EX,Rothschild 1904,yes,Choiseul pigeon,Rothschild_1904
+x399,Pampusana_salamonis,Neoaves,Columbiformes,Columbidae,Pampusana,EX,Ramsay 1882,yes,Thick-billed ground dove,Ramsay_1882
+x400,Carpodacus_ferreorostris,Neoaves,Passeriformes,Fringillidae,Carpodacus,EX,Vigors 1829,yes,Bonin grosbeak,Vigors_1829
+x401,Zoothera_terrestris,Neoaves,Passeriformes,Turdidae,Zoothera,EX,Kittlitz 1831,yes,Bonin thrush,Kittlitz_1831
+x402,Columba_versicolor,Neoaves,Columbiformes,Columbidae,Columba,EX,Kittlitz 1832,yes,Bonin wood pigeon,Kittlitz_1832
+x403,Pseudobulweria_sp_Gambier,Neoaves,Procellariiformes,Procellariidae,Pseudobulweria,EP,undescribed (Kirch et al. 2010),no,Mangareva petrel,Kirch_2010
+x404,Columbidae_sp_Buka_1,Neoaves,Columbiformes,Columbidae,Columbidae sp.,EP,undescribed (Turvey 2009),no,Small-winged ground pigeon,Turvey_2009
+x405,Columbidae_sp_Buka_2,Neoaves,Columbiformes,Columbidae,Columbidae sp.,EP,undescribed (Turvey 2009),no,Kilu ground-pigeon,Turvey_2009
+x406,Acrocephalus_nijoi,Neoaves,Passeriformes,Acrocephalidae,Acrocephalus,EX,Yamashina 1940,yes,Aguijan reed-warbler,Yamashina_1940
+x408,Pomarea_fluxa,Neoaves,Passeriformes,Monarchidae,Pomarea,EX,Murphy & Mathews 1928,yes,Eiao monarch,Murphy_1928
+x409,Pomarea_nukuhivae,Neoaves,Passeriformes,Monarchidae,Pomarea,EX,Murphy & Mathews 1928,yes,Nukuhiva flycatcher,Murphy_1928
+x410,Megapodius_sp_Buka,Galloanserae,Galliformes,Megapodiidae,Megapodius,EP,undescribed (Turvey 2009),no,Large solomons islands megapode,Turvey_2009
+x411,Aplonis_ulietensis,Neoaves,Passeriformes,Sturnidae,Aplonis,EX,Gmelin 1788,yes,Raiatea starling / Bay thrush,Gmelin_1788
+x412,Acrocephalus_musae,Neoaves,Passeriformes,Acrocephalidae,Acrocephalus,EX,Forster 1844,yes,Society Islands reed warbler,Forster_1844
+x413,Acrocephalus_luscinius,Neoaves,Passeriformes,Acrocephalidae,Acrocephalus,EX,Quoy & Gaimard 1830,yes,Guam reed warbler,Quoy_1830
+x414,Acrocephalus_yamashinae,Neoaves,Passeriformes,Acrocephalidae,Acrocephalus,EX,Takatsukasa 1931,yes,Pagan reed warbler,Takatsukasa_1931
+x415,Zosterops_conspicillatus,Neoaves,Passeriformes,Zosteropidae,Zosterops,EX,Kittlitz 1832,yes,Bridled white-eye,Kittlitz_1832
+x416,Cacatua_sp_NewCaledonia,Neoaves,Psittaciformes,Cacatuidae,Cacatua,EP,undescribed (Steadman 2006),no,New Caledonian cockatoo,Steadman_2006c
+x417,Myiagra_sp_Tonga,Neoaves,Passeriformes,Monarchidae,Myiagra,EP,undescribed (Steadman 1993),no,Tongan flycatcher,Steadman_1993
+x418,Caloenas_maculata,Neoaves,Columbiformes,Columbidae,Caloenas,EX,Gmelin 1789,yes,Spotted green pigeon,Gmelin_1789
+x420,Hypotaenidia_sp_Norfolk,Neoaves,Gruiformes,Rallidae,Hypotaenidia,EH,undescribed (Hume 2017),no,Norfolk island rail,Hume_2017
+x421,Pareudiastes_sp_Buka,Neoaves,Gruiformes,Rallidae,Pareudiastes,EP,undescribed (Turvey 2009),no,Buka gallinule,Turvey_2009
+x422,Ptilinopus_sp_Tubuai,Neoaves,Columbiformes,Columbidae,Ptilinopus,EP,undescribed (Worthy & Bollt 2011),no,Tubuai fruit dove,Worthy_2011
+x423,Gallicolumba_sp_Tubuai,Neoaves,Columbiformes,Columbidae,Gallicolumba,EP,undescribed (Worthy & Bollt 2011),no,Tubuai ground dove,Worthy_2011
+x424,Columba_jouyi,Neoaves,Columbiformes,Columbidae,Columba,EX,Stejneger 1887,yes,Ryukyu pigeon ,Stejneger_1887a
+x425,Tyto_sp_Flores,Neoaves,Strigiformes,Tytonidae,Tyto,EP,undescribed (Meijer et al. 2013),no,Flores barn-owl,Meijer_2013
+x426,Leptoptilos_robustus,Neoaves,Ciconiiformes,Ciconiidae,Leptoptilos,EP,Meijer & Due 2010,yes,Flores giant stork,Meijer_2010
+x427,Anas_marecula,Galloanserae,Anseriformes,Anatidae,Anas,EX,Olson & Jouventin 1996,yes,Amsterdam island duck,Olson_1996
+x428,Anas_sp_StPaul,Galloanserae,Anseriformes,Anatidae,Anas,Discarted,undescribed (Olson & Jouventin 1996),no,St.Paul garganey,Olson_1996
+x429,Mascarinus_mascarin,Neoaves,Psittaciformes,Psittacidae,Mascarinus,EX,Linnaeus 1771,yes,Mascarene parrot,Linnaeus_1771
+x430,Necropsittacus_rodricanus,Neoaves,Psittaciformes,Psittacidae,Necropsittacus,EX,Milne-Edwards 1867,yes,Rodrigues parrot,MilneEdwards_1867
+x431,Lophopsittacus_mauritianus,Neoaves,Psittaciformes,Psittacidae,Lophopsittacus,EX,Owen 1866,yes,Raven parrot,Owen_1866
+x432,Psittacidae_sp_Reunion,Neoaves,Psittaciformes,Psittacidae,Psittacidae sp.,EH,undescribed (Dubois 1674 in: Hume 2013),no,Reunion red parrot/ Green parrot,Hume_2013
+x433,Lophopsittacus_bensoni,Neoaves,Psittaciformes,Psittacidae,Lophopsittacus,EX,Holyoak 1973,yes,Thirioux's grey parrot,Holyoak_1973
+x434,Alexandrinus_exsul,Neoaves,Psittaciformes,Psittacidae,Alexandrinus,EX,Newton 1872,yes,Newton's parakeet ,Newton_1872
+x435,Mascarenotus_sauzieri,Neoaves,Strigiformes,Strigidae,Mascarenotus,EX,Newton & Gadow 1893,yes,Sauzier's owl,Newton_1893a
+x436,Mascarenotus_murivorus,Neoaves,Strigiformes,Strigidae,Mascarenotus,EX,Milne-Edwards 1873,yes,Rodrigues owl,MilneEdwards_1873
+x437,Mascarenotus_grucheti,Neoaves,Strigiformes,Strigidae,Mascarenotus,EX,Mourer-Chauvire et al. 1994,yes,Reunion owl,MourerChauvire_1994
+x438,Anas_theodori,Galloanserae,Anseriformes,Anatidae,Anas,EX,Newton & Gadow 1893,yes,Mascarene Teal / Mauritian duck,Newton_1893a
+x439,Alopochen_kervazoi,Galloanserae,Anseriformes,Anatidae,Alopochen,EX,Cowles 1994,yes,Reunion shelduck,Cowles_1994
+x440,Alopochen_mauritiana,Galloanserae,Anseriformes,Anatidae,Alopochen,EX,Newton & Gadow 1893,yes,Mauritius sheldgoose,Newton_1893a
+x441,Aythya_sp_Reunion,Galloanserae,Anseriformes,Anatidae,Aythya,EH,undescribed (Hume 2013),no,Reunion pochard,Hume_2013
+x442,Anatidae_sp_Rodrigues,Galloanserae,Anseriformes,Anatidae,Anatidae sp.,EH,undescribed (Hume 2013),no,Rodrigues stout-legged duck,Hume_2013
+x443,Foudia_delloni,Neoaves,Passeriformes,Ploceidae,Foudia,EX,Cheke & Hume 2008,yes,Reunion fody,Cheke_2008
+x444,Threskiornis_solitarius,Neoaves,Pelecaniformes,Threskiornithidae,Threskiornis,EX,Sélys-Longchamps 1848,yes,Reunion ibis,SelysLongchamps_1848
+x445,Nycticorax_duboisi,Neoaves,Pelecaniformes,Ardeidae,Nycticorax,EX,Rothschild 1907,yes,Reunion night heron,Rothschild_1905
+x446,Nycticorax_mauritianus,Neoaves,Pelecaniformes,Ardeidae,Nycticorax,EX,Newton & Gadow 1893,yes,Mauritius night heron,Newton_1893a
+x447,Nycticorax_megacephalus,Neoaves,Pelecaniformes,Ardeidae,Nycticorax,EX,Milne-Edwards 1873,yes,Rodrigues night heron,MilneEdwards_1873
+x448,Falco_duboisi,Neoaves,Falconiformes,Falconidae,Falco,EX,Cowles 1994,yes,Reunion kestrel,Cowles_1994
+x449,Fulica_newtonii,Neoaves,Gruiformes,Rallidae,Fulica,EX,Milne-Edwards 1867,yes,Mascarene coot,MilneEdwards_1867
+x450,Porphyrio_caerulescens,Neoaves,Gruiformes,Rallidae,Porphyrio,EX,Selys Longchamps 1848,yes,Reunion blue gallinule,SelysLongchamps_1848
+x451,Dryolimnas_augusti,Neoaves,Gruiformes,Rallidae,Dryolimnas,EX,Mourer-Chauvire et al. 1999,yes,Reunion wood rail,MourerChauvire_1999
+x452,Dryolimnas_chekei,Neoaves,Gruiformes,Rallidae,Dryolimnas,EH,Hume 2019,yes,Cheke's wood rail,Hume_2019
+x453,Aphanapteryx_bonasia,Neoaves,Gruiformes,Rallidae,Aphanapteryx,EX,Selys Longchamps 1848,yes,Mauritian red rail,SelysLongchamps_1848
+x454,Erythromachus_leguati,Neoaves,Gruiformes,Rallidae,Erythromachus,EX,Milne-Edwards 1873,yes,Rodrigues rail,MilneEdwards_1873
+x455,Raphus_cucullatus,Neoaves,Columbiformes,Columbidae,Raphus,EX,Linnaeus 1758,yes,Dodo,Linnaeus_1758
+x456,Pezophaps_solitaria,Neoaves,Columbiformes,Columbidae,Pezophaps,EX,Gmelin 1789,yes,Rodriguez Solitaire ,Gmelin_1789
+x457,Columba_thiriouxi,Neoaves,Columbiformes,Columbidae,Columba,EX,Hume 2011,yes,Mauritius woodpigeon,Hume_2011
+x458,Nesoenas_duboisi,Neoaves,Columbiformes,Columbidae,Nesoenas,EX,Rothschild 1907,yes,Reunion pink pigeon,Rothschild_1907
+x459,Nesoenas_cicur,Neoaves,Columbiformes,Columbidae,Nesoenas,EX,Hume 2011,yes,Mauritius turtle dove,Hume_2011
+x460,Nesoenas_rodericanus,Neoaves,Columbiformes,Columbidae,Nesoenas,EX,Milne-Edwards 1873,yes,Rodrigues turtle dove,MilneEdwards_1873
+x461,Alectroenas_nitidissimus,Neoaves,Columbiformes,Columbidae,Alectroenas,EX,Scopoli 1786,yes,Mauritius blue pigeon ,Scopoli_1786
+x462,Alectroenas_sp_Reunion,Neoaves,Columbiformes,Columbidae,Alectroenas,Discarted,undescribed (Hume 2013),no,Reunion blue pigeon,Hume_2013
+x463,Alectroenas_payandeei,Neoaves,Columbiformes,Columbidae,Alectroenas,EX,Hume 2011,yes,Rodrigues blue pigeon,Hume_2011
+x464,Fregilupus_varius,Neoaves,Passeriformes,Sturnidae,Fregilupus,EX,Boddaert 1783,yes,Reunion starling,Boddaert_1783
+x465,Necropsar_rodericanus,Neoaves,Passeriformes,Sturnidae,Necropsar,EX,Gunther et al. 1879,yes,Rodrigues starling,Gunther_1879
+x466,Cryptopsar_ischyrhynchus,Neoaves,Passeriformes,Sturnidae,Cryptopsar,EP,Hume 2014,yes,Mauritius starling,Hume_2014
+x467,Hypsipetes_cowlesi,Neoaves,Passeriformes,Pycnonotidae,Hypsipetes,EP,Hume 2015,yes,Rodrigues bulbul,Hume_2015
+x469,Pterodroma_sp_Rodrigues,Neoaves,Procellariiformes,Procellariidae,Pterodroma,EH,undescribed (Hume 2017),no,Rodrigues petrel,Hume_2017
+x470,Zosterops_semiflavus,Neoaves,Passeriformes,Zosteropidae,Zosterops,EX,Newton 1867,yes,Marianne white-eye,Newton_1867a
+x471,Palaeornis_wardi,Neoaves,Psittaciformes,Psittacidae,Palaeornis,EX,Newton 1867,yes,Seychelles parakeet ,Newton_1867b
+x472,Nesillas_aldabrana,Neoaves,Passeriformes,Acrocephalidae,Nesillas,EX,Benson & Penny 1968,yes,Aldabra brush-warbler ,Benson_1968
+x473,Mullerornis_modestus,Palaeognathae,Aepyornithiformes,Aepyornithidae,Mullerornis,EP,Milne-Edwards & Grandidier 1869,yes,Elephant bird 'Mullerornis',MilneEdwards_1869
+x474,Aepyornis_hildebrandti,Palaeognathae,Aepyornithiformes,Aepyornithidae,Aepyornis,EP,Burckhardt 1893,yes,Hildebrandt's elephant bird,Burckhardt_1893
+x475,Aepyornis_maximus,Palaeognathae,Aepyornithiformes,Aepyornithidae,Aepyornis,EP,Saint-Hilaire 1851,yes,Giant elephant bird,SaintHilaire_1851
+x477,Alopochen_sirabensis,Galloanserae,Anseriformes,Anatidae,Alopochen,EP,Andrews 1897,yes,Malagasy shelduck,Andrews_1897
+x478,Centrornis_majori,Galloanserae,Anseriformes,Anatidae,Centrornis,EP,Andrews 1897,yes,Malagasy sheldgoose,Andrews_1897
+x479,Hovacrex_roberti,Neoaves,Gruiformes,Rallidae,Hovacrex,EP,Andrews 1897,yes,Hova gallinule,Andrews_1897
+x480,Coua_primaeva,Neoaves,Cuculiformes,Cuculidae,Coua,EP,Milne-Edwards & Grandidier 1869,yes,Ancient coua,MilneEdwards_1895
+x481,Coua_berthae,Neoaves,Cuculiformes,Cuculidae,Coua,EP,Goodman & Ravoavy 1993,yes,Bertha's coua,Goodman_1993
+x482,Coua_delalandei,Neoaves,Cuculiformes,Cuculidae,Coua,EX,Temminck 1827,yes,Delalande's coua,Temminck_1827
+x483,Vanellus_madagascariensis,Neoaves,Charadriiformes,Charadriidae,Vanellus,EP,Goodman 1996,yes,Malagasy lapwing,Goodman_1999
+x484,Stephanoaetus_mahery,Neoaves,Accipitriformes,Accipitridae,Stephanoaetus,EP,Goodman 1994,yes,Malagasy crowned eagle,Goodman_1994
+x485,Tachybaptus_rufolavatus,Neoaves,Podicipediformes,Podicipedidae,Tachybaptus,EX,Delacour 1932,yes,Alaotra grebe,Delacour_1932
+x486,Brachypteracias_langrandi,Neoaves,Coraciiformes,Brachypteraciidae,Brachypteracias,EP,Goodman 2000,yes,Ampoza ground roller,Goodman_2000
+x487,Pinguinus_impennis,Neoaves,Charadriiformes,Alcidae,Pinguinus,EX,Linnaeus 1758,yes,Great auk,Linnaeus_1758
+x488,Gyps_melitensis,Neoaves,Accipitriformes,Accipitridae,Gyps,EP,Lydekker 1890,yes,Maltese vulture,Lydekker_1890
+x489,Aegypius_prepyrenaicus,Neoaves,Accipitriformes,Accipitridae,Aegypius,EP,Hernández Carrasquilla 2001,yes,Pre-pyrenees vulture,HernandezCarrasquilla_2001
+x490,Cygnus_falconeri,Galloanserae,Anseriformes,Anatidae,Cygnus,EP,Parker 1865,yes,Maltese giant swan,Parker_1865
+x491,Cygnus_equitum,Galloanserae,Anseriformes,Anatidae,Cygnus,EP,Bate 1916,yes,Dwarf swan,Bate_1916
+x492,Phasianus_yanshansis,Galloanserae,Galliformes,Phasianidae,Phasianus,EP,Huang & Hou 1984,yes,NA,Huang_1984
+x493,Tetrastes_daliannsis,Galloanserae,Galliformes,Phasianidae,Tetrastes,EP,Hou 1992,yes,NA,Hou_1992
+x494,Corvus_fangshannus,Neoaves,Passeriformes,Corvidae,Corvus,EP,Hou 1993,yes,NA,Hou_1993
+x495,Struthio_anderssoni,Palaeognathae,Struthioniformes,Struthionidae,Struthio,EP,Lowe & Bate 1931,yes,Andersson's ostrich (proposed),Lowe_1931
+x496,Buteo_sanya,Neoaves,Accipitriformes,Accipitridae,Buteo,EP,Hou 1998,yes,NA,Hou_1998
+x497,Quiscalus_palustris,Neoaves,Passeriformes,Icteridae,Quiscalus,EX,Swainson 1827,yes,Slender-billed grackle,Swainson_1827
+x498,Camptorhynchus_labradorius,Galloanserae,Anseriformes,Anatidae,Camptorhynchus,EX,Gmelin 1789,yes,Labrador duck ,Gmelin_1789
+x499,Podilymbus_gigas,Neoaves,Podicipediformes,Podicipedidae,Podilymbus,EX,Griscom 1929,yes,Atitlan grebe ,Griscom_1929
+x500,Urile_perspicillatus,Neoaves,Suliformes,Phalacrocoracidae,Urile,EX,Pallas 1811,yes,Spectacled cormorant,Pallas_1811
+x501,Conuropsis_carolinensis,Neoaves,Psittaciformes,Psittacidae,Conuropsis,EX,Linnaeus 1758,yes,Carolina parakeet ,Linnaeus_1758
+x502,Ectopistes_migratorius,Neoaves,Columbiformes,Columbidae,Ectopistes,EX,Linnaeus 1766,yes,Passenger pigeon,Linnaeus_1766
+x503,Chendytes_lawi,Galloanserae,Anseriformes,Anatidae,Chendytes,EP,Miller 1925,yes,Law's diving-goose,Miller_1924
+x505,Podilymbus_wetmorei,Neoaves,Podicipediformes,Podicipedidae,Podilymbus,EP,Storer 1976,yes,Wetmore's (pied-billed) grebe,Storer_1976
+x506,Anhinga_beckeri,Neoaves,Suliformes,Anhingidae,Anhinga,EP,Emslie 1998,yes,NA,Emslie_1998
+x507,Morus_reyana,Neoaves,Suliformes,Sulidae,Morus,EP,Howard 1936,yes,Playa Del Rey gannet,Howard_1936
+x508,Phoenicopterus_copei,Neoaves,Phoenicopteriformes,Phoenicopteridae,Phoenicopterus,EP,Shufeldt 1891,yes,NA,Shufeldt_1891
+x509,Breagyps_clarki,Neoaves,Cathartiformes,Cathartidae,Breagyps,EP,Miller 1910,yes,La Brea condor / Clark's condor,Miller_1910a
+x510,Branta_dickeyi,Galloanserae,Anseriformes,Anatidae,Branta,EP,Miller 1924,yes,Dickey's goose,Miller_1924
+x511,Anabernicula_gracilenta,Galloanserae,Anseriformes,Anatidae,Anabernicula,EP,Ross 1935,yes,Pigmy Goose,Ross_1935
+x512,Anas_schneideri,Galloanserae,Anseriformes,Anatidae,Anas,EP,Emslie 1985,yes,Schneider's teal,Emslie_1985
+x513,Anas_itchtucknee,Galloanserae,Anseriformes,Anatidae,Anas,EP,McCoy 1963,yes,Itchtucknee duck,McCoy_1963
+x514,Aiolornis_incredibilis,Neoaves,Cathartiformes,Teratornithidae,Aiolornis,EP,Howard 1952,yes,Incredible teratorn,Howard_1952
+x515,Teratornis_merriami,Neoaves,Cathartiformes,Teratornithidae,Teratornis,EP,Miller 1909,yes,Merriam's teratorn,Miller_1909
+x516,Teratornis_woodburnensis,Neoaves,Cathartiformes,Teratornithidae,Teratornis,EP,Campbell & Stenger 2002,yes,NA,Campbell_2002b
+x517,Cathartornis_gracilis,Neoaves,Cathartiformes,Teratornithidae,Cathartornis,EP,Miller 1910,yes,Slender teratorn,Miller_1910b
+x518,Mycteria_wetmorei,Neoaves,Ciconiiformes,Ciconiidae,Mycteria,EP,Howard 1935,yes,Wetmore's stork,Howard_1969
+x519,Neophrontops_americanus,Neoaves,Accipitriformes,Accipitridae,Neophrontops,EP,Miller 1916,yes,American neophrontops,Miller_1916b
+x520,Spizaetus_grinnelli,Neoaves,Accipitriformes,Accipitridae,Spizaetus,EP,Miller 1911,yes,Grinnell’s crested eagle,Miller_1911b
+x521,Buteogallus_fragilis,Neoaves,Accipitriformes,Accipitridae,Buteogallus,EP,Miller 1911,yes,Fragile eagle,Miller_1911b
+x522,Buteogallus_milleri,Neoaves,Accipitriformes,Accipitridae,Buteogallus,EP,Howard 1932,yes,Miller's eagle,Howard_1932
+x523,Amplibuteo_woodwardi,Neoaves,Accipitriformes,Accipitridae,Amplibuteo,EP,Miller 1911,yes,Woodward's giant buzzard / Woodward 'eagle',Miller_1911b
+x524,Buteogallus_daggetti,Neoaves,Accipitriformes,Accipitridae,Buteogallus,EP,Miller 1915,yes,Walking eagle / Daggett's eagle,Miller_1915
+x525,Spizaetus_willetti,Neoaves,Accipitriformes,Accipitridae,Spizaetus,EP,Howard 1935,yes,Willett's hawk-eagle,Howard_1935
+x526,Neogyps_errans,Neoaves,Accipitriformes,Accipitridae,Neogyps,EP,Miller 1916,yes,Errant eagle,Miller_1916a
+x527,Dendragapus_gilli,Galloanserae,Galliformes,Phasianidae,Dendragapus,EP,Jehl 1969,yes,NA,Jehl_1969
+x528,Tympanuchus_ceres,Galloanserae,Galliformes,Phasianidae,Tympanuchus,EP,Shufeldt 1913,yes,NA,Shufeldt_1913
+x529,Neortyx_peninsularis,Galloanserae,Galliformes,Odontophoridae,Neortyx,EP,Holman 1961,yes,NA,Holman_1961
+x530,Meleagris_crassipes,Galloanserae,Galliformes,Phasianidae,Meleagris,EP,Miller 1940,yes,Bigfoot turkey,Miller_1940
+x531,Meleagris_californicus,Galloanserae,Galliformes,Phasianidae,Meleagris,EP,Miller 1909,yes,California(n) turkey,Miller_1909
+x532,Grus_pagei,Neoaves,Gruiformes,Gruidae,Grus,EP,Campbell 1995,yes,Page's crane,Campbell_1995
+x533,Rallus_natator,Neoaves,Gruiformes,Rallidae,Rallus,EP,Miller 1942,yes,NA,Miller_1942
+x534,Belonopterus_downsi,Neoaves,Charadriiformes,Charadriidae,Belonopterus,EP,Campbell Jr 2002,yes,NA,Campbell_2002a
+x535,Numenius_victima,Neoaves,Charadriiformes,Scolopacidae,Numenius,EP,Miller 1942,yes,NA,Miller_1942
+x536,Fratercula_dowi,Neoaves,Charadriiformes,Alcidae,Fratercula,EP,Guthrie et al. 2002,yes,Dow's puffin,Guthrie_2002
+x538,Asio_priscus,Neoaves,Strigiformes,Strigidae,Asio,EP,Howard 1964,yes,Ancient owl,Howard_1964b
+x539,Oraristrix_brea,Neoaves,Strigiformes,Strigidae,Oraristrix,EP,Howard 1933,yes,Brea owl,Howard_1933
+x540,Tachycineta_speleodytes,Neoaves,Passeriformes,Hirundinidae,Tachycineta,EP,Brodkorb 1975,yes,NA,Brodkorb_1957
+x541,Cistothorus_brevis,Neoaves,Passeriformes,Troglodytidae,Cistothorus,EP,Brodkorb 1975,yes,NA,Brodkorb_1957
+x542,Henocitta_brodkorbii,Neoaves,Passeriformes,Corvidae,Henocitta,EP,Holman 1959,yes,NA,Holman_1959
+x543,Corvus_neomexicanus,Neoaves,Passeriformes,Corvidae,Corvus,EP,Magish & Harris 1976,yes,New Mexico raven / New Mexican raven,Magish_1976
+x544,Pandanaris_convexa,Neoaves,Passeriformes,Icteridae,Pandanaris,EP,Miller 1947,yes,Convex-billed cowbird,Miller_1947
+x545,Pandanaris_floridana,Neoaves,Passeriformes,Icteridae,Pandanaris,EP,Brodkorb 1975,yes,NA,Brodkorb_1957
+x546,Pyelorhamphus_molothroides,Neoaves,Passeriformes,Icteridae,Pyelorhamphus,EP,Miller 1932,yes,Thick-billed cowbird,Miller_1932
+x547,Cremaster_tytthus,Neoaves,Passeriformes,Icteridae,Cremaster,EP,Brodkorb 1959,yes,NA,Brodkorb_1959
+x548,Euphagus_magnirostris,Neoaves,Passeriformes,Icteridae,Euphagus,EP,Miller 1929,yes,Large-billed blackbird,Miller_1929
+x549,Pipilo_angelensis,Neoaves,Passeriformes,Passerellidae,Pipilo,EP,Dawson 1948,yes,Los Angeles towhee,Dawson_1948
+x550,Gymnogyps_amplus,Neoaves,Cathartiformes,Cathartidae,Gymnogyps,EP,Miller 1911,yes,NA,Miller_1911a
+x551,Mitu_mitu,Galloanserae,Galliformes,Cracidae,Mitu,EW,Linnaeus 1766,yes,Alagoas curassow / Northern mitu,Linnaeus_1766
+x552,Podiceps_andinus,Neoaves,Podicipediformes,Podicipedidae,Podiceps,EX,Meyer De Schauensee 1959,yes,Colombian grebe / Tota grebe,MeyerDeSchauensee_1959
+x553,Psilopterus_sp_Uruguay,Neoaves,Cariamiformes,Phorusrhacidae,Psilopterus,EP,undescribed (Jones et al. 2018),no,Uruguayan terror bird,Jones_2018
+x554,Phorusrhacidae_sp_Uruguay,Neoaves,Cariamiformes,Phorusrhacidae,Phorusrhacidae,EP,undescribed (Alvarenga et al. 2010),no,Terror bird sp. ,Alvarenga_2010
+x555,Milvago_brodkorbi,Neoaves,Falconiformes,Falconidae,Milvago,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x556,Ciconia_lydekkeri,Neoaves,Ciconiiformes,Ciconiidae,Ciconia,EP,Agnolin 2009,yes,NA,Agnolin_2009
+x557,Sarcoramphus_fisheri,Neoaves,Cathartiformes,Cathartidae,Sarcoramphus,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x558,Geronogyps_reliquus,Neoaves,Cathartiformes,Cathartidae,Geronogyps,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x559,Gymnogyps_howardae,Neoaves,Cathartiformes,Cathartidae,Gymnogyps,EP,Campbell et al. 1979,yes,Piebald condor,Campbell_1979
+x560,Wingegyps_cartellei,Neoaves,Cathartiformes,Cathartidae,Wingegyps,EP,Alvarenga & Olson 2004,yes,Brazilian condor / Pygmy condor,Alvarenga_2004
+x561,Syrigma_sanctimartini,Neoaves,Pelecaniformes,Ardeidae,Syrigma,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x562,Pleistovultur_nevesi,Neoaves,Cathartiformes,Cathartidae,Pleistovultur,EP,Alvarenga et al. 2008,yes,Pink-breasted condor ,Alvarenga_2008
+x563,Pampagyps_imperator,Neoaves,Cathartiformes,Cathartidae,Pampagyps,EP,Agnolin et al. 2017,yes,Emperor vulture of the Pampas,Agnolin_2017
+x564,Theristicus_wetmorei,Neoaves,Pelecaniformes,Threskiornithidae,Theristicus,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x565,Eudocimus_peruvianus,Neoaves,Pelecaniformes,Threskiornithidae,Eudocimus,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x566,Anas_amotape,Galloanserae,Anseriformes,Anatidae,Anas,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x567,Anas_sanctahelenae,Galloanserae,Anseriformes,Anatidae,Anas,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x568,Anas_talarae,Galloanserae,Anseriformes,Anatidae,Anas,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x569,Nannonetta_invisitata,Galloanserae,Anseriformes,Anatidae,Nannonetta,EP,Campbell et al. 1979,yes,Crested duck,Campbell_1979
+x570,Neochen_pugil,Galloanserae,Anseriformes,Anatidae,Neochen,EP,Winge 1888,yes,NA,Winge_1888
+x571,Buteo_hoffstetteri,Neoaves,Accipitriformes,Accipitridae,Buteo,EP,Campbell et al. 1976,yes,NA,Campbell_1976
+x572,Amplibuteo_hibbardi,Neoaves,Accipitriformes,Accipitridae,Amplibuteo,EP,Campbell et al. 1979,yes,Hibbard's buteonine hawk (proposed),Campbell_1979
+x573,Buteogallus_terrestris,Neoaves,Accipitriformes,Accipitridae,Buteogallus,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x574,Oreopholus_orcesi,Neoaves,Charadriiformes,Charadriidae,Oreopholus,EP,Campbell Jr 1976,yes,NA,Campbell_1976
+x575,Viator_picis,Neoaves,Charadriiformes,Charadriidae,Viator,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x576,Belonopterus_edmondi,Neoaves,Charadriiformes,Charadriidae,Belonopterus,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x577,Tringa_ameghini,Neoaves,Charadriiformes,Scolopacidae,Tringa,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x578,Micropalama_chapmani,Neoaves,Charadriiformes,Scolopacidae,Micropalama,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x579,Nuntius_solitarius,Neoaves,Charadriiformes,Scolopacidae,Nuntius,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x580,Steganopus_graui,Neoaves,Charadriiformes,Scolopacidae,Steganopus,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x581,Thinocorus_koepckeae,Neoaves,Charadriiformes,Thinocoridae,Thinocorus,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x582,Caprimulgus_piurensis,Neoaves,Caprimulgiformes,Caprimulgidae,Caprimulgus,EP,Campbell et al. 1979,yes,NA,Campbell_1979
+x583,Pseudoseisuropsis_cuelloi,Neoaves,Passeriformes,Furnariidae,Pseudoseisuropsis,EP,Claramunt & Rinderknecht 2005,yes,NA,Claramunt_2005
+x584,Caracara_sp_Argentina,Neoaves,Falconiformes,Falconidae,Caracara,EP,undescribed (Jones et al. 2015),no,Argentinian caracara ,Jones_2015
+x585,Caracara_seymouri,Neoaves,Falconiformes,Falconidae,Caracara,EP,Suárez & Olson 2014,yes,Seymour's caracara (proposed),Suarez_2014
+x586,Caracara_major,Neoaves,Falconiformes,Falconidae,Caracara,EP,Jones et al. 2013,yes,NA,Jones_2013
+x587,Dromaius_minor,Palaeognathae,Struthioniformes,Casuariidae,Dromaius,EX,Spencer 1906,yes,King island emu,Spencer_1906
+x588,Dromaius_baudinianus,Palaeognathae,Struthioniformes,Casuariidae,Dromaius,EX,Parker 1984,yes,Kangaroo island emu,Parker_1984
+x590,Psephotellus_pulcherrimus,Neoaves,Psittaciformes,Psittacidae,Psephotellus,EX,Gould 1845,yes,Paradise parrot ,Gould_1945
+x591,Genyornis_newtoni,Galloanserae,Gastornithiformes,Dromornithidae,Genyornis,EP,Stirling & Zietz 1896,yes,Mihirung paringmal / Newton's large-jawed bird / Newton's mihirung / Newton's thunder bird,Stirling_1896
+x592,Casuarius_lydekkeri,Palaeognathae,Struthioniformes,Casuariidae,Casuarius,EP,Rothschild 1911,yes,Pygmy cassowary,Rothschild_1911
+x597,Centropus_colossus,Neoaves,Cuculiformes,Cuculidae,Centropus,EP,Baird 1985,yes,Colossal cuckoo,Baird_1985
+x598,Orthonyx_hypsilophus,Neoaves,Passeriformes,Orthonychidae,Orthonyx,EP,Baird 1985,yes,NA,Baird_1985
+x599,Orthonyx_wakefieldi,Neoaves,Passeriformes,Orthonychidae,Orthonyx,EP,Baird 1993,yes,NA,Baird_1993
+x600,Pycnoptilus_fordi,Neoaves,Passeriformes,Acanthizidae,Pycnoptilus,EP,Baird 1993,yes,NA,Baird_1993
+x601,Gigantohierax_suarezi,Neoaves,Accipitriformes,Accipitridae,Gigantohierax,EP,Arredondo & Arredondo 1999,yes,Cuban giant hawk,Arredondo_1999
+x602,Pulsatrix_arredondoi,Neoaves,Strigiformes,Strigidae,Pulsatrix,EP,Brodkorb 1968,yes,Cuban spectacled owl,Brodkorb_1968
+x603,Asio_ecuadoriensis,Neoaves,Strigiformes,Strigidae,Asio,EP,Lo Coco et al. 2020,yes,South American long-eared owl,LoCoco_2020
+x605,Anabernicula_oregonensis,Galloanserae,Anseriformes,Anatidae,Anabernicula,EP,Howard 1964,yes,Pigmy Goose (Oregon),Howard_1964a
+x606,Accipiter_sp_Abaco,Neoaves,Accipitriformes,Accipitridae,Accipiter,EP,undescribed (Steadman & Franklin 2020),no,Abaco hawk,Steadman_2020a
+x607,Caracara_sp_Caicos,Neoaves,Falconiformes,Falconidae,Caracara,EP,undescribed (Steadman & Franklin 2020),no,Caicos caracara,Steadman_2020a
+x608,Grus_sp_Caicos,Neoaves,Gruiformes,Gruidae,Grus,EP,undescribed (Steadman & Franklin 2020),no,Caicos crane,Steadman_2020a
+x609,Rallus_sp_LongIsland,Neoaves,Gruiformes,Rallidae,Rallus,EP,undescribed (Steadman & Franklin 2020),no,Long Island rail,Steadman_2020a
+x610,Rallus_sp_Caicos,Neoaves,Gruiformes,Rallidae,Rallus,EP,undescribed (Steadman & Franklin 2020),no,Caicos rail,Steadman_2020a
+x611,Porzana_sp_LongIsland,Neoaves,Gruiformes,Rallidae,Porzana,EP,undescribed (Steadman & Franklin 2020),no,Long Island crake,Steadman_2020a
+x612,Porzana_sp_Caicos,Neoaves,Gruiformes,Rallidae,Porzana,EP,undescribed (Steadman & Franklin 2020),no,Caicos crake,Steadman_2020a
+x613,Burhinus_nanus,Neoaves,Charadriiformes,Burhinidae,Burhinus,EP,Brodkorb 1959,yes,Bahama thick-knee,Brodkorb_1959
+x614,Scolopax_sp_LongIsland,Neoaves,Charadriiformes,Scolopacidae,Scolopax,EP,undescribed (Steadman & Franklin 2020),no,Long Island woodcock ,Steadman_2020a
+x615,Ornimegalonyx_ewingi,Neoaves,Strigiformes,Strigidae,Ornimegalonyx,EP,Suarez 2020,yes,Cuban giant owl,Suarez_2020c
+x616,Fulica_montanei,Neoaves,Gruiformes,Rallidae,Fulica,EP,Alarcón-Muñoz Labarca & Soto-Acuña 2020,yes,NA,AlarconMunoz_2020
+x617,Turnix_sp_Timor,Neoaves,Charadriiformes,Turnicidae,Turnix,EP,undescribed (Meijer et al. 2019),no,Timor buttonquail,Meijer_2019
+x618,Ara_guadeloupensis,Neoaves,Psittaciformes,Psittacidae,Ara,EH,Clark 1905,yes,Guadeloupe macaw,Clark_1905
+x620,Nycticorax_sp_Mangaia,Neoaves,Pelecaniformes,Ardeidae,Nycticorax,EP,undescribed (Steadman 2006),no,Mangaia night heron / Cook Islands night-heron,Steadman_2006c
+x621,Cichlocolaptes_mazarbarnetti,Neoaves,Passeriformes,Furnariidae,Cichlocolaptes,EX,Barnett & Buzzetti 2014,yes,Cryptic treehunter,Barnett_2014
+x622,Philydor_novaesi,Neoaves,Passeriformes,Furnariidae,Philydor,EX,Teixeira & Gonzaga 1983,yes,Alagoas foliage-gleaner,Teixeira_1983
+x623,Melamprosops_phaeosoma,Neoaves,Passeriformes,Fringillidae,Melamprosops,EX,Casey & Jacobi 1974,yes,Po-ouli,Casey_1974
+x624,Gallirallus_lafresnayanus,Neoaves,Gruiformes,Rallidae,Gallirallus,CR,Verreaux & Des Murs 1860,yes,New Caledonian rail,Verreaux_1860
+x625,Cyanopsitta_spixii,Neoaves,Psittaciformes,Psittacidae,Cyanopsitta,EW,Wagler 1832,yes,Spix's macaw,Wagler_1832
+x626,Coturnix_lignorum,Galloanserae,Galliformes,Phasianidae,Coturnix,EP,Rando et al. 2020,yes,Madeira quail,Rando_2020
+x627,Coturnix_alabrevis,Galloanserae,Galliformes,Phasianidae,Coturnix,EP,Rando et al. 2020,yes,Porto Santo quail,Rando_2020
+x628,Coturnix_centensis,Galloanserae,Galliformes,Phasianidae,Coturnix,EP,Rando et al. 2020,yes,Sao Vicente quail,Rando_2020
+x629,Coturnix_sp_Bugio,Galloanserae,Galliformes,Phasianidae,Coturnix,EP,undescribed (Rando et al. 2020),no,Desertas quail,Rando_2020
+x630,Coturnix_sp_SantaMaria,Galloanserae,Galliformes,Phasianidae,Coturnix,EP,undescribed (Rando et al. 2020),no,Santa Maria quail,Rando_2020
+x631,Coturnix_sp_Graciosa,Galloanserae,Galliformes,Phasianidae,Coturnix,EP,undescribed (Rando et al. 2020),no,Graciosa quail,Rando_2020
+x632,Gallirallus_astolfoi,Neoaves,Gruiformes,Rallidae,Gallirallus,EH,Salvador et al. 2021,yes,Astolfo's rail,Salvador_2021
+x633,Geokichla_longitarsus,Neoaves,Passeriformes,Turdidae,Geokichla,EH,Hume 2022,yes,Mauritius ground thrush,Hume_2022
+x634,Cathartes_emsliei,Neoaves,Cathartiformes,Cathartidae,Cathartes,EP,Suárez & Olson 2020,yes,Emslie's vulture,Suarez_2020a
+x635,Glaucidium_kurochkini,Neoaves,Strigiformes,Strigidae,Glaucidium,EP,Campbell & Bochenski 2013,yes,Kurochkin's pygmy owl,Campbell_2013
+x636,Asphaltoglaux_cecileae,Neoaves,Strigiformes,Strigidae,Asphaltoglaux,EP,Campbell & Bochenski 2013,yes,Asphalt miniature owl,Campbell_2013
+x637,Gallirallus_sp_Miyako,Neoaves,Gruiformes,Rallidae,Gallirallus,EP,undescribed (Matsuoka 2000),no,NA,Matsuoka_2000
+x638,Grus_sp_Miyako,Neoaves,Gruiformes,Gruidae,Grus,EP,undescribed (Matsuoka 2000),no,NA,Matsuoka_2000
+x639,Grus_sp_Okinawa,Neoaves,Gruiformes,Gruidae,Grus,EP,undescribed (Matsuoka 2000),no,NA,Matsuoka_2000
+x640,Nycticorax_sp_Buka,Neoaves,Pelecaniformes,Ardeidae,Nycticorax,EP,undescribed (Steadman 2006),no,Solomon Islands night heron,Steadman_2006c
+x641,Aratinga_sp_Barbuda,Neoaves,Psittaciformes,Psittacidae,Aratinga,EP,undescribed (Pregill 1994),no,NA,Pregill_2009
+x642,Tongoenas_burleyi,Neoaves,Columbiformes,Columbidae,Tongoenas,EP,Steadman & Takano 2020,yes,Tongan Giant Pigeon,Steadman_2020b
+x643,Turdus_sp_Pico,Neoaves,Passeriformes,Turdidae,Turdus,EP,undescribed (Illera Per. Com.),no,Pico thrush,Illera Per. Com.
+x648,Anser_djuktaiensis,Galloanserae,Anseriformes,Anatidae,Anser,EPU,Zelenkov & Kurochkin 2014,yes,Dyuktai river goose,Zelenkov_2014
+x649,Mergellus_mochanovi ,Galloanserae,Anseriformes,Anatidae,Mergellus,EPU,Zelenkov & Kurochkin 2014,yes,Dyuktai river smew,Zelenkov_2014
+x650,Microcarbo_serventyorum,Neoaves,Suliformes,Phalacrocoracidae,Microcarbo,EPU,van Tets 1994,yes,Serventy's cormorant,Tets_1994
+x651,Icterus_turmalis,Neoaves,Passeriformes,Icteridae,Icterus,EP,Steadman & Oswald 2020,yes,Talara troupial,Steadman_2020c
+x652,Molothrus_resinosus,Neoaves,Passeriformes,Icteridae,Molothrus,EP,Steadman & Oswald 2020,yes,Talara cowbird,Steadman_2020c
+x654,Falco_powelli,Neoaves,Falconiformes,Falconidae,Falco,EPU,Emslie & Mead 2023,yes,Powell's kestrel,Emslie_2023
+x655,Ardea_bennuides,Neoaves,Pelecaniformes,Ardeidae,Ardea,EP,Hoch 1979,yes,Bennu heron / Giant heron,Hoch_1977
+x656,Trigonoceps_sp_Flores,Neoaves,Accipitriformes,Accipitridae,Trigonoceps,EP,undescribed (Meijer et al. 2013),no,Flores vulture,Meijer_2013
