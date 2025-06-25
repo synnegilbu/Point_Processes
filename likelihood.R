@@ -163,19 +163,41 @@ run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta =
 
 # Pipeline
 run_spde_lgcp_pipeline_continuous <- function(
-    d = 3, m = 8, covariate_fn = function(x) sum(x), beta = 0.1,
-    estimate_beta = TRUE, scale_intensity = 2000
+    d = 3,
+    m = 10,  # finer mesh
+    covariate_fn = function(x) x[1],
+    beta = 1.0,
+    estimate_beta = TRUE,
+    scale_intensity = 3000
 ) {
   bounds <- replicate(d, c(0, 1), simplify = FALSE)
+  
+  # Step 1: Build mesh
   mesh <- build_mesh(d, m, bounds)
+  
+  # Step 2: Compute FEM matrices
   fem <- compute_fem_matrices(mesh$points, mesh$simplices)
+  
+  # Step 3: Precision matrix
   Q <- assemble_precision_matrix(fem$C, fem$G)
   check_matrix_sanity(Q)
-  Y <- scale(simulate_latent_field(Q))
-  lgcp_points <- simulate_lgcp_points_continuous(Y, mesh$points, covariate_fn, beta, bounds, scale_intensity)
-  alpha_weights <- rep(prod(sapply(bounds, function(b) diff(b))) / nrow(mesh$points), nrow(mesh$points))
+  
+  # Step 4: Simulate unscaled latent field
+  Y <- simulate_latent_field(Q)
+  
+  # Step 5: Simulate LGCP points using true field
+  lgcp_points <- simulate_lgcp_points_continuous(
+    Y, mesh$points, covariate_fn, beta, bounds, scale_intensity
+  )
+  
+  # Step 6: Construct likelihood
+  alpha_weights <- rep(prod(sapply(bounds, function(b) diff(b))) / nrow(mesh$points),
+                       nrow(mesh$points))
   likelihood_data <- construct_likelihood_data(mesh, lgcp_points, covariate_fn, alpha_weights)
-  result <- run_inla_continuous(likelihood_data, Q, estimate_beta)
+  
+  # Step 7: Run INLA model
+  result <- run_inla_continuous(likelihood_data, Q, estimate_beta, beta = beta)
+  
   list(
     mesh_points = mesh$points,
     latent_field = Y,
@@ -186,16 +208,18 @@ run_spde_lgcp_pipeline_continuous <- function(
   )
 }
 
+
 # Example run
 set.seed(123)
 result3d <- run_spde_lgcp_pipeline_continuous(
   d = 3,
-  m = 5,  
+  m = 10,
   covariate_fn = function(x) x[1],
-  beta = 3.0,
+  beta = 1.5,
   estimate_beta = TRUE,
   scale_intensity = 3000
 )
+
 
 
 cat("Estimated beta (3D):\n")
@@ -208,17 +232,75 @@ print(rmse)
 cat("\nCorrelation between true and estimated field (3D):\n")
 print(cor(result3d$latent_field, result3d$estimated_field))
 
+plot_field_slice <- function(result, slice_dim = 3, slice_val = 0.5, tol = 0.05, title_prefix = "Latent Field") {
+  library(ggplot2)
+  library(gridExtra)
+  library(dplyr)
+  
+  df <- as.data.frame(result$mesh_points)
+  colnames(df) <- c("x", "y", "z")
+  df$true <- result$latent_field
+  df$estimated <- log(result$estimated_field)
+  
+  dims <- c("x", "y", "z")
+  fixed_dim <- dims[slice_dim]
+  other_dims <- setdiff(dims, fixed_dim)
+  
+  df_slice <- df %>% filter(abs(.data[[fixed_dim]] - slice_val) < tol)
+  
+  cat("Number of points in slice:", nrow(df_slice), "\n")
+  if (nrow(df_slice) == 0) {
+    warning("No points found near the specified slice value. Try increasing `tol`.")
+    return(NULL)
+  }
+  
+  fill_limits <- range(c(df_slice$true, df_slice$estimated), na.rm = TRUE)
+  
+  p1 <- ggplot(df_slice, aes(x = .data[[other_dims[1]]], y = .data[[other_dims[2]]], fill = true)) +
+    geom_raster() +
+    coord_equal() +
+    scale_fill_viridis_c(limits = fill_limits) +
+    labs(title = paste(title_prefix, "- True"), x = other_dims[1], y = other_dims[2])
+  
+  p2 <- ggplot(df_slice, aes(x = .data[[other_dims[1]]], y = .data[[other_dims[2]]], fill = estimated)) +
+    geom_raster() +
+    coord_equal() +
+    scale_fill_viridis_c(limits = fill_limits) +
+    labs(title = paste(title_prefix, "- Estimated"), x = other_dims[1], y = other_dims[2])
+  
+  
+  gridExtra::grid.arrange(p1, p2, ncol = 2)
+}
+
+
+plot_field_slice(result3d, slice_dim = 3, slice_val = 0.5, tol = 0.1)
+
+
+df <- as.data.frame(result3d$mesh_points)
+colnames(df) <- c("x", "y", "z")
+df$true <- result3d$latent_field
+df$true <- result$latent_field           # Already log-intensity
+df$estimated <- log(result3d$estimated_field)  # Convert back to log-scale
+
+
+df_slice <- df %>% filter(abs(z - 0.5) < 0.2)
+nrow(df_slice)
+head(df_slice)
+
+
+
 
 
 # Updated 2D simulation run
 test_result_2d <- run_spde_lgcp_pipeline_continuous(
   d = 2,
   m = 40,
-  covariate_fn = function(x) x[1],  # Simple linear covariate
+  covariate_fn = function(x) x[1],
   beta = 1.0,
   estimate_beta = TRUE,
   scale_intensity = 10000
 )
+
 
 plot_latent_vs_estimated <- function(result, title_prefix = "Field") {
   library(ggplot2)
