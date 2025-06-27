@@ -43,7 +43,7 @@ compute_fem_matrices <- function(points, simplices) {
 }
 
 # Assemble precision matrix
-assemble_precision_matrix <- function(C, G, tau = 0.1, kappa = 5, jitter = 1e-4) {
+assemble_precision_matrix <- function(C, G, tau = 1, kappa = 1, jitter = 1e-2) {
   Q <- tau^2 * (kappa^2 * C + G)
   Q <- forceSymmetric(Q)
   diag_vals <- diag(Q)
@@ -102,18 +102,42 @@ build_projector_matrix <- function(mesh_points, simplices, eval_points) {
 }
 
 # Construct likelihood data
-construct_likelihood_data <- function(mesh, observed_points, covariate_fn, alpha_weights) {
+construct_likelihood_data <- function(mesh, observed_points, covariate_fn, bounds) {
   mesh_points <- mesh$points
   n_mesh <- nrow(mesh_points)
   n_obs <- nrow(observed_points)
+  
+  # Total domain volume (for integration weights)
+  total_volume <- prod(sapply(bounds, function(b) diff(b)))
+  alpha_weights <- rep(total_volume / n_mesh, n_mesh)  # integration weight per mesh node
+  
+  # Combine mesh nodes and observed points
   locations <- rbind(mesh_points, observed_points)
+  
+  # Projector matrix A for both mesh + data points
   A <- build_projector_matrix(mesh_points, mesh$simplices, locations)
+  
+  # Covariate values at all locations
   cov_values <- apply(locations, 1, covariate_fn)
+  
+  # Response vector: 0 for mesh (integration), 1 for observed points
   y <- c(rep(0, n_mesh), rep(1, n_obs))
+  
+  # Exposure (E): integration weights for mesh points, zero for observations
   weight <- c(alpha_weights, rep(0, n_obs))
-  idx <- c(1:n_mesh, rep(NA, n_obs))
-  list(y = y, weight = weight, covariate = cov_values, idx = idx, A = A)
+  
+  # Index into the latent field: mesh nodes use 1:n, observations assigned dummy index (ignored)
+  idx <- c(1:n_mesh, rep(n_mesh + 1L, n_obs))  # all integers, no NAs
+  
+  list(
+    y = y,
+    weight = weight,
+    covariate = cov_values,
+    idx = idx,
+    A = A
+  )
 }
+
 
 # Run INLA model
 run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta = 0.0) {
@@ -123,7 +147,7 @@ run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta =
   mesh_idx <- likelihood_data$idx
   A <- likelihood_data$A
   
-  offset <- beta * covariate
+  offset <- if (!estimate_beta) beta * covariate else 0
   n_mesh <- max(mesh_idx, na.rm = TRUE)
   
   # Index of latent field values: mesh nodes only
@@ -139,6 +163,8 @@ run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta =
     ),
     tag = "spatial"
   )
+  cat("Minimum eigenvalue of Q: ")
+  print(min(eigen(as.matrix(Q), only.values = TRUE)$values))
   
   # Try running INLA with error handling
   result <- tryCatch({
@@ -164,7 +190,7 @@ run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta =
 # Pipeline
 run_spde_lgcp_pipeline_continuous <- function(
     d = 3,
-    m = 10,  # finer mesh
+    m = 10,
     covariate_fn = function(x) x[1],
     beta = 1.0,
     estimate_beta = TRUE,
@@ -172,31 +198,70 @@ run_spde_lgcp_pipeline_continuous <- function(
 ) {
   bounds <- replicate(d, c(0, 1), simplify = FALSE)
   
-  # Step 1: Build mesh
-  mesh <- build_mesh(d, m, bounds)
+  # ---- First pass: initial mesh and LGCP simulation ----
+  mesh_initial <- build_mesh(d, m, bounds)
+  fem_initial <- compute_fem_matrices(mesh_initial$points, mesh_initial$simplices)
+  Q_initial <- assemble_precision_matrix(fem_initial$C, fem_initial$G)
+  check_matrix_sanity(Q_initial)
+  Y_initial <- simulate_latent_field(Q_initial)
   
-  # Step 2: Compute FEM matrices
+  lgcp_points_initial <- simulate_lgcp_points_continuous(
+    Y_initial, mesh_initial$points, covariate_fn, beta, bounds, scale_intensity
+  )
+  
+  # ---- Second pass: enforce spacing and build new mesh ----
+  enforce_min_spacing <- function(points, min_dist = 0.03) {
+    if (!is.matrix(points)) stop("Points must be a matrix.")
+    if (ncol(points) < 2) stop("Points must be at least 2D.")
+    keep_indices <- c(1)
+    for (i in 2:nrow(points)) {
+      pt <- points[i, , drop = FALSE]
+      kept <- points[keep_indices, , drop = FALSE]
+      pt_rep <- matrix(rep(pt, each = nrow(kept)), nrow = nrow(kept))
+      dists <- sqrt(rowSums((pt_rep - kept)^2))
+      if (all(dists > min_dist)) keep_indices <- c(keep_indices, i)
+    }
+    points[keep_indices, , drop = FALSE]
+  }
+  
+  regular_grid <- build_mesh(d = d, m = 15, bounds = bounds)$points
+  combined <- rbind(lgcp_points_initial, regular_grid)
+  filtered_points <- enforce_min_spacing(combined, min_dist = 0.025)
+  new_mesh_points <- jitter_points(filtered_points, eps = 1e-4)
+  new_simplices <- delaunayn(new_mesh_points, options = "QJ")
+  mesh <- list(points = new_mesh_points, simplices = new_simplices)
+  trimesh(mesh$simplices, mesh$points)
+  
+  # ---- Volume diagnostics (optional) ----
+  volumes <- apply(mesh$simplices, 1, function(i) {
+    verts <- mesh$points[i, , drop = FALSE]
+    if (d == 2) {
+      abs(det(cbind(verts[2, ] - verts[1, ], verts[3, ] - verts[1, ]))) / 2
+    } else if (d == 3) {
+      abs(det(verts[2:4, ] - matrix(verts[1, ], 3, 3, byrow = TRUE))) / 6
+    } else {
+      NA
+    }
+  })
+  print(summary(volumes))
+  
+  # ---- Final mesh, latent field, and data ----
   fem <- compute_fem_matrices(mesh$points, mesh$simplices)
-  
-  # Step 3: Precision matrix
-  Q <- assemble_precision_matrix(fem$C, fem$G)
+  Q <- assemble_precision_matrix(fem$C, fem$G,, tau=1)
   check_matrix_sanity(Q)
-  
-  # Step 4: Simulate unscaled latent field
   Y <- simulate_latent_field(Q)
+  Y <- Y - mean(Y)
   
-  # Step 5: Simulate LGCP points using true field
+  
   lgcp_points <- simulate_lgcp_points_continuous(
     Y, mesh$points, covariate_fn, beta, bounds, scale_intensity
   )
+  points(lgcp_points)
   
-  # Step 6: Construct likelihood
-  alpha_weights <- rep(prod(sapply(bounds, function(b) diff(b))) / nrow(mesh$points),
-                       nrow(mesh$points))
-  likelihood_data <- construct_likelihood_data(mesh, lgcp_points, covariate_fn, alpha_weights)
+  likelihood_data <- construct_likelihood_data(mesh, lgcp_points, covariate_fn, bounds)
   
-  # Step 7: Run INLA model
-  result <- run_inla_continuous(likelihood_data, Q, estimate_beta, beta = beta)
+  result <- run_inla_continuous(likelihood_data, Q, estimate_beta = FALSE, beta = 1.0)
+
   
   list(
     mesh_points = mesh$points,
@@ -204,21 +269,25 @@ run_spde_lgcp_pipeline_continuous <- function(
     estimated_field = result$summary.random$idx$mean,
     beta_estimate = if (estimate_beta) result$summary.fixed else NULL,
     observed_points = lgcp_points,
+    likelihood_data = likelihood_data,
     result = result
   )
 }
+
+
 
 
 # Example run
 set.seed(123)
 result3d <- run_spde_lgcp_pipeline_continuous(
   d = 3,
-  m = 10,
-  covariate_fn = function(x) x[1],
+  m = 10,  # was 10, increase for better spatial resolution
+  covariate_fn = function(x) x[1],  # fine for now, could try more complex later
   beta = 1.5,
   estimate_beta = TRUE,
-  scale_intensity = 3000
+  scale_intensity = 500  # reduce slightly to avoid oversaturation
 )
+
 
 
 
@@ -231,76 +300,58 @@ print(rmse)
 
 cat("\nCorrelation between true and estimated field (3D):\n")
 print(cor(result3d$latent_field, result3d$estimated_field))
+library(akima)
+library(ggplot2)
+library(patchwork)
 
-plot_field_slice <- function(result, slice_dim = 3, slice_val = 0.5, tol = 0.05, title_prefix = "Latent Field") {
-  library(ggplot2)
-  library(gridExtra)
-  library(dplyr)
+plot_3d_field_slice_interp <- function(result, target_z = 0.5, tol = 0.05) {
+  mesh_points <- result$mesh_points
+  estimated_field <- result$estimated_field
+  true_field <- result$latent_field
   
-  df <- as.data.frame(result$mesh_points)
-  colnames(df) <- c("x", "y", "z")
-  df$true <- result$latent_field
-  df$estimated <- log(result$estimated_field)
+  slice_indices <- which(abs(mesh_points[, 3] - target_z) < tol)
   
-  dims <- c("x", "y", "z")
-  fixed_dim <- dims[slice_dim]
-  other_dims <- setdiff(dims, fixed_dim)
+  pts <- mesh_points[slice_indices, ]
+  est_vals <- estimated_field[slice_indices]
+  true_vals <- true_field[slice_indices]
   
-  df_slice <- df %>% filter(abs(.data[[fixed_dim]] - slice_val) < tol)
+  # Interpolation for estimated field
+  est_interp <- interp(x = pts[,1], y = pts[,2], z = est_vals, nx = 100, ny = 100)
+  est_df <- expand.grid(x = est_interp$x, y = est_interp$y)
+  est_df$z <- as.vector(est_interp$z)
   
-  cat("Number of points in slice:", nrow(df_slice), "\n")
-  if (nrow(df_slice) == 0) {
-    warning("No points found near the specified slice value. Try increasing `tol`.")
-    return(NULL)
-  }
+  # Interpolation for true field
+  true_interp <- interp(x = pts[,1], y = pts[,2], z = true_vals, nx = 100, ny = 100)
+  true_df <- expand.grid(x = true_interp$x, y = true_interp$y)
+  true_df$z <- as.vector(true_interp$z)
   
-  fill_limits <- range(c(df_slice$true, df_slice$estimated), na.rm = TRUE)
-  
-  p1 <- ggplot(df_slice, aes(x = .data[[other_dims[1]]], y = .data[[other_dims[2]]], fill = true)) +
+  # Plot
+  p1 <- ggplot(est_df, aes(x = x, y = y, fill = z)) +
     geom_raster() +
-    coord_equal() +
-    scale_fill_viridis_c(limits = fill_limits) +
-    labs(title = paste(title_prefix, "- True"), x = other_dims[1], y = other_dims[2])
+    scale_fill_viridis_c(name = "Estimated") +
+    ggtitle("Estimated (z ≈ 0.5)") +
+    coord_fixed()
   
-  p2 <- ggplot(df_slice, aes(x = .data[[other_dims[1]]], y = .data[[other_dims[2]]], fill = estimated)) +
+  p2 <- ggplot(true_df, aes(x = x, y = y, fill = z)) +
     geom_raster() +
-    coord_equal() +
-    scale_fill_viridis_c(limits = fill_limits) +
-    labs(title = paste(title_prefix, "- Estimated"), x = other_dims[1], y = other_dims[2])
+    scale_fill_viridis_c(name = "True") +
+    ggtitle("True (z ≈ 0.5)") +
+    coord_fixed()
   
-  
-  gridExtra::grid.arrange(p1, p2, ncol = 2)
+  p1 + p2 + plot_annotation(title = paste("Smoothed slice near z =", target_z))
 }
 
-
-plot_field_slice(result3d, slice_dim = 3, slice_val = 0.5, tol = 0.1)
-
-
-df <- as.data.frame(result3d$mesh_points)
-colnames(df) <- c("x", "y", "z")
-df$true <- result3d$latent_field
-df$true <- result$latent_field           # Already log-intensity
-df$estimated <- log(result3d$estimated_field)  # Convert back to log-scale
-
-
-df_slice <- df %>% filter(abs(z - 0.5) < 0.2)
-nrow(df_slice)
-head(df_slice)
-
-
-
-
+plot_3d_field_slice_interp(result3d, target_z = 0.5)
 
 # Updated 2D simulation run
 test_result_2d <- run_spde_lgcp_pipeline_continuous(
   d = 2,
-  m = 40,
+  m = 20,
   covariate_fn = function(x) x[1],
   beta = 1.0,
   estimate_beta = TRUE,
-  scale_intensity = 10000
+  scale_intensity = 500
 )
-
 
 plot_latent_vs_estimated <- function(result, title_prefix = "Field") {
   library(ggplot2)
@@ -310,9 +361,9 @@ plot_latent_vs_estimated <- function(result, title_prefix = "Field") {
   df <- as.data.frame(result$mesh_points)
   colnames(df) <- c("x", "y")
   df$true <- result$latent_field
-  df$estimated <- result$estimated_field
+  df$estimated <- result$estimated_field  # already on log scale
   
-  # Interpolate onto a regular grid
+  # Interpolate both fields onto a common grid
   interp_true <- with(df, akima::interp(x, y, true, duplicate = "mean"))
   interp_est <- with(df, akima::interp(x, y, estimated, duplicate = "mean"))
   
@@ -322,18 +373,23 @@ plot_latent_vs_estimated <- function(result, title_prefix = "Field") {
   df_est <- expand.grid(x = interp_est$x, y = interp_est$y)
   df_est$z <- as.vector(interp_est$z)
   
+  # Plot: true latent field
   p1 <- ggplot(df_true, aes(x = x, y = y, fill = z)) +
     geom_raster(interpolate = TRUE) +
     coord_equal() +
-    scale_fill_viridis_c() +
+    scale_fill_viridis_c(name = "Log-intensity") +
+    theme_minimal() +
     ggtitle(paste0(title_prefix, ": True Latent Field"))
   
+  # Plot: estimated latent field
   p2 <- ggplot(df_est, aes(x = x, y = y, fill = z)) +
     geom_raster(interpolate = TRUE) +
     coord_equal() +
-    scale_fill_viridis_c() +
+    scale_fill_viridis_c(name = "Log-intensity") +
+    theme_minimal() +
     ggtitle(paste0(title_prefix, ": Estimated Latent Field"))
   
+  # Show side by side
   gridExtra::grid.arrange(p1, p2, ncol = 2)
 }
 
@@ -348,6 +404,7 @@ print(test_result_2d$beta_estimate)
 cat("\nLatent field RMSE (2D):\n")
 rmse_2d <- sqrt(mean((test_result_2d$latent_field - test_result_2d$estimated_field)^2))
 print(rmse_2d)
+
 
 cat("\nCorrelation between true and estimated field (2D):\n")
 print(cor(test_result_2d$latent_field, test_result_2d$estimated_field))

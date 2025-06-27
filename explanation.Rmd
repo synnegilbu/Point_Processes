@@ -314,13 +314,11 @@ keep <- runif(N_max) < (lambda_interp / lambda_max)
 points[keep, , drop = FALSE]
 ```
 
-The log-intensity values $\eta(s)$ are transformed into pointwise intensities using the exponential function: 
-\[
+The log-intensity values $\eta(s)$ are transformed into pointwise intensities using the exponential function: $$
 \lambda(s) = \text{scale\_intensity} \cdot e^{\eta(s)}
-\]
+$$
 
-To simulate a realization of the inhomogeneous Poisson process, we employ the thinning method. Each candidate point is retained independently with probability: 
-$$p(s) = \frac{\lambda(s)}{\lambda_{\max}},$$ where $\lambda_{\max}$ is a fixed upper bound on the intensity. This ensures that the retained points follow the desired LGCP with spatially varying intensity.
+To simulate a realization of the inhomogeneous Poisson process, we employ the thinning method. Each candidate point is retained independently with probability: $$p(s) = \frac{\lambda(s)}{\lambda_{\max}},$$ where $\lambda_{\max}$ is a fixed upper bound on the intensity. This ensures that the retained points follow the desired LGCP with spatially varying intensity.
 
 ## `build_projector_matrix`
 
