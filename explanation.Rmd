@@ -648,27 +648,37 @@ run_spde_lgcp_pipeline_continuous <- function(
 
 ```
 
-#### Explanation:
+### `run_spde_lgcp_pipeline_continuous()`
 
-1.  Define domain bounds in $d$ dimensions.
-2.  Build the mesh and compute the FEM mass matrix $\mathbf{C}$ and stiffness matrix $\mathbf{G}$.
-3.  Assemble the SPDE precision matrix $\mathbf{Q}$ from the FEM matrices.
-4.  Simulate the latent Gaussian field on the mesh nodes using the precision matrix.
-5.  Generate LGCP points by exponentiating the latent field and applying the covariate effect.
-6.  Compute integration weights for each mesh node to approximate spatial integrals.
-7.  Construct likelihood data by combining mesh-based exposure and observed points.
-8.  Fit the model using INLA, optionally estimating the covariate coefficient $\beta$.
+This function implements a full simulation and inference pipeline for fitting an LGCP using the SPDE-INLA framework in continuous space. It includes mesh generation, latent field simulation, LGCP point generation, and Bayesian inference.
+
+#### Description:
+
+1.  **Initial mesh construction:** A regular grid mesh is generated over a unit hypercube in $\mathbb{R}^d$ and triangulated using Delaunay triangulation. This mesh is used to simulate a preliminary latent Gaussian field.
+
+2.  **First LGCP simulation:** A realization of the LGCP is generated using the simulated latent field and a user-specified covariate function. This helps identify regions of high intensity in trait space.
+
+3.  **Second mesh refinement:** A denser regular grid is combined with the simulated LGCP points to refine the mesh. To avoid numerical issues, a minimum spacing constraint is enforced between points, and small random jitter is applied to prevent degenerate simplices.
+
+4.  **Final latent field simulation:** A new latent Gaussian field is simulated on the refined mesh using finite element matrices and the assembled SPDE precision matrix. The field is centered to stabilize inference.
+
+5.  **Final LGCP simulation:** The refined mesh and new latent field are used to generate the final LGCP realization.
+
+6.  **Likelihood data construction:** Integration weights are computed, and a projector matrix is built to link the latent field to both integration nodes and observed points. These components are used to define a continuous-space LGCP likelihood.
+
+7.  **Model fitting with INLA:** The INLA framework is used to fit the model, with optional estimation of the covariate coefficient $\beta$. The latent field is modeled as a GMRF with a custom precision matrix derived from the SPDE.
 
 #### Returns:
 
-A list with:
+A list containing:
 
--   `mesh_points`: Mesh node coordinates.
--   `latent_field`: Simulated latent Gaussian values.
--   `estimated_field`: Posterior mean estimate of latent field.
--   `beta_estimate`: Estimated covariate effect (if applicable).
--   `observed_points`: Simulated LGCP observations.
--   `result`: Full INLA model output.
+-   `mesh_points`: Coordinates of the refined mesh nodes.
+-   `latent_field`: Simulated values of the latent Gaussian field.
+-   `estimated_field`: Posterior mean estimate of the latent field from INLA.
+-   `beta_estimate`: Estimated covariate effect (if `estimate_beta = TRUE`).
+-   `observed_points`: LGCP points simulated from the latent field.
+-   `likelihood_data`: Full likelihood setup used in INLA (integration weights, covariates, projector matrix).
+-   `result`: Full INLA model output object.
 
 ## Example run:
 
