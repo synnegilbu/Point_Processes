@@ -8,4 +8,4 @@ The accompanying bird trait dataset (from the AVONET database) is used as a moti
 
 This work addresses the lack of high-dimensional LGCP infrastructure in R by developing and validating a complete end-to-end pipeline for trait-space point process modeling.
 
-For a more detailed explanation of the methods and usage, see the `explanation.Rmd` file included in the repository.
+For a more detailed explanation of the methods and usage, see the `explanation.md` file included in the repository.
