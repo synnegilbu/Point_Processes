@@ -7,3 +7,5 @@ The project provides tools for mesh construction in arbitrary dimensions, simula
 The accompanying bird trait dataset (from the AVONET database) is used as a motivating example, but the framework is general and supports both real and synthetic data in 2D and higher.
 
 This work addresses the lack of high-dimensional LGCP infrastructure in R by developing and validating a complete end-to-end pipeline for trait-space point process modeling.
+
+For a more detailed explanation of the methods and usage, see the `explanation.Rmd` file included in the repository.
