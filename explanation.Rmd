@@ -559,28 +559,92 @@ Runs a full simulation-and-estimation pipeline for a LGCP using the SPDE approac
 
 ```{r}
 run_spde_lgcp_pipeline_continuous <- function(
-    d = 3, m = 8, covariate_fn = function(x) sum(x), beta = 0.1,
-    estimate_beta = TRUE, scale_intensity = 2000
+    d = 3,
+    m = 10,
+    covariate_fn = function(x) x[1],
+    beta = 1.0,
+    estimate_beta = TRUE,
+    scale_intensity = 3000
 ) {
   bounds <- replicate(d, c(0, 1), simplify = FALSE)
-  mesh <- build_mesh(d, m, bounds)
+  
+  # ---- First pass: initial mesh and LGCP simulation ----
+  mesh_initial <- build_mesh(d, m, bounds)
+  fem_initial <- compute_fem_matrices(mesh_initial$points, mesh_initial$simplices)
+  Q_initial <- assemble_precision_matrix(fem_initial$C, fem_initial$G)
+  check_matrix_sanity(Q_initial)
+  Y_initial <- simulate_latent_field(Q_initial)
+  
+  lgcp_points_initial <- simulate_lgcp_points_continuous(
+    Y_initial, mesh_initial$points, covariate_fn, beta, bounds, scale_intensity
+  )
+  
+  # ---- Second pass: enforce spacing and build new mesh ----
+  enforce_min_spacing <- function(points, min_dist = 0.03) {
+    if (!is.matrix(points)) stop("Points must be a matrix.")
+    if (ncol(points) < 2) stop("Points must be at least 2D.")
+    keep_indices <- c(1)
+    for (i in 2:nrow(points)) {
+      pt <- points[i, , drop = FALSE]
+      kept <- points[keep_indices, , drop = FALSE]
+      pt_rep <- matrix(rep(pt, each = nrow(kept)), nrow = nrow(kept))
+      dists <- sqrt(rowSums((pt_rep - kept)^2))
+      if (all(dists > min_dist)) keep_indices <- c(keep_indices, i)
+    }
+    points[keep_indices, , drop = FALSE]
+  }
+  
+  regular_grid <- build_mesh(d = d, m = 15, bounds = bounds)$points
+  combined <- rbind(lgcp_points_initial, regular_grid)
+  filtered_points <- enforce_min_spacing(combined, min_dist = 0.025)
+  new_mesh_points <- jitter_points(filtered_points, eps = 1e-4)
+  new_simplices <- delaunayn(new_mesh_points, options = "QJ")
+  mesh <- list(points = new_mesh_points, simplices = new_simplices)
+  trimesh(mesh$simplices, mesh$points)
+  
+  # ---- Volume diagnostics (optional) ----
+  volumes <- apply(mesh$simplices, 1, function(i) {
+    verts <- mesh$points[i, , drop = FALSE]
+    if (d == 2) {
+      abs(det(cbind(verts[2, ] - verts[1, ], verts[3, ] - verts[1, ]))) / 2
+    } else if (d == 3) {
+      abs(det(verts[2:4, ] - matrix(verts[1, ], 3, 3, byrow = TRUE))) / 6
+    } else {
+      NA
+    }
+  })
+  print(summary(volumes))
+  
+  # ---- Final mesh, latent field, and data ----
   fem <- compute_fem_matrices(mesh$points, mesh$simplices)
-  Q <- assemble_precision_matrix(fem$C, fem$G)
+  Q <- assemble_precision_matrix(fem$C, fem$G,, tau=1)
   check_matrix_sanity(Q)
-  Y <- scale(simulate_latent_field(Q))
-  lgcp_points <- simulate_lgcp_points_continuous(Y, mesh$points, covariate_fn, beta, bounds, scale_intensity)
-  alpha_weights <- rep(prod(sapply(bounds, function(b) diff(b))) / nrow(mesh$points), nrow(mesh$points))
-  likelihood_data <- construct_likelihood_data(mesh, lgcp_points, covariate_fn, alpha_weights)
-  result <- run_inla_continuous(likelihood_data, Q, estimate_beta)
+  Y <- simulate_latent_field(Q)
+  Y <- Y - mean(Y)
+  
+  
+  lgcp_points <- simulate_lgcp_points_continuous(
+    Y, mesh$points, covariate_fn, beta, bounds, scale_intensity
+  )
+  points(lgcp_points)
+  
+  likelihood_data <- construct_likelihood_data(mesh, lgcp_points, covariate_fn, bounds)
+  
+  result <- run_inla_continuous(likelihood_data, Q, estimate_beta = FALSE, beta = 1.0)
+
+  
   list(
     mesh_points = mesh$points,
     latent_field = Y,
     estimated_field = result$summary.random$idx$mean,
     beta_estimate = if (estimate_beta) result$summary.fixed else NULL,
     observed_points = lgcp_points,
+    likelihood_data = likelihood_data,
     result = result
   )
 }
+
+
 
 ```
 

@@ -261,7 +261,7 @@ run_spde_lgcp_pipeline_continuous <- function(
   likelihood_data <- construct_likelihood_data(mesh, lgcp_points, covariate_fn, bounds)
   
   result <- run_inla_continuous(likelihood_data, Q, estimate_beta = FALSE, beta = 1.0)
-
+  
   
   list(
     mesh_points = mesh$points,
@@ -276,27 +276,99 @@ run_spde_lgcp_pipeline_continuous <- function(
 
 
 
+benchmark_continuous_pipeline_variable_m <- function(
+    dims = 1:8,
+    reps = 3,
+    beta = 1.0,
+    scale_intensity = 500,
+    output_file = "spde_lgcp_continuous_benchmark.csv"
+) {
+  # Recommended m values per dimension to avoid huge meshes
+  m_per_dim <- c(
+    `1` = 100,
+    `2` = 40,
+    `3` = 15,
+    `4` = 10,
+    `5` = 6,
+    `6` = 5,
+    `7` = 4,
+    `8` = 3
+  )
+  
+  if (!file.exists(output_file)) {
+    write.csv(data.frame(
+      dimension = integer(),
+      m = integer(),
+      repetition = integer(),
+      runtime_sec = numeric(),
+      latent_mse = numeric(),
+      correlation = numeric()
+    ), file = output_file, row.names = FALSE)
+  }
+  
+  for (d in dims) {
+    if (is.null(m_per_dim[as.character(d)])) {
+      cat(sprintf("Skipping dimension %d: no m defined.\n", d))
+      next
+    }
+    
+    m <- m_per_dim[as.character(d)]
+    
+    for (rep in 1:reps) {
+      cat(sprintf("Running d = %d, m = %d, repetition = %d...\n", d, m, rep))
+      
+      start_time <- Sys.time()
+      
+      result <- tryCatch({
+        run_spde_lgcp_pipeline_continuous(
+          d = d,
+          m = m,
+          beta = beta,
+          scale_intensity = scale_intensity,
+          estimate_beta = TRUE,
+          covariate_fn = function(x) x[1]
+        )
+      }, error = function(e) {
+        cat("Error during run: ", conditionMessage(e), "\n")
+        return(NULL)
+      })
+      
+      end_time <- Sys.time()
+      runtime <- as.numeric(difftime(end_time, start_time, units = "secs"))
+      
+      if (!is.null(result)) {
+        mse <- mean((result$latent_field - result$estimated_field)^2)
+        corr <- cor(result$latent_field, result$estimated_field)
+        
+        result_row <- data.frame(
+          dimension = d,
+          m = m,
+          repetition = rep,
+          runtime_sec = runtime,
+          latent_mse = mse,
+          correlation = corr
+        )
+        
+        write.table(result_row, file = output_file, sep = ",", row.names = FALSE,
+                    col.names = FALSE, append = TRUE)
+        
+        cat(sprintf("Saved: d = %d, m = %d, rep = %d, time = %.2fs, MSE = %.4f, corr = %.3f\n",
+                    d, m, rep, runtime, mse, corr))
+      } else {
+        cat("Run failed, skipping result saving.\n")
+      }
+    }
+  }
+}
 
-# Example run
-set.seed(123)
-result3d <- run_spde_lgcp_pipeline_continuous(
-  d = 3,
-  m = 10,  
-  covariate_fn = function(x) x[1],  
-  beta = 1.5,
-  estimate_beta = TRUE,
-  scale_intensity = 500 
-)
 
-
-
-test_result_2d <- run_spde_lgcp_pipeline_continuous(
-  d = 2,
-  m = 40,
-  covariate_fn = function(x) x[1],
+benchmark_continuous_pipeline_variable_m(
+  dims = 2:6,  # or 1:8
+  reps = 3,
   beta = 1.0,
-  estimate_beta = TRUE,
-  scale_intensity = 500
+  scale_intensity = 500,
+  output_file = "spde_lgcp_continuous_benchmark.csv"
 )
+
 
 
