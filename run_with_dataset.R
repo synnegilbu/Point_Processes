@@ -127,7 +127,7 @@ run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta =
     return(NULL)
   })
   return(list(
-    mesh_points = mesh$points,  # or mesh$loc if you used inla.mesh.2d/3d
+    mesh_points = mesh$points,  
     estimated_field = result$summary.random$idx$mean,
     fixed_effects = result$summary.fixed,
     result = result
@@ -239,7 +239,7 @@ plot_field_slices <- function(mesh_points, field_values, fixed_dim = 3, n_slices
 plot_field_slices(
   mesh_points = result$mesh_points,
   field_values = result$estimated_field,
-  fixed_dim = 3,  # or 1 or 2
+  fixed_dim = 3,  
   n_slices = 10,
   output_dir = "slices"
 )
