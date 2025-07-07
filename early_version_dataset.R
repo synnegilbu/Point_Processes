@@ -125,7 +125,7 @@ field <- result_4d$estimated_field
 
 # --- Choose 10 evenly spaced values for dimension 3 (Beak.Width) and fix dim 4 ---
 dim3_vals <- seq(0.05, 0.95, length.out = 10)
-dim4_fixed <- 0.5  # Hold Beak.Length_Nares constant
+dim4_fixed <- 0.5  
 
 # --- Generate and Save Slices ---
 for (i in seq_along(dim3_vals)) {
@@ -136,8 +136,8 @@ for (i in seq_along(dim3_vals)) {
   if (length(indices) < 10) next
   
   slice_df <- data.frame(
-    x = mesh_points[indices, 1],  # Trait 1
-    y = mesh_points[indices, 2],  # Trait 2
+    x = mesh_points[indices, 1],  
+    y = mesh_points[indices, 2],  
     value = field[indices]
   )
   
@@ -170,65 +170,9 @@ species_names_3D <- model_data_3D$Species1
 
 
 # Run the LGCP model in 3D space
-result_3D <- run_lgcp(coords_scaled_3D, covariate_3D, m = 10)  # You can experiment with m (e.g. 8, 12)
+result_3D <- run_lgcp(coords_scaled_3D, covariate_3D, m = 10)  
 
 # Fixed effects
 fixed_3d <- result_3D$fixed_effects
 print(fixed_3d)
 
-# Hyperparameters
-hyper_3d <- result_3D$result$summary.hyperpar
-print(hyper_3d)
-
-library(ggplot2)
-library(dplyr)
-library(viridis)
-
-# Extract mesh and field
-mesh_points <- result_3D$mesh_points
-field_values <- result_3D$estimated_field
-
-# Ensure the folder exists
-output_dir <- "fig_3d_slices"
-if (!dir.exists(output_dir)) {
-  dir.create(output_dir)
-  message("Created directory: ", output_dir)
-}
-
-# Determine slice levels
-z_vals <- seq(min(mesh_points[, 3]), max(mesh_points[, 3]), length.out = 10)
-tol <- (max(mesh_points[, 3]) - min(mesh_points[, 3])) / 20  # Tolerance for slicing
-
-# Loop through slices
-for (i in seq_along(z_vals)) {
-  z_fixed <- z_vals[i]
-  slice_indices <- which(abs(mesh_points[, 3] - z_fixed) < tol)
-  
-  # Skip empty slices
-  if (length(slice_indices) < 5) {
-    message(sprintf("Skipping slice %d: too few points (%d)", i, length(slice_indices)))
-    next
-  }
-  
-  slice_data <- data.frame(
-    x = mesh_points[slice_indices, 1],
-    y = mesh_points[slice_indices, 2],
-    z = mesh_points[slice_indices, 3],
-    field = field_values[slice_indices]
-  )
-  
-  p <- ggplot(slice_data, aes(x = x, y = y, fill = field)) +
-    geom_tile() +
-    scale_fill_viridis(option = "magma") +
-    coord_fixed() +
-    labs(
-      title = paste("Slice", i, "at z ≈", round(z_fixed, 2)),
-      x = "Trait 1 (scaled)", y = "Trait 2 (scaled)", fill = "Field"
-    ) +
-    theme_minimal()
-  
-  file_path <- file.path(output_dir, sprintf("slice_%02d.png", i))
-  ggsave(filename = file_path, plot = p, width = 6, height = 5, dpi = 300)
-  
-  message("Saved: ", file_path)
-}
