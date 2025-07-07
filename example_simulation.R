@@ -127,7 +127,7 @@ construct_likelihood_data <- function(mesh, observed_points, covariate_fn, bound
   weight <- c(alpha_weights, rep(0, n_obs))
   
   # Index into the latent field: mesh nodes use 1:n, observations assigned dummy index (ignored)
-  idx <- c(1:n_mesh, rep(n_mesh + 1L, n_obs))  # all integers, no NAs
+  idx <- c(1:n_mesh, rep(n_mesh + 1L, n_obs))  
   
   list(
     y = y,
