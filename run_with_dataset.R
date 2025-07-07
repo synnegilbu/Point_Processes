@@ -148,99 +148,146 @@ enforce_min_spacing <- function(points, min_dist = 0.03) {
   points[keep_indices, , drop = FALSE]
 }
 
-# Build mesh from AVONET beak space
-filtered_points <- enforce_min_spacing(coords_beak, min_dist = 0.03)
-mesh_points <- jitter_points(filtered_points)
-simplices <- delaunayn(mesh_points, options = "QJ")
-mesh <- list(points = mesh_points, simplices = simplices)
-
-# Construct FEM and precision matrix
-fem <- compute_fem_matrices(mesh$points, mesh$simplices)
-Q <- assemble_precision_matrix(fem$C, fem$G)
-check_matrix_sanity(Q)
-
-# Simulate latent field
-Y <- simulate_latent_field(Q)
-Y <- Y - mean(Y)
-
-# Likelihood data
-bounds <- replicate(3, c(0, 1), simplify = FALSE)
-likelihood_data <- construct_likelihood_data(mesh, coords_beak, covariate_fn, bounds)
-
-# Run INLA model
-result <- run_inla_continuous(likelihood_data, Q, estimate_beta = TRUE)
-
-# Output
-cat("Estimated beta:\n")
-print(result$summary.fixed)
-
-cat("\nLatent field RMSE:\n")
-rmse <- sqrt(mean((Y - result$summary.random$idx$mean)^2))
-print(rmse)
-
-cat("\nCorrelation between true and estimated field:\n")
-print(cor(Y, result$summary.random$idx$mean))
-
-
-plot_field_slices <- function(mesh_points, field_values, fixed_dim = 3, n_slices = 6, output_dir = "slices") {
-  if (!dir.exists(output_dir)) dir.create(output_dir)
+run_spde_lgcp_for_traits <- function(coords_raw,
+                                     covariate_vals,
+                                     covariate_fn = NULL,
+                                     d = ncol(coords_raw),
+                                     beta = 1.0,
+                                     m_coarse = 5,
+                                     m_fine = 5,
+                                     min_spacing = 0.15,
+                                     scale_intensity = 50,
+                                     estimate_beta = TRUE) {
   
-  dims <- 1:3
-  var_dims <- dims[-fixed_dim]
+  # Bounds in unit cube
+  bounds <- replicate(d, c(0, 1), simplify = FALSE)
   
-  # Safety: remove NA rows
-  valid_rows <- complete.cases(mesh_points, field_values)
-  mesh_points <- mesh_points[valid_rows, ]
-  field_values <- field_values[valid_rows]
+  # Scale coordinates to [0,1]^d
+  coords_scaled <- scale(coords_raw, center = apply(coords_raw, 2, min),
+                         scale = apply(coords_raw, 2, max) - apply(coords_raw, 2, min))
   
-  fixed_vals <- mesh_points[, fixed_dim]
-  if (all(is.na(fixed_vals))) stop("All fixed dimension values are NA")
-  
-  slice_vals <- seq(min(fixed_vals), max(fixed_vals), length.out = n_slices)
-  
-  for (i in seq_along(slice_vals)) {
-    val <- slice_vals[i]
-    tol <- (max(fixed_vals) - min(fixed_vals)) / (n_slices * 2)
-    sel <- abs(fixed_vals - val) < tol
-    
-    if (sum(sel) < 10) {
-      message(sprintf("Skipping slice %d: too few points", i))
-      next
+  # Default covariate function via nearest neighbor
+  if (is.null(covariate_fn)) {
+    covariate_fn <- function(x_row) {
+      idx <- get.knnx(coords_scaled, matrix(x_row, nrow = 1), k = 1)$nn.index
+      covariate_vals[idx]
     }
-    
-    sub_points <- mesh_points[sel, ]
-    sub_field <- field_values[sel]
-    
-    interp_result <- akima::interp(
-      x = sub_points[, var_dims[1]],
-      y = sub_points[, var_dims[2]],
-      z = sub_field,
-      linear = TRUE,
-      extrap = FALSE
-    )
-    
-    interp_df <- expand.grid(x = interp_result$x, y = interp_result$y)
-    interp_df$z <- as.vector(interp_result$z)
-    
-    p <- ggplot(interp_df, aes(x = x, y = y, fill = z)) +
-      geom_raster(interpolate = TRUE) +
-      scale_fill_viridis_c(option = "magma", na.value = "gray20") +
-      coord_fixed() +
-      theme_minimal() +
-      labs(
-        title = paste("Slice", i, "at dim", fixed_dim, "≈", round(val, 2)),
-        fill = "Field"
-      )
-    
-    ggsave(filename = sprintf("%s/slice_%02d.png", output_dir, i), plot = p, width = 6, height = 5)
   }
+  
+  # Coarse mesh
+  grid_axes <- replicate(d, seq(0, 1, length.out = m_coarse), simplify = FALSE)
+  initial_mesh_grid <- do.call(expand.grid, grid_axes)
+  initial_mesh_points <- jitter_points(as.matrix(initial_mesh_grid))
+  initial_simplices <- delaunayn(initial_mesh_points, options = "QJ")
+  initial_mesh <- list(points = initial_mesh_points, simplices = initial_simplices)
+  
+  fem_initial <- compute_fem_matrices(initial_mesh$points, initial_mesh$simplices)
+  Q_initial <- assemble_precision_matrix(fem_initial$C, fem_initial$G)
+  check_matrix_sanity(Q_initial)
+  Y_initial <- simulate_latent_field(Q_initial)
+  Y_initial <- Y_initial - mean(Y_initial)
+  
+  # Simulate LGCP points
+  lgcp_points_initial <- simulate_lgcp_points_continuous(
+    Y_initial, initial_mesh$points, covariate_fn, beta,
+    bounds = bounds, scale_intensity = scale_intensity
+  )
+  
+  # Final mesh
+  fine_grid_axes <- replicate(d, seq(0, 1, length.out = m_fine), simplify = FALSE)
+  regular_grid <- do.call(expand.grid, fine_grid_axes)
+  combined <- rbind(lgcp_points_initial, coords_scaled, as.matrix(regular_grid))
+  filtered_points <- enforce_min_spacing(combined, min_dist = min_spacing)
+  mesh_points <- jitter_points(filtered_points)
+  simplices <- delaunayn(mesh_points, options = "QJ")
+  mesh <- list(points = mesh_points, simplices = simplices)
+  
+  # Final latent field
+  fem <- compute_fem_matrices(mesh$points, mesh$simplices)
+  Q <- assemble_precision_matrix(fem$C, fem$G)
+  check_matrix_sanity(Q)
+  Y <- simulate_latent_field(Q)
+  Y <- Y - mean(Y)
+  
+  # Likelihood data and INLA model
+  likelihood_data <- construct_likelihood_data(mesh, coords_scaled, covariate_fn, bounds)
+  result <- run_inla_continuous(likelihood_data, Q, estimate_beta = estimate_beta, beta = beta)
+  
+  return(list(
+    dimension = d,
+    mesh = mesh,
+    latent_field = Y,
+    estimated_field = result$estimated_field,
+    fixed_effects = result$fixed_effects,
+    result = result
+  ))
 }
 
-plot_field_slices(
-  mesh_points = result$mesh_points,
-  field_values = result$estimated_field,
-  fixed_dim = 3,  
-  n_slices = 10,
-  output_dir = "slices"
+
+coords_raw <- as.matrix(avonet[, c("Beak.Length_Culmen", "Beak.Depth", "Beak.Width")])
+trophic_covariate <- as.numeric(factor(avonet$Trophic.Level))
+
+result3d_refined <- run_spde_lgcp_for_traits(
+  coords_raw = coords_raw,
+  covariate_vals = trophic_covariate,
+  d = 3,
+  beta = 1.0,
+  estimate_beta = TRUE,
+  m_coarse = 7,
+  m_fine = 8,
+  min_spacing = 0.10,
+  scale_intensity = 200
 )
 
+
+result4d_fast <- run_spde_lgcp_for_traits(
+  coords_raw = coords_beak_raw4d,
+  covariate_vals = trophic_covariate,
+  d = 4,
+  beta = 0.0,
+  estimate_beta = FALSE,
+  m_coarse = 4,
+  m_fine = 5,
+  min_spacing = 0.15,
+  scale_intensity = 30
+)
+
+
+
+check_quadratic_field_fit <- function(coords, field_vals) {
+  if (!is.matrix(coords)) coords <- as.matrix(coords)
+  
+  d <- ncol(coords)
+  if (d < 1) stop("Invalid coordinate dimension.")
+  
+  df <- as.data.frame(coords)
+  colnames(df) <- paste0("X", 1:d)
+  df$Y <- field_vals
+  
+  # Build quadratic formula dynamically
+  terms <- paste0("X", 1:d)
+  squares <- paste0("I(", terms, "^2)")
+  interactions <- combn(terms, 2, FUN = function(x) paste(x, collapse = ":"))
+  rhs <- paste(c(terms, squares, interactions), collapse = " + ")
+  formula <- as.formula(paste("Y ~", rhs))
+  
+  # Fit model
+  model <- lm(formula, data = df)
+  summ <- summary(model)
+  
+  return(list(
+    model = model,
+    summary = summ,
+    r_squared = summ$r.squared,
+    adj_r_squared = summ$adj.r.squared
+  ))
+}
+
+quad3d <- check_quadratic_field_fit(result3d_refined$mesh$points, result3d_refined$estimated_field)
+quad4d <- check_quadratic_field_fit(result4d_fast$mesh$points, result4d_fast$estimated_field)
+
+print(quad3d)
+print(quad4d)
+
+print(result3d_refined$fixed_effects)
+print(result4d_fast$fixed_effects)
