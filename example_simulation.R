@@ -106,29 +106,14 @@ construct_likelihood_data <- function(mesh, observed_points, covariate_fn, bound
   mesh_points <- mesh$points
   n_mesh <- nrow(mesh_points)
   n_obs <- nrow(observed_points)
-  
-  # Total domain volume (for integration weights)
   total_volume <- prod(sapply(bounds, function(b) diff(b)))
-  alpha_weights <- rep(total_volume / n_mesh, n_mesh)  # integration weight per mesh node
-  
-  # Combine mesh nodes and observed points
+  alpha_weights <- rep(total_volume / n_mesh, n_mesh)  
   locations <- rbind(mesh_points, observed_points)
-  
-  # Projector matrix A for both mesh + data points
   A <- build_projector_matrix(mesh_points, mesh$simplices, locations)
-  
-  # Covariate values at all locations
   cov_values <- apply(locations, 1, covariate_fn)
-  
-  # Response vector: 0 for mesh (integration), 1 for observed points
   y <- c(rep(0, n_mesh), rep(1, n_obs))
-  
-  # Exposure (E): integration weights for mesh points, zero for observations
   weight <- c(alpha_weights, rep(0, n_obs))
-  
-  # Index into the latent field: mesh nodes use 1:n, observations assigned dummy index (ignored)
   idx <- c(1:n_mesh, rep(n_mesh + 1L, n_obs))  
-  
   list(
     y = y,
     weight = weight,
@@ -149,11 +134,8 @@ run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta =
   
   offset <- if (!estimate_beta) beta * covariate else 0
   n_mesh <- max(mesh_idx, na.rm = TRUE)
-  
-  # Index of latent field values: mesh nodes only
   idx_latent <- 1:n_mesh
   
-  # Build INLA stack
   stk <- inla.stack(
     data = list(y = y, E = weight + 1e-10, offset = offset),
     A = list(A, 1),
@@ -165,8 +147,6 @@ run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta =
   )
   cat("Minimum eigenvalue of Q: ")
   print(min(eigen(as.matrix(Q), only.values = TRUE)$values))
-  
-  # Try running INLA with error handling
   result <- tryCatch({
     inla(
       formula = y ~ covariate + f(idx, model = "generic0", Cmatrix = Q),
@@ -187,7 +167,7 @@ run_inla_continuous <- function(likelihood_data, Q, estimate_beta = TRUE, beta =
 }
 
 
-# Pipeline
+
 run_spde_lgcp_pipeline_continuous <- function(
     d = 3,
     m = 10,
