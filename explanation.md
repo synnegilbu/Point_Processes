@@ -365,17 +365,25 @@ For each evaluation point inside a simplex, its row in A is populated with the b
 This function prepares the combined data vector needed for fitting a LGCP model with INLA. It merges the latent field mesh structure with the observed point locations into a single unified framework.
 
 ```{r}
-construct_likelihood_data <- function(mesh, observed_points, covariate_fn, alpha_weights) {
+construct_likelihood_data <- function(mesh, observed_points, covariate_fn, bounds) {
   mesh_points <- mesh$points
   n_mesh <- nrow(mesh_points)
   n_obs <- nrow(observed_points)
+  total_volume <- prod(sapply(bounds, function(b) diff(b)))
+  alpha_weights <- rep(total_volume / n_mesh, n_mesh)  
   locations <- rbind(mesh_points, observed_points)
   A <- build_projector_matrix(mesh_points, mesh$simplices, locations)
   cov_values <- apply(locations, 1, covariate_fn)
   y <- c(rep(0, n_mesh), rep(1, n_obs))
   weight <- c(alpha_weights, rep(0, n_obs))
-  idx <- c(1:n_mesh, rep(NA, n_obs))
-  list(y = y, weight = weight, covariate = cov_values, idx = idx, A = A)
+  idx <- c(1:n_mesh, rep(n_mesh + 1L, n_obs))  
+  list(
+    y = y,
+    weight = weight,
+    covariate = cov_values,
+    idx = idx,
+    A = A
+  )
 }
 ```
 
