@@ -1,6 +1,6 @@
 
 This example demonstrates how to perform inference on a **simulated Log-Gaussian Cox Process (LGCP)** using the SPDE-INLA framework. While the pipeline here is built around simulated data, the same approach applies to real-world datasets.  
-For an example using real data, see the [`run_with_dataset.R`](run_with_dataset) file.
+For an example using real data, see the [`run_with_dataset.R`]((https://github.com/synnegilbu/Point_Processes/blob/main/run_with_dataset.R)) file.
 
 
 
