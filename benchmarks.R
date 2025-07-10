@@ -362,6 +362,8 @@ benchmark_continuous_pipeline_variable_m <- function(
 }
 
 
+# EXAMPLE RUN
+                              
 benchmark_continuous_pipeline_variable_m(
   dims = 2:6,  
   reps = 3,
