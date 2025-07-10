@@ -227,7 +227,9 @@ run_spde_lgcp_for_traits <- function(coords_raw,
 coords_raw <- as.matrix(avonet[, c("Beak.Length_Culmen", "Beak.Depth", "Beak.Width")])
 trophic_covariate <- as.numeric(factor(avonet$Trophic.Level))
 
-result3d_refined <- run_spde_lgcp_for_traits(
+
+# EXAMPLE RUN                            
+result3d <- run_spde_lgcp_for_traits(
   coords_raw = coords_raw,
   covariate_vals = trophic_covariate,
   d = 3,
