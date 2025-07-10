@@ -363,7 +363,7 @@ benchmark_continuous_pipeline_variable_m <- function(
 
 
 benchmark_continuous_pipeline_variable_m(
-  dims = 2:6,  # or 1:8
+  dims = 2:6,  
   reps = 3,
   beta = 1.0,
   scale_intensity = 500,
